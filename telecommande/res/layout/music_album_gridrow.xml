@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:padding="10dp"     android:background="@null">
+
+	<ImageView
+	    android:id="@+id/albumIcone"
+	    android:layout_width="@dimen/radio_image_size_gridrow"
+	    android:layout_height="@dimen/radio_image_size_gridrow"
+	    android:layout_gravity="center_horizontal"
+	    android:layout_marginBottom="@dimen/radio_image_margin_gridrow"
+	    android:background="@null"
+	    android:src="@drawable/bg_img_loading"
+	    android:visibility="gone" />
+
+	<TextView android:id="@+id/albumName" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+		android:gravity="center_vertical" android:text="Nom Album"
+		android:textSize="@dimen/text_size_large" android:textStyle="bold"  android:background="@null"
+		       android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true" />
+<!-- 	<TextView android:id="@+id/albumArtistName" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+		android:gravity="center_vertical" android:text="Nom Artiste"
+		android:textSize="@dimen/radio_name_gridrow" android:textStyle="bold" />
+ -->
+ </LinearLayout>

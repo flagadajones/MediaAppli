@@ -1,0 +1,12 @@
+<resources>
+    <string-array name="colors">        
+        <item>#30555500</item>
+        <item>#30ff0000</item>
+        <item>#30005555</item>
+        
+        <item>#3000ff00</item>
+        <item>#30550055</item>
+          
+        <item>#300000ff</item>
+    </string-array>
+</resources>

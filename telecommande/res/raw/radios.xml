@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<radios>
+
+    <radio> 
+     <name> France Bleu Basse Normandie</name>
+     <image>http://upload.wikimedia.org/wikipedia/fr/thumb/6/62/Logo_France_Bleu.png/599px-Logo_France_Bleu.png</image>
+     <flux>http://mp3.live.tv-radio.com/fbbassenormandie/all/fbbassenormandie.mp3</flux> 
+    </radio>
+
+    <radio>
+        <name>Le Mouv'</name>
+    <image>http://radiofrancepub.com/wp-content/uploads/2011/01/Le-Mouv-150x150.jpg</image>
+    <flux>hhttp://mp3.live.tv-radio.com/lemouv/all/lemouv-32k.mp3</flux>
+    </radio>
+
+    
+        <radio>
+        <name>FIP</name>
+    <image>http://upload.wikimedia.org/wikipedia/fr/3/35/Logo_Fip.jpg</image>
+    <flux>http://mp3.live.tv-radio.com/fip/all/fip-32k.mp3</flux>
+    </radio>
+    
+    
+
+    </radios>

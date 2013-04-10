@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_height="100dp"
+	android:layout_width="100dp" android:background="@drawable/grid_selector"
+	 >
+
+	<ImageView android:id="@+id/deviceIcone"
+		 android:layout_width="@dimen/device_select_image_size_gridrow"
+	    android:layout_height="@dimen/device_select_image_size_gridrow"
+	    android:layout_gravity="center_horizontal"
+	    android:src="@drawable/bg_img_loading"
+	    android:layout_marginBottom="@dimen/radio_image_margin_gridrow" />
+
+	<TextView
+	    android:id="@+id/deviceName"
+	    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_horizontal"
+		    android:gravity="center_vertical"
+		    android:text="Nom lecteur"
+		    android:textSize="@dimen/radio_name_gridrow"
+		    android:textStyle="bold" />
+
+	
+
+	
+</LinearLayout>

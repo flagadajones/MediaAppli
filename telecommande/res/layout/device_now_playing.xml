@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="ContentDescription" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/black" >
+
+        <ImageView
+            android:id="@+id/audio_player_album_art"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/audio_player_info_container_padding"
+        android:paddingRight="@dimen/audio_player_info_container_padding"
+        android:paddingTop="@dimen/audio_player_artwork_padding" >
+
+        <TextView
+            android:id="@+id/audio_player_track"
+            style="@style/AudioPlayerText"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/audio_player_album_artist"
+            style="@style/AudioPlayerText"
+            android:layout_below="@+id/audio_player_track"
+            android:textColor="@color/transparent_black"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <SeekBar
+            android:id="@android:id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/audio_player_seek_bar_padding"
+            android:thumb="@null" />
+
+        <TextView
+            android:id="@+id/audio_player_current_time"
+            style="@style/AudioPlayerText"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@android:id/progress"
+            android:paddingLeft="@dimen/audio_player_info_container_padding"
+            android:paddingRight="@dimen/audio_player_info_container_padding"
+            android:textColor="@color/transparent_black"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/audio_player_total_time"
+            style="@style/AudioPlayerText"
+            android:layout_alignParentRight="true"
+            android:layout_below="@android:id/progress"
+            android:paddingLeft="@dimen/audio_player_info_container_padding"
+            android:paddingRight="@dimen/audio_player_info_container_padding"
+            android:textColor="@color/transparent_black"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/audio_player_controls_height"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/audio_player_button_container_padding" >
+
+        <ImageButton
+            android:id="@+id/audio_player_prev"
+            style="@style/AudioPlayerButton"
+            android:src="@drawable/apollo_holo_light_previous" />
+
+        <ImageButton
+            android:id="@+id/audio_player_play"
+            style="@style/AudioPlayerButton"
+            
+            android:src="@drawable/apollo_holo_light_pause" />
+
+        <ImageButton
+            android:id="@+id/audio_player_next"
+            style="@style/AudioPlayerButton"
+            android:src="@drawable/apollo_holo_light_next" />
+    </LinearLayout>
+
+</LinearLayout>
