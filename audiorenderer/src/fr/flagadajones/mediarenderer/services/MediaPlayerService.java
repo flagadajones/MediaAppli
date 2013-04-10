@@ -42,20 +42,14 @@ import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class MediaPlayerService extends Service implements OnBufferingUpdateListener, OnInfoListener,
         OnPreparedListener, OnErrorListener, OnCompletionListener {
-    private AudioItem mAudioItem;
     public StatefulMediaPlayer mMediaPlayer = new StatefulMediaPlayer();
+    private UpdateThread updateThread = new UpdateThread(this);
+    private AudioItem mAudioItem;
     public List<fr.flagadajones.mediarenderer.AudioItem> playlist = new ArrayList<fr.flagadajones.mediarenderer.AudioItem>();
     public int trackPosition;
-    private UpdateThread updateThread = new UpdateThread(this);
 
     public MediaPlayerService() {
         BusManager.getInstance().register(this);
-    }
-
-    @Subscribe
-    public void clearPlayList(PlayerClearEvent event) {
-        playlist.clear();
-        BusManager.getInstance().post(updateMediaInfo());
     }
 
     @Override
@@ -69,8 +63,42 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     }
 
+    @Produce
+    public PlayerSongUpdateEvent updateMediaInfo() {
+        PlayerSongUpdateEvent event = new PlayerSongUpdateEvent();
+        event.playListSize = playlist.size();
+        event.trackPosition = trackPosition;
+        if (mAudioItem != null) {
+            event.trackUrl = mAudioItem.url;
+            event.trackDuration = mAudioItem.duration;
+
+            // FIXME : corriger avec les vraies valeurs
+            event.mediaDuration = "00:00;00";
+            event.mediaUrl = mAudioItem.url;
+        }
+        return event;
+    }
+
+    public void setAudioItem(AudioItem audioItem) {
+        this.mAudioItem = audioItem;
+        mMediaPlayer.setAudioItem(audioItem);
+    }
+
+    @Subscribe
+    public void setVolume(PlayerSetVolumeEvent event) {
+        mMediaPlayer.setVolume(event.volume, event.volume);
+    }
+
     public StatefulMediaPlayer getMediaPlayer() {
         return mMediaPlayer;
+    }
+
+    @Subscribe
+    public void initializePlayer(PlayerInitializeEvent event) {
+        if (event.pos != -1)
+            initializePlayer(playlist.get(event.pos));
+        else
+            initializePlayer(event.item);
     }
 
     private void initializePlayer(AudioItem audioStream) {
@@ -88,27 +116,6 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         BusManager.getInstance().post(new PlayerChangeSongEvent(audioStream, playlist));
         BusManager.getInstance().post(updateMediaInfo());
 
-    }
-
-    @Subscribe
-    public void initializePlayer(PlayerInitializeEvent event) {
-        if (event.pos != -1)
-            initializePlayer(playlist.get(event.pos));
-        else
-            initializePlayer(event.item);
-    }
-
-    // public void pause() {
-    // mMediaPlayer.pause();
-    // BusManager.getInstance().post(new PlayerPauseEvent());
-    // }
-    @Subscribe
-    public void nextSong(PlayerNextEvent event) {
-        int index = playlist.indexOf(mAudioItem);
-        if (index < playlist.size() - 1) {
-            initializePlayer(playlist.get(index + 1));
-
-        }
     }
 
     @Override
@@ -132,17 +139,6 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMediaPlayer.release();
-    }
-
-    @Override
     public boolean onError(MediaPlayer player, int what, int extra) {
         mMediaPlayer.reset();
         BusManager.getInstance().post(new PlayerErrorEvent());
@@ -160,14 +156,6 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         BusManager.getInstance().post(new PlayerStartEvent());
     }
 
-    @Subscribe
-    public void onPrevSong(PlayerPrevEvent event) {
-        int index = playlist.indexOf(mAudioItem);
-        if (index > 0) {
-            initializePlayer(playlist.get(index - 1));
-        }
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
@@ -181,34 +169,6 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
         updateThread.stop();
 
-    }
-
-    public void resetMediaPlayer() {
-        stopForeground(true);
-        mMediaPlayer.reset();
-
-    }
-
-    @Subscribe
-    public void seekTo(PlayerSeekEvent event) {
-
-        mMediaPlayer.seekTo(event.msec);
-
-    }
-
-    public void setAudioItem(AudioItem audioItem) {
-        this.mAudioItem = audioItem;
-        mMediaPlayer.setAudioItem(audioItem);
-    }
-
-    @Subscribe
-    public void setPlayList(PlayerPlayListEvent event) {
-        playlist = event.list;
-    }
-
-    @Subscribe
-    public void setVolume(PlayerSetVolumeEvent event) {
-        mMediaPlayer.setVolume(event.volume, event.volume);
     }
 
     @Subscribe
@@ -251,19 +211,59 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         updateThread.stop();
     }
 
-    @Produce
-    public PlayerSongUpdateEvent updateMediaInfo() {
-        PlayerSongUpdateEvent event = new PlayerSongUpdateEvent();
-        event.playListSize = playlist.size();
-        event.trackPosition = trackPosition;
-        if (mAudioItem != null) {
-            event.trackUrl = mAudioItem.url;
-            event.trackDuration = mAudioItem.duration;
+    public void resetMediaPlayer() {
+        stopForeground(true);
+        mMediaPlayer.reset();
 
-            // FIXME : corriger avec les vraies valeurs
-            event.mediaDuration = "00:00;00";
-            event.mediaUrl = mAudioItem.url;
+    }
+
+    // public void pause() {
+    // mMediaPlayer.pause();
+    // BusManager.getInstance().post(new PlayerPauseEvent());
+    // }
+    @Subscribe
+    public void nextSong(PlayerNextEvent event) {
+        int index = playlist.indexOf(mAudioItem);
+        if (index < playlist.size() - 1) {
+            initializePlayer(playlist.get(index + 1));
+
         }
-        return event;
+    }
+
+    @Subscribe
+    public void onPrevSong(PlayerPrevEvent event) {
+        int index = playlist.indexOf(mAudioItem);
+        if (index > 0) {
+            initializePlayer(playlist.get(index - 1));
+        }
+    }
+
+    @Subscribe
+    public void seekTo(PlayerSeekEvent event) {
+
+        mMediaPlayer.seekTo(event.msec);
+
+    }
+
+    @Subscribe
+    public void clearPlayList(PlayerClearEvent event) {
+        playlist.clear();
+        BusManager.getInstance().post(updateMediaInfo());
+    }
+
+    @Subscribe
+    public void setPlayList(PlayerPlayListEvent event) {
+        playlist = event.list;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMediaPlayer.release();
     }
 }
