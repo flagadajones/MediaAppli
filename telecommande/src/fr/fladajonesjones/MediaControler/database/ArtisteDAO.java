@@ -46,7 +46,6 @@ public class ArtisteDAO {
                 .query(MySQLOpenHelper.TABLE_ARTISTES, new String[] { MySQLOpenHelper.COLONNE_ARTISTE_ID,
                         MySQLOpenHelper.COLONNE_ARTISTE_NOM, MySQLOpenHelper.COLONNE_ARTISTE_NB_ALBUM }, null, null,
                         null, null, MySQLOpenHelper.COLONNE_ARTISTE_NOM);
-    //    
         ArrayList<Artiste> retour=cursorToArtistes(c,complet);
         // Ferme le curseur pour liberer les ressources.
         c.close();
@@ -102,9 +101,6 @@ public class ArtisteDAO {
         
     }
 
-    // public long insertArtiste(ContentValues valeurs) {
-    // return maBaseDonnees.insert(MySQLOpenHelper.TABLE_ARTISTES, null, valeurs);
-    // }
 
     public int updateArtiste(Artiste artisteToUpdate) {
     	

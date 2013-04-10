@@ -153,9 +153,6 @@ return instance;
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Dans notre cas, nous supprimons la base et les donnees pour en crEer
-        // une nouvelle ensuite. Vous pouvez creer une logique de mise a jour
-        // propre a votre base permettant de garder les donnees a la place.
         db.execSQL("DROP INDEX " + TABLE_ALBUMS_INDEX + ";");
         db.execSQL("DROP INDEX " + TABLE_DEVICES_INDEX + ";");
         db.execSQL("DROP INDEX " + TABLE_PISTES_INDEX + ";");
@@ -166,84 +163,44 @@ return instance;
         db.execSQL("DROP TABLE " + TABLE_ALBUMS + ";");
         db.execSQL("DROP TABLE " + TABLE_ARTISTES + ";");
 
-//      db.execSQL("alter table albums add column ordre integer");    
-        
-/*       
- String SELECT_QUERY = "SELECT t1." + MySQLOpenHelper.COLONNE_ALBUM_ID + ",t1." + MySQLOpenHelper.COLONNE_ALBUM_NOM
-                + "," + MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK + "," + MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID + ","
-                + MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART + ",t2." + MySQLOpenHelper.COLONNE_ARTISTE_NOM + ","
-                + MySQLOpenHelper.COLONNE_ARTISTE_NB_ALBUM
-
-                + " FROM " + MySQLOpenHelper.TABLE_ALBUMS + " t1 INNER JOIN " + MySQLOpenHelper.TABLE_ARTISTES
-                + " t2 ON t1." + MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID + " = t2."
-                + MySQLOpenHelper.COLONNE_ARTISTE_ID + " ORDER BY t2." + MySQLOpenHelper.COLONNE_ARTISTE_NOM+", t1."+MySQLOpenHelper.COLONNE_ALBUM_NOM;
-
-        Cursor c = db.rawQuery(SELECT_QUERY, null);
-
-        AlbumDAO albumDao = new AlbumDAO();
-        
-        ArrayList<Album> retour = albumDao.cursorToAlbums(c, true);
-        
-        int num=1;
-        for (Album album : retour) {
-            album.order=num;
-            num++;
-            
-        }
-        
-        insertAlbums(db, retour);
-        // Ferme le curseur pour liberer les ressources.
-        c.close();
-
-
-
-        
-        
-        db.execSQL(REQUETE_CREATION_TABLE_ALBUMS_INDEX);
-        db.execSQL(REQUETE_CREATION_TABLE_DEVICES_INDEX);
-        db.execSQL(REQUETE_CREATION_TABLE_ARTISTES_INDEX);
-        db.execSQL(REQUETE_CREATION_TABLE_PISTES_INDEX);
-   */     // Creation de la nouvelle structure.
+     // Creation de la nouvelle structure.
         onCreate(db);
     }
     
     
-    public void insertAlbums(SQLiteDatabase db, List<Album> tmpAlbums) {
-        if (tmpAlbums == null || tmpAlbums.size() == 0)
-            return;
-        //Application.activity.showToast("Insert Albums", true);
-        // The InsertHelper needs to have the db instance + the name of the table where you want to add the data
-        
-        InsertHelper ih = new InsertHelper(db, MySQLOpenHelper.TABLE_ALBUMS);
-
-        final int albumArt = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART);
-        final int artisteId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID);
-        final int albumId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ID);
-        final int nbTrack = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK);
-        final int albumNom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NOM);
-        final int order = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ORDER);
-
-        db.setLockingEnabled(false);
-        try {
-            for (Album album : tmpAlbums) {
-                ih.prepareForReplace();
-                ih.bind(albumArt, album.icone);
-                ih.bind(artisteId, album.artisteId);
-                ih.bind(albumId, album.upnpId);
-                ih.bind(nbTrack, album.nbTracks);
-                ih.bind(albumNom, album.nom);
-                ih.bind(order,album.order);
-                ih.execute();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (ih != null)
-                ih.close();
-            db.setLockingEnabled(true);
-        }
-        tmpAlbums.clear();
-
-    }
+//    private void insertAlbums(SQLiteDatabase db, List<Album> tmpAlbums) {
+//        if (tmpAlbums == null || tmpAlbums.size() == 0)
+//            return;
+//        InsertHelper ih = new InsertHelper(db, MySQLOpenHelper.TABLE_ALBUMS);
+//
+//        final int albumArt = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART);
+//        final int artisteId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID);
+//        final int albumId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ID);
+//        final int nbTrack = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK);
+//        final int albumNom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NOM);
+//        final int order = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ORDER);
+//
+//        db.setLockingEnabled(false);
+//        try {
+//            for (Album album : tmpAlbums) {
+//                ih.prepareForReplace();
+//                ih.bind(albumArt, album.icone);
+//                ih.bind(artisteId, album.artisteId);
+//                ih.bind(albumId, album.upnpId);
+//                ih.bind(nbTrack, album.nbTracks);
+//                ih.bind(albumNom, album.nom);
+//                ih.bind(order,album.order);
+//                ih.execute();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (ih != null)
+//                ih.close();
+//            db.setLockingEnabled(true);
+//        }
+//        tmpAlbums.clear();
+//
+//    }
 
 }
