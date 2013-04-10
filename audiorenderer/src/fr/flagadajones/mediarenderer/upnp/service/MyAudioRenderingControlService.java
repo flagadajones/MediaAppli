@@ -18,20 +18,21 @@ import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class MyAudioRenderingControlService extends AbstractAudioRenderingControl {
     AudioManager audMgr = (AudioManager) Application.instance.getSystemService(Context.AUDIO_SERVICE);
-    // private MediaPlayerService mMediaPlayerService;
     boolean mute = false;
-
-    // public MediaPlayerService getmMediaPlayer() {
-    // return mMediaPlayerService;
-    // }
-    //
-    // public void setmMediaPlayer(MediaPlayerService mMediaPlayer) {
-    // this.mMediaPlayerService = mMediaPlayer;
-    // }
 
     public MyAudioRenderingControlService(LastChange lastChange) {
         super(lastChange);
 
+    }
+
+    @Override
+    protected Channel[] getCurrentChannels() {
+        return new Channel[] { Channel.Master };
+    }
+
+    @Override
+    public UnsignedIntegerFourBytes[] getCurrentInstanceIds() {
+        return new UnsignedIntegerFourBytes[] { new UnsignedIntegerFourBytes(0) };
     }
 
     @Override
@@ -60,16 +61,6 @@ public class MyAudioRenderingControlService extends AbstractAudioRenderingContro
         getLastChange().setEventedValue(0,
                 new RenderingControlVariable.Volume(new ChannelVolume(Channel.Master, arg2.getValue().intValue())));
         BusManager.getInstance().post(new PlayerSetVolumeEvent(arg2.getValue().intValue()));
-    }
-
-    @Override
-    public UnsignedIntegerFourBytes[] getCurrentInstanceIds() {
-        return new UnsignedIntegerFourBytes[] { new UnsignedIntegerFourBytes(0) };
-    }
-
-    @Override
-    protected Channel[] getCurrentChannels() {
-        return new Channel[] { Channel.Master };
     }
 
 }

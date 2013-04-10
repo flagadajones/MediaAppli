@@ -55,9 +55,6 @@ public class MainActivity extends Activity {
         BusManager.getInstance().unregister(this);
     }
 
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
     private ServiceConnection mediaPlayerServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
@@ -85,14 +82,9 @@ public class MainActivity extends Activity {
         super.onCreate(icicle);
         setContentView(R.layout.main);
         initViews();
-        // Application.instance.mService.setClient(this);
         bindToService();
     }
 
-    /**
-     * Determines if the MediaPlayerService is already running.
-     * @return true if the service is running, false otherwise.
-     */
     private boolean mediaPlayerServiceRunning() {
 
         ActivityManager manager = (ActivityManager) Application.instance.getSystemService(ACTIVITY_SERVICE);
@@ -106,10 +98,6 @@ public class MainActivity extends Activity {
         return false;
     }
 
-    /**
-     * Binds to the instance of MediaPlayerService. If no instance of MediaPlayerService exists, it first starts a new
-     * instance of the service.
-     */
     public void bindToService() {
         Intent intent = new Intent(this, MediaPlayerService.class);
 
@@ -128,15 +116,8 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    // client service
-
     @Subscribe
     public void onInitializePlayerSuccess(final PlayerInitializeSuccess event) {
-        // mProgressDialog.dismiss();
-        //
-        // final ToggleButton playPauseButton = (ToggleButton)
-        // findViewById(R.id.playPauseButton);
-        // playPauseButton.setChecked(true);
         runOnUiThread(new Runnable() {
             public void run() {
 
@@ -166,12 +147,10 @@ public class MainActivity extends Activity {
 
     @Subscribe
     public void onErrorPlayer(final PlayerErrorEvent event) {
-        // mProgressDialog.cancel();
     }
 
     @Subscribe
     public void onPausePlayer(final PlayerPauseEvent event) {
-        // TODO Auto-generated method stub
         runOnUiThread(new Runnable() {
             public void run() {
                 buttonPlayPause.setText("PAUSE");

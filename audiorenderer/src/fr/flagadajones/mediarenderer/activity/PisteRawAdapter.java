@@ -10,7 +10,7 @@ import android.widget.TextView;
 import fr.flagadajones.mediarenderer.AudioItem;
 import fr.flagadajones.mediarenderer.R;
 
-public class PisteRawAdapter extends ArrayAdapter<AudioItem>{
+public class PisteRawAdapter extends ArrayAdapter<AudioItem> {
 
     private LayoutInflater inflater;
 
@@ -18,7 +18,7 @@ public class PisteRawAdapter extends ArrayAdapter<AudioItem>{
         super(context, -1);
 
         inflater = ((Activity) context).getLayoutInflater();
-  
+
     }
 
     @Override
@@ -33,8 +33,7 @@ public class PisteRawAdapter extends ArrayAdapter<AudioItem>{
             holder = new PisteRowHolder();
             holder.pisteTitre = (TextView) row.findViewById(R.id.pisteTitre);
             holder.pisteDuree = (TextView) row.findViewById(R.id.pisteDuree);
-            
-            // holder.deviceHydrate=(TextView)row.findViewById(R.id.deviceHydrate);
+
             row.setTag(holder);
         } else {
             holder = (PisteRowHolder) row.getTag();
@@ -42,13 +41,13 @@ public class PisteRawAdapter extends ArrayAdapter<AudioItem>{
         AudioItem item = getItem(position);
 
         holder.pisteTitre.setText(item.title);
-        holder.pisteDuree.setText(item.duration);	
-                return row;
+        holder.pisteDuree.setText(item.duration);
+        return row;
     }
 
     public static class PisteRowHolder {
         public TextView pisteTitre;
         public TextView pisteDuree;
-       
+
     }
 }

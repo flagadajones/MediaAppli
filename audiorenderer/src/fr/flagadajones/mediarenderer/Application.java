@@ -16,9 +16,7 @@ import android.util.Log;
 import fr.flagadajones.mediarenderer.loader.ImageLoader;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
 import fr.flagadajones.mediarenderer.upnp.MediaRenderer;
-import fr.flagadajones.mediarenderer.upnp.service.MyAVTransportService;
 import fr.flagadajones.mediarenderer.upnp.service.MyRendererUpnpService;
-import fr.flagadajones.mediarenderer.util.FixedAndroidHandler;
 
 public class Application extends android.app.Application {
 	final private static Logger log = Logger.getLogger(Application.class
@@ -59,8 +57,6 @@ public class Application extends android.app.Application {
 	// ###############################################################################
 
 	private boolean mBound;
-	// public MediaPlayerService mService;
-	// public StatefulMediaPlayer mMediaPlayer;
 
 	/**
 	 * Defines callbacks for service binding, passed to bindService()
@@ -70,40 +66,7 @@ public class Application extends android.app.Application {
 		public void onServiceConnected(ComponentName className,
 				IBinder serviceBinder) {
 			Log.d("Application", "service connected");
-
-			// bound with Service. get Service instance
-			// MediaPlayerBinder binder = (MediaPlayerBinder) serviceBinder;
-			// mService = binder.getService();
-			// mediaRenderer.setMediaPlayerService(mService);
-			// send this instance to the service, so it can make callbacks on
-			// this instance as a client
-			// mService.setClient(Application.this);
-			// mMediaPlayer=mService.getMediaPlayer();
 			mBound = true;
-
-			// Set play/pause button to reflect state of the service's contained
-			// player
-			// final ToggleButton playPauseButton = (ToggleButton)
-			// findViewById(R.id.playPauseButton);
-			// playPauseButton.setChecked(mService.getMediaPlayer().isPlaying());
-
-			// Set station Picker to show currently set stream station
-			// Spinner stationPicker = (Spinner)
-			// findViewById(R.id.stationPicker);
-			// if(mService.getMediaPlayer() != null &&
-			// mService.getMediaPlayer().getStreamStation() != null) {
-			// for (int i = 0; i < CONSTANTS.STATIONS.length; i++) {
-			// if
-			// (mService.getMediaPlayer().getStreamStation().equals(CONSTANTS.STATIONS[i]))
-			// {
-			// stationPicker.setSelection(i);
-			// mSelectedStream = (StreamStation)
-			// stationPicker.getItemAtPosition(i);
-			// }
-			//
-			// }
-			// }
-
 		}
 
 		@Override
@@ -112,10 +75,6 @@ public class Application extends android.app.Application {
 		}
 	};
 
-	/**
-	 * Binds to the instance of MediaPlayerService. If no instance of
-	 * MediaPlayerService exists, it first starts a new instance of the service.
-	 */
 	public void bindToService() {
 		Intent intent = new Intent(this, MediaPlayerService.class);
 
@@ -131,11 +90,6 @@ public class Application extends android.app.Application {
 
 	}
 
-	/**
-	 * Determines if the MediaPlayerService is already running.
-	 * 
-	 * @return true if the service is running, false otherwise.
-	 */
 	private boolean mediaPlayerServiceRunning() {
 
 		ActivityManager manager = (ActivityManager) Application.instance
@@ -154,7 +108,6 @@ public class Application extends android.app.Application {
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
 
 		instance = this;
@@ -175,10 +128,6 @@ public class Application extends android.app.Application {
 
 	public void onTerminate() {
 		super.onTerminate();
-		if (upnpService != null) {
-			// upnpService.getRegistry().removeListener(registryListener);
-
-		}
 		getApplicationContext().unbindService(upnpServiceConnection);
 	}
 

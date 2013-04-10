@@ -3,14 +3,11 @@ package fr.flagadajones.mediarenderer.services;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
+import android.util.Log;
 import fr.flagadajones.mediarenderer.events.PlayerUpdatePosEvent;
 import fr.flagadajones.mediarenderer.util.BusManager;
 
-import android.util.Log;
-
 public class UpdateThread {
-    // private int counter = 0, incrementby = 1;
     private static boolean isRunning = false;
     private MediaPlayerService mediaPlayerService;
 
@@ -18,7 +15,6 @@ public class UpdateThread {
         return isRunning;
     }
 
-    // private NotificationManager nm;
     private Timer timer = new Timer();
 
     public UpdateThread(MediaPlayerService mediaPlayerService) {
@@ -53,12 +49,11 @@ public class UpdateThread {
     }
 
     private void onTimerTick() {
-       // Log.d("TimerTick", "Timer doing work.");
         try {
 
             sendMessageToUI();
 
-        } catch (Throwable t) { // you should always ultimately catch all exceptions in timer tasks.
+        } catch (Throwable t) {
             Log.e("TimerTick", "Timer Tick Failed.", t);
         }
     }
