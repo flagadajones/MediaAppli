@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
-import fr.flagadajones.mediarenderer.loader.ImageLoader;
+import fr.flagadajones.android.loader.ImageLoader;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
 import fr.flagadajones.mediarenderer.upnp.MediaRenderer;
 import fr.flagadajones.mediarenderer.upnp.service.MyRendererUpnpService;
@@ -114,7 +114,7 @@ public class Application extends android.app.Application {
 //		org.teleal.common.logging.LoggingUtil
 //				.resetRootHandler(new FixedAndroidHandler());
 
-		imageLoader = new ImageLoader(getApplicationContext());
+		imageLoader = new ImageLoader(getApplicationContext(),R.drawable.stub);
 
 		java.util.logging.Logger.getLogger("org.teleal.cling").setLevel(
 				Level.OFF);

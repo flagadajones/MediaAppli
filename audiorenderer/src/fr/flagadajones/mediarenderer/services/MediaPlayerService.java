@@ -20,6 +20,7 @@ import android.util.Log;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
+import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.mediarenderer.AudioItem;
 import fr.flagadajones.mediarenderer.activity.MainActivity;
 import fr.flagadajones.mediarenderer.events.PlayerChangeSongEvent;
@@ -38,7 +39,6 @@ import fr.flagadajones.mediarenderer.events.PlayerSongUpdateEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
 import fr.flagadajones.mediarenderer.player.StatefulMediaPlayer;
-import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class MediaPlayerService extends Service implements OnBufferingUpdateListener, OnInfoListener,
         OnPreparedListener, OnErrorListener, OnCompletionListener {

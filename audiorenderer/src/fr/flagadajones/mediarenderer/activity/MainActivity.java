@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
+import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.mediarenderer.Application;
 import fr.flagadajones.mediarenderer.R;
 import fr.flagadajones.mediarenderer.events.PlayerChangeSongEvent;
@@ -30,7 +31,6 @@ import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
 import fr.flagadajones.mediarenderer.events.PlayerUpdatePosEvent;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
-import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class MainActivity extends Activity {
 

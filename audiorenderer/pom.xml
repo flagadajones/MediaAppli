@@ -24,7 +24,12 @@
 	</build>
 
 	<dependencies>
+<dependency>
+			<groupId>fr.flagadajones</groupId>
+			<artifactId>fj-lib-util</artifactId>
+			<version>${project.version}</version>
 
+		</dependency>
 	</dependencies>
 
 

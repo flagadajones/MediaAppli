@@ -12,9 +12,9 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 
 import android.content.Context;
 import android.media.AudioManager;
+import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.mediarenderer.Application;
 import fr.flagadajones.mediarenderer.events.PlayerSetVolumeEvent;
-import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class MyAudioRenderingControlService extends AbstractAudioRenderingControl {
     AudioManager audMgr = (AudioManager) Application.instance.getSystemService(Context.AUDIO_SERVICE);

@@ -34,6 +34,7 @@ import org.fourthline.cling.support.model.item.MusicTrack;
 
 import com.squareup.otto.Subscribe;
 
+import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.mediarenderer.events.PlayerClearEvent;
 import fr.flagadajones.mediarenderer.events.PlayerInitializeEvent;
 import fr.flagadajones.mediarenderer.events.PlayerNextEvent;
@@ -44,7 +45,6 @@ import fr.flagadajones.mediarenderer.events.PlayerSeekEvent;
 import fr.flagadajones.mediarenderer.events.PlayerSongUpdateEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
-import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class MyAVTransportService extends AbstractAVTransportService {
 

@@ -4,8 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.util.Log;
+import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.mediarenderer.events.PlayerUpdatePosEvent;
-import fr.flagadajones.mediarenderer.util.BusManager;
 
 public class UpdateThread {
     private static boolean isRunning = false;
