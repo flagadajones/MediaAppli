@@ -60,7 +60,7 @@ public class MenuDrawerUtil {
     }
 
     public static void toggleMenu() {
-        mMenuDrawer.toggleMenu();
+       // mMenuDrawer.toggleMenu();
     }
 
     public static void closeMenu() {
@@ -82,16 +82,16 @@ public class MenuDrawerUtil {
         // mActivePosition =position;
         if (items == null) {
             items = new ArrayList<Object>();
-            items.add(new Item("Musique", R.drawable.ic_action_refresh_dark));
-            items.add(new Item("Radio", R.drawable.ic_action_select_all_dark));
+            items.add(new Item("Musique", R.drawable.menu_cd_2));
+            items.add(new Item("Radio", R.drawable.menu_radio));
             mAdapter = new MenuAdapter(items);
         }
 
         if (configs == null) {
             configs = new ArrayList<Object>();
-            configs.add(new Category("Conf"));
-            configs.add(new Item("Renderers", R.drawable.ic_action_refresh_dark));
-            configs.add(new Item("Servers", R.drawable.ic_action_refresh_dark));
+            //configs.add(new Category("Conf"));
+            configs.add(new Item("Renderer", R.drawable.menu_player));
+            configs.add(new Item("Server", R.drawable.menu_server));
             mAdapter.addAll(configs);
         }
         // A custom ListView is needed so the drawer can be notified when it's scrolled. This is to update the position
@@ -115,14 +115,14 @@ public class MenuDrawerUtil {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mActivePosition = position;
             mMenuDrawer.setActiveView(view, position);
-
+            
             Object item = mAdapter.getItem(position);
             if (item instanceof Item && ((Item) item).mTitle.equals("Musique")) {
                 replaceFragment(new AlbumFragment());
-            } else if (item instanceof Item && ((Item) item).mTitle.equals("Renderers")) {
+            } else if (item instanceof Item && ((Item) item).mTitle.equals("Renderer")) {
                 // replaceFragment(new DeviceFragment());
                 replaceFragment(new RendererGridFragment());
-            } else if (item instanceof Item && ((Item) item).mTitle.equals("Servers")) {
+            } else if (item instanceof Item && ((Item) item).mTitle.equals("Server")) {
                 replaceFragment(new DeviceFragment());
                 // replaceFragment(new DashBoardFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Radio")) {
@@ -132,6 +132,8 @@ public class MenuDrawerUtil {
                 fragment.renderer = (UpnpRendererDevice) item;
                 replaceFragment(fragment);
             }
+            
+            mMenuDrawer.closeMenu();
 
         }
 

@@ -31,7 +31,9 @@
 						<platform>15</platform>
 					</sdk>
 					<apkDebug>true</apkDebug>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<extractDuplicates>true</extractDuplicates>
+					
 				</configuration>
 			</plugin>
 

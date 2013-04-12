@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,10 @@ public class MenuAdapter extends BaseAdapter {
 
         TextView tv = (TextView) v;
         tv.setText(((Item) item).mTitle);
-        tv.setCompoundDrawablesWithIntrinsicBounds(((Item) item).mIconRes, 0, 0, 0);
+        Drawable draw=tv.getResources().getDrawable(((Item) item).mIconRes );
+        draw.setBounds(0, 0, 100, 100);
+       
+        tv.setCompoundDrawables(null,draw, null, null);
         return v;
     }
 

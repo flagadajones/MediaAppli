@@ -13,10 +13,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
@@ -37,6 +40,7 @@ public class DashBoardActivity extends FragmentActivity {
      */
 
     private ProgressDialog pd;
+    private Menu menu;
 
     @Subscribe
     public void onLoading(UpnpServerLoadingEvent event) {
@@ -52,6 +56,16 @@ public class DashBoardActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Application.activity = this;
+        // Activate StrictMode
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+            .detectAll().penaltyLog().penaltyDeath().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
+            .penaltyLog().penaltyDeath().build());
+        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true); 
+               
+        
         MenuDrawerUtil.initMenuDrawerManager(this, R.layout.activity_main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -63,6 +77,8 @@ public class DashBoardActivity extends FragmentActivity {
         ft.replace(R.id.details, new RendererGridFragment());
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+        
+        
     }
 
     @Override
@@ -157,7 +173,11 @@ public class DashBoardActivity extends FragmentActivity {
         super.onCreateOptionsMenu(menu);
         menu.add(0, 0, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
         menu.add(0, 2, 0, "Debug").setIcon(android.R.drawable.ic_menu_info_details);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbarmenu, menu);
+        this.menu=menu;
         return true;
+   
     }
 
     public void showToast(final String msg, final boolean longLength) {
@@ -170,12 +190,18 @@ public class DashBoardActivity extends FragmentActivity {
     }
 
     public void showProgressDialog() {
-        pd = ProgressDialog.show(this, "Chargement", "", true, false);
-
+        //pd = ProgressDialog.show(this, "Chargement", "", true, false);
+        MenuItem menuItem=menu.getItem(R.id.action_refresh);
+        menuItem.setActionView(R.layout.progressbar);
+        menuItem.expandActionView();
+        
     }
 
     public void removeProgressDialog() {
-        pd.dismiss();
+        //pd.dismiss();
+        MenuItem menuItem=menu.getItem(R.id.action_refresh);
+        menuItem.collapseActionView();
+        menuItem.setActionView(null);
     }
 
 }

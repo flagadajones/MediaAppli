@@ -48,6 +48,9 @@ import fr.flagadajones.media.util.BusManager;
 public class UpnpServerDevice extends UpnpDevice {
     private static final Logger log = Logger.getLogger(UpnpServerDevice.class.getName());
     Service<Device, Service> contentDirectoryService = null;
+    
+    boolean browsing=false;
+    
     PisteDAO pisteDao = null;
     AlbumDAO albumDao = null;
     ArtisteDAO artisteDao = null;
@@ -58,7 +61,7 @@ public class UpnpServerDevice extends UpnpDevice {
             String noeud = listeNoeud.remove(0);
             browse(noeud, new UpnpServerBrowseOkEvent());
         } else {
-
+            
             BusManager.getInstance().unregister(this);
             Application.activity.showToast("Chargement terminé", true);
 
@@ -112,6 +115,8 @@ public class UpnpServerDevice extends UpnpDevice {
     }
 
     public void browseAlbums() {
+        if(!browsing){
+            browsing=true;
         listeNoeud.clear();
         IntentFilter f = new IntentFilter();
         BusManager.getInstance().register(this);
@@ -119,6 +124,7 @@ public class UpnpServerDevice extends UpnpDevice {
         initDao();
 
         browse("0", new UpnpServerBrowseOkEvent());
+        }
     }
 
     public void loadPiste(String noeud) {

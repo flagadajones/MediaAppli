@@ -40,7 +40,7 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:drawablePadding">16dp</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
     </style>
 <style name="RendererGrid.Title">
         <item name="android:background">@drawable/md__list_selector_holo_dark</item>
@@ -71,7 +71,8 @@
     
     <style name="MenuDrawerStyle" parent="Widget.MenuDrawer">
       <item name="mdActiveIndicator">@drawable/menu_arrow</item>
-        <item name="mdMenuSize">250dp</item>
+        <!-- <item name="mdMenuSize">250dp</item> -->
+        <item name="mdMenuSize">120dp</item>
     </style>
 
     <style name="MenuDrawerStyle.Right" parent="Widget.MenuDrawer">
