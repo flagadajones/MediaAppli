@@ -1,4 +1,4 @@
-package fr.flagadajones.mediarenderer.util;
+package fr.flagadajones.media.util;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;

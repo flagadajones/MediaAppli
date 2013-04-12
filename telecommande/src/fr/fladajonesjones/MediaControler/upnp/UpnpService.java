@@ -4,8 +4,6 @@ package fr.fladajonesjones.MediaControler.upnp;
 import org.fourthline.cling.android.AndroidUpnpServiceConfiguration;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
 
-import android.net.wifi.WifiManager;
-
 /**
  * @author Christian Bauer
  */

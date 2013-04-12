@@ -14,7 +14,7 @@ import fr.fladajonesjones.MediaControler.R;
 
 public class MenuAdapter extends BaseAdapter {
 
-    private List<Object> mItems=new ArrayList<Object>();
+    private List<Object> mItems = new ArrayList<Object>();
 
     MenuAdapter(List<Object> items) {
         mItems.addAll(items);
@@ -23,11 +23,10 @@ public class MenuAdapter extends BaseAdapter {
     public void addAll(Collection<? extends Object> objects) {
         mItems.addAll(objects);
     }
-    
-    public void clear(){
+
+    public void clear() {
         mItems.clear();
     }
-    
 
     @Override
     public int getCount() {
@@ -93,10 +92,10 @@ public class MenuAdapter extends BaseAdapter {
         Object item = getItem(position);
 
         if (item instanceof Category) {
-            v=renduCategory((Category) item, v, parent);
+            v = renduCategory((Category) item, v, parent);
         } else if (item instanceof Item) {
-        	v=renduItem((Item) item, v, parent);
-        } 
+            v = renduItem((Item) item, v, parent);
+        }
 
         v.setTag(R.id.mdActiveViewPosition, position);
 

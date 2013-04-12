@@ -1,9 +1,9 @@
-package fr.fladajonesjones.MediaControler.loader;
+package fr.flagadajones.media.util;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Utils {
+public class StreamUtils {
     public static void CopyStream(InputStream is, OutputStream os)
     {
         final int buffer_size=1024;
@@ -20,4 +20,6 @@ public class Utils {
         }
         catch(Exception ex){}
     }
+    
+   
 }

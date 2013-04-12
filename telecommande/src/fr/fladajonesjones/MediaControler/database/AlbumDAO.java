@@ -1,13 +1,18 @@
 package fr.fladajonesjones.MediaControler.database;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
+import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
 import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Artiste;
+import fr.flagadajones.media.util.BusManager;
 
 public class AlbumDAO {
     private SQLiteDatabase maBaseDonnees;
@@ -187,6 +192,54 @@ public class AlbumDAO {
     public int removeAlbum(String where, String[] whereArgs) {
 
         return maBaseDonnees.delete(MySQLOpenHelper.TABLE_ALBUMS, where, whereArgs);
+    }
+
+    public void insertAlbums(List<Album> tmpAlbums) {
+        if (tmpAlbums == null || tmpAlbums.size() == 0)
+            return;
+        // Application.activity.showToast("Insert Albums", true);
+        // The InsertHelper needs to have the db instance + the name of the
+        // table where you want to add the data
+        InsertHelper ih = new InsertHelper(maBaseDonnees, MySQLOpenHelper.TABLE_ALBUMS);
+
+        final int albumArt = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART);
+        final int artisteId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID);
+        final int albumId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ID);
+        final int nbTrack = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK);
+        final int albumNom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NOM);
+        final int ordre = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ORDER);
+
+        Collections.sort(tmpAlbums);
+
+        maBaseDonnees.setLockingEnabled(false);
+        int number = 1;
+        try {
+            for (Album album : tmpAlbums) {
+                ih.prepareForReplace();
+                ih.bind(albumArt, album.icone);
+                ih.bind(artisteId, album.artisteId);
+                ih.bind(albumId, album.upnpId);
+                ih.bind(nbTrack, album.nbTracks);
+                ih.bind(albumNom, album.nom);
+                ih.bind(ordre, number);
+
+                ih.execute();
+                number++;
+            }
+        } catch (Exception e) {
+            log.warning("erreur");
+            e.printStackTrace();
+        } finally {
+            if (ih != null)
+                ih.close();
+            maBaseDonnees.setLockingEnabled(true);
+        }
+        tmpAlbums.clear();
+
+        // Application.activity.showToast("Albums OK", true);
+        // Application.instance.unregisterReceiver(mStatusListener);
+
+    
     }
 
 }

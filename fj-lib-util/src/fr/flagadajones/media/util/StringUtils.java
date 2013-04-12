@@ -1,14 +1,10 @@
-package fr.fladajonesjones.MediaControler;
+package fr.flagadajones.media.util;
 
 import java.util.Formatter;
 import java.util.Locale;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+public class StringUtils {
 
-public class Util {
     private final static StringBuilder sFormatBuilder = new StringBuilder();
 
     private final static Formatter sFormatter = new Formatter(sFormatBuilder, Locale.getDefault());
@@ -18,10 +14,15 @@ public class Util {
      * @param secs
      * @return time String
      */
-    public static String makeTimeString(Context context, long secs) {
+    public static String makeTimeString(long secs) {
 
-        String durationformat = context.getString(secs < 3600 ? R.string.durationformatshort
-                : R.string.durationformatlong);
+        String durationformat;
+        if (secs < 3600)
+            durationformat = "%2$d:%5$02d";
+        else
+            durationformat = "%1$d:%3$02d:%5$02d";
+            
+        
 
         /*
          * Provide multiple arguments so the format can be changed easily by
@@ -37,11 +38,5 @@ public class Util {
         timeArgs[4] = secs % 60;
 
         return sFormatter.format(durationformat, timeArgs).toString();
-    }
-
-    public static Drawable resize(Drawable image) {
-        Bitmap d = ((BitmapDrawable) image).getBitmap();
-        Bitmap bitmapOrig = Bitmap.createScaledBitmap(d, 32, 32, false);
-        return new BitmapDrawable(bitmapOrig);
     }
 }

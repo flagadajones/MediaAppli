@@ -5,10 +5,6 @@
 package fr.fladajonesjones.MediaControler.activity;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,10 +20,15 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.otto.Subscribe;
+
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.Util;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererMetaChangeEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import fr.flagadajones.media.util.BusManager;
+import fr.flagadajones.media.util.StringUtils;
 
 /**
  * @author Andrew Neal
@@ -36,7 +37,7 @@ public class NowPlayingFragment extends Fragment {
 
     
 
-    private UpnpRendererDevice renderer;
+    public UpnpRendererDevice renderer;
 
     // Track, album, and artist name
     private TextView mTrackName, mAlbumArtistName;
@@ -61,16 +62,32 @@ public class NowPlayingFragment extends Fragment {
     private boolean mFromTouch, paused = false;
 
     // Handler
-    private static final int REFRESH = 1, UPDATEINFO = 2;
+    private static final int REFRESH = 1;//, UPDATEINFO = 2;
 
     // Notify if repeat or shuffle changes
     private Toast mToast;
 
-    public NowPlayingFragment(UpnpRendererDevice renderer) {
+    public NowPlayingFragment() {
         super();
-        this.renderer = renderer;
+        
+    }
+    
+//    public NowPlayingFragment(UpnpRendererDevice renderer) {
+//        super();
+//        this.renderer = renderer;
+//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusManager.getInstance().register(this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusManager.getInstance().unregister(this);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -156,26 +173,19 @@ public class NowPlayingFragment extends Fragment {
         return root;
     }
 
-    /**
-     * Update everything as the meta or playstate changes
-     */
-    private final BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(UpnpRendererDevice.META_CHANGED))
-                mHandler.sendMessage(mHandler.obtainMessage(UPDATEINFO));
-            setPauseButtonImage();
-        }
-    };
+
+    @Subscribe
+    public void onMetaChange(UpnpRendererMetaChangeEvent event){
+        updateMusicInfo();
+        setPauseButtonImage();
+    }
+    
+   
 
     @Override
     public void onStart() {
         super.onStart();
-        IntentFilter f = new IntentFilter();
-        f.addAction(UpnpRendererDevice.META_CHANGED);
-        getActivity().registerReceiver(mStatusListener, new IntentFilter(f));
-
-        long next = refreshNow();
+       long next = refreshNow();
         queueNextRefresh(next);
     }
 
@@ -183,8 +193,6 @@ public class NowPlayingFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         paused = true;
-        mHandler.removeMessages(REFRESH);
-        getActivity().unregisterReceiver(mStatusListener);
     }
 
     /**
@@ -228,6 +236,8 @@ public class NowPlayingFragment extends Fragment {
         }
     }
 
+    
+    //FIXME remove REFRESH Handler;
     /**
      * We need to refresh the time via a Handler
      */
@@ -238,9 +248,6 @@ public class NowPlayingFragment extends Fragment {
             case REFRESH:
                 long next = refreshNow();
                 queueNextRefresh(next);
-                break;
-            case UPDATEINFO:
-                updateMusicInfo();
                 break;
             default:
                 break;
@@ -293,7 +300,7 @@ public class NowPlayingFragment extends Fragment {
         long pos = mPosOverride < 0 ? renderer.getPosition() : mPosOverride;
         long remaining = 1000 - (pos % 1000);
         if ((pos >= 0) && (mDuration > 0)) {
-            mCurrentTime.setText(Util.makeTimeString(getActivity(), pos / 1000));
+            mCurrentTime.setText(StringUtils.makeTimeString( pos / 1000));
 
             if (renderer.isPlaying()) {
                 mCurrentTime.setVisibility(View.VISIBLE);
@@ -331,7 +338,7 @@ public class NowPlayingFragment extends Fragment {
         mTrackName.setText(trackName);
         mAlbumArtistName.setText(albumName + " - " + artistName);
         mDuration = renderer.getMusique().getDuration();
-        mTotalTime.setText(Util.makeTimeString(getActivity(), mDuration / 1000));
+        mTotalTime.setText(StringUtils.makeTimeString(mDuration / 1000));
 
 
         Application.imageLoader.DisplayImage(renderer.getMusique().icone, mAlbumArt);

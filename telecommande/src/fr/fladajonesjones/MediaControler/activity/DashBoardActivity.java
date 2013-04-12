@@ -1,8 +1,9 @@
 package fr.fladajonesjones.MediaControler.activity;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.squareup.otto.Subscribe;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import android.app.ProgressDialog;
@@ -19,10 +20,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.ViewServer;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
+import fr.flagadajones.android.ViewServer;
+import fr.flagadajones.media.util.BusManager;
 
 public class DashBoardActivity extends FragmentActivity {
 
@@ -33,67 +37,67 @@ public class DashBoardActivity extends FragmentActivity {
      */
 
     private ProgressDialog pd;
-    
-    BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        	
-            if (intent.getAction().equals(UpnpServerDevice.LOADING)) {
-               showProgressDialog();
-            }
-            if (intent.getAction().equals(UpnpServerDevice.LOADING_OK)) {
-                removeProgressDialog();
-            }
-        }
-    };
-    
-    
+
+    @Subscribe
+    public void onLoading(UpnpServerLoadingEvent event) {
+        showProgressDialog();
+    }
+
+    @Subscribe
+    public void onLoadingOk(UpnpServerLoadingOkEvent event) {
+        removeProgressDialog();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Application.activity=this;
+        Application.activity = this;
         MenuDrawerUtil.initMenuDrawerManager(this, R.layout.activity_main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        
-        IntentFilter f = new IntentFilter();
-        f.addAction(UpnpServerDevice.LOADING);
-        f.addAction(UpnpServerDevice.LOADING_OK);
-        Application.instance.registerReceiver(mStatusListener, new IntentFilter(f));
-        
+
         ViewServer.get(this).addWindow(this);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.details, new RendererGridFragment());
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+
     @Override
     public void onDestroy() {
-    	super.onDestroy();
-    	ViewServer.get(this).removeWindow(this);
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
-    
+
     @Override
     public void onResume() {
-    	super.onResume();
-    	ViewServer.get(this).setFocusedWindow(this);
+        super.onResume();
+        BusManager.getInstance().register(this);
+        ViewServer.get(this).setFocusedWindow(this);
+
     }
-    
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BusManager.getInstance().register(this);
+    }
+
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
-       // MenuDrawerUtil.onRestoreDrawerState();
+        // MenuDrawerUtil.onRestoreDrawerState();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    //     outState.putParcelable(STATE_MENUDRAWER, mMenuDrawer.onSaveDrawerState());
-    //     outState.putInt(STATE_ACTIVE_POSITION, MenuDrawerUtil.mActivePosition);
+        // outState.putParcelable(STATE_MENUDRAWER, mMenuDrawer.onSaveDrawerState());
+        // outState.putInt(STATE_ACTIVE_POSITION, MenuDrawerUtil.mActivePosition);
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -130,13 +134,13 @@ public class DashBoardActivity extends FragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     protected void searchNetwork() {
         Toast.makeText(this, "Recherche", Toast.LENGTH_SHORT).show();
         UpnpDeviceManager.getInstance().search();
-        
+
     }
-    
+
     @Override
     public void onBackPressed() {
         final int drawerState = MenuDrawerUtil.getDrawerState();
@@ -156,22 +160,22 @@ public class DashBoardActivity extends FragmentActivity {
         return true;
     }
 
-    
     public void showToast(final String msg, final boolean longLength) {
         runOnUiThread(new Runnable() {
             public void run() {
-                Toast.makeText(getApplicationContext(), msg, longLength ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), msg, longLength ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT)
+                        .show();
             }
         });
     }
-  
-    public void showProgressDialog(){
-    pd = ProgressDialog.show(this, "Chargement", "", true,
-            false);
-  
+
+    public void showProgressDialog() {
+        pd = ProgressDialog.show(this, "Chargement", "", true, false);
+
     }
-    public void removeProgressDialog(){
-        pd.dismiss();    
+
+    public void removeProgressDialog() {
+        pd.dismiss();
     }
 
 }

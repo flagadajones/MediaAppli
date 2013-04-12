@@ -12,54 +12,62 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+
+import com.squareup.otto.Subscribe;
+
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RendererStatusGridAdapter;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererAddEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererRemoveEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServiceClient;
+import fr.flagadajones.media.util.BusManager;
 
-public class RendererGridFragment extends Fragment implements UpnpServiceClient {
+public class RendererGridFragment extends Fragment {
 
-	   BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-	        @Override
-	        public void onReceive(Context context, Intent intent) {
-	            String action = intent.getAction();
-	            if (UpnpRendererDevice.STATUT_CHANGED.equals(action)) {
-	            	rendererListAdapter.notifyDataSetChanged();
-	        }
-	    }
-	        };
+	  
 	
-	@Override
-	public void onRendererDeviceAdded(final UpnpRendererDevice renderer) {
-		getActivity().runOnUiThread(new Runnable() {
-		    public void run() {
-		if (rendererListAdapter.getPosition(renderer) == -1)
-			rendererListAdapter.add(renderer);
-		else
-			rendererListAdapter.notifyDataSetChanged();
-		    }});
-	}
+	        @Subscribe
+	        public void onStatutChange(UpnpRendererStatutChangeEvent event){
+	            rendererListAdapter.notifyDataSetChanged();
+	        }
+	        
+	        
+	        @Subscribe
+	        public void onRendererDeviceAdded(UpnpRendererAddEvent event) {
+	            // getActivity().runOnUiThread(new Runnable() {
+	            // public void run() {
+	            if (rendererListAdapter.getPosition(event.device) == -1)
+	                rendererListAdapter.add(event.device);
+	            else
+	                rendererListAdapter.notifyDataSetChanged();
+	            // }});
+	        }
 
-	@Override
-	public void onRendererDeviceRemoved(final UpnpRendererDevice renderer) {
-		getActivity().runOnUiThread(new Runnable() {
-		    public void run() {
-		    	rendererListAdapter.remove(renderer);
-		    }});
+	        @Subscribe
+	        public void onRendererDeviceRemoved(UpnpRendererRemoveEvent event) {
+	            // getActivity().runOnUiThread(new Runnable() {
+	            // public void run() {
+	            rendererListAdapter.remove(event.device);
+	            // }});
 
-	}
+	        }
 
-	@Override
-	public void onServerDeviceAdded(final UpnpServerDevice server) {
-	}
+	    
+	        @Override
+	        public void onResume() {
+	            super.onResume();
+	            BusManager.getInstance().register(this);
+	        }
 
-	@Override
-	public void onServerDeviceRemoved(final UpnpServerDevice server) {
-	}
+	        @Override
+	        public void onPause() {
+	            super.onPause();
+	            BusManager.getInstance().unregister(this);
+	        }
 
 
 	// private static final Logger log =
@@ -71,10 +79,6 @@ public class RendererGridFragment extends Fragment implements UpnpServiceClient 
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		MenuDrawerUtil.toggleMenu();
-		UpnpDeviceManager.getInstance().register(this);
-		IntentFilter f = new IntentFilter();
-        f.addAction(UpnpRendererDevice.STATUT_CHANGED);
-        Application.instance.registerReceiver(mStatusListener, new IntentFilter(f));
 
 	};
 
@@ -119,8 +123,6 @@ public class RendererGridFragment extends Fragment implements UpnpServiceClient 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		UpnpDeviceManager.getInstance().unregister(this);
-        Application.instance.unregisterReceiver(mStatusListener);
 
 	}
 }

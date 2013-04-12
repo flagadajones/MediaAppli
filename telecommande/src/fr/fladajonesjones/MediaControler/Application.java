@@ -2,8 +2,8 @@ package fr.fladajonesjones.MediaControler;
 
 import fr.fladajonesjones.MediaControler.activity.DashBoardActivity;
 import fr.fladajonesjones.MediaControler.database.MySQLOpenHelper;
-import fr.fladajonesjones.MediaControler.loader.ImageLoader;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
+import fr.flagadajones.android.loader.ImageLoader;
 
 public class Application extends android.app.Application {
 
@@ -37,7 +37,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        imageLoader = new ImageLoader(getApplicationContext());
+        imageLoader = new ImageLoader(getApplicationContext(),R.drawable.stub);
 
         MySQLOpenHelper.getInstance(getApplicationContext());
 

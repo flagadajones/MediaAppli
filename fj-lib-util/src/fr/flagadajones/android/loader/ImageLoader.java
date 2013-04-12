@@ -1,4 +1,4 @@
-package fr.fladajonesjones.MediaControler.loader;
+package fr.flagadajones.android.loader;
 
 
 	import java.io.File;
@@ -24,7 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.TextView;
-import fr.fladajonesjones.MediaControler.R;
+import fr.flagadajones.media.util.StreamUtils;
 
 	public class ImageLoader {
 	    
@@ -35,12 +35,13 @@ import fr.fladajonesjones.MediaControler.R;
 	    ExecutorService executorService;
 	    Handler handler=new Handler();//handler to display images in UI thread
 	    
-	    public ImageLoader(Context context){
+	    public ImageLoader(Context context,int stub_id){
 	        fileCache=new FileCache(context);
+	        this.stub_id=stub_id;
 	        executorService=Executors.newFixedThreadPool(5);
 	    }
 
-	    final int stub_id=R.drawable.stub;
+	    final int stub_id;
 	    public void DisplayImage(String url, ImageView imageView)
 	    {
 	        imageViews.put(imageView, url);
@@ -101,7 +102,7 @@ import fr.fladajonesjones.MediaControler.R;
 	            conn.setInstanceFollowRedirects(true);
 	            InputStream is=conn.getInputStream();
 	            OutputStream os = new FileOutputStream(f);
-	            Utils.CopyStream(is, os);
+	            StreamUtils.CopyStream(is, os);
 	            os.close();
             conn.disconnect();
 	            bitmap = decodeFile(f);

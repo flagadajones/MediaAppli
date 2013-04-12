@@ -21,6 +21,8 @@ import org.fourthline.cling.support.model.container.MusicAlbum;
 import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
 
+import com.squareup.otto.Subscribe;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,42 +34,37 @@ import fr.fladajonesjones.MediaControler.database.AlbumDAO;
 import fr.fladajonesjones.MediaControler.database.ArtisteDAO;
 import fr.fladajonesjones.MediaControler.database.MySQLOpenHelper;
 import fr.fladajonesjones.MediaControler.database.PisteDAO;
+import fr.fladajonesjones.MediaControler.events.UpnpServerBrowseOkEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Artiste;
 import fr.fladajonesjones.MediaControler.model.Piste;
+import fr.flagadajones.media.util.BusManager;
 
 public class UpnpServerDevice extends UpnpDevice {
-    private static final Logger log = Logger.getLogger(UpnpServerDevice.class
-            .getName());
-    static public String FIND_ALBUM = "fr.flagadajones.MediaController.upnp.UpnpServerDevice.FIND_ALBUM";
-    static public String LOADING = "fr.flagadajones.MediaController.upnp.UpnpServerDevice.LOADING";
-    static public String LOADING_OK = "fr.flagadajones.MediaController.upnp.UpnpServerDevice.LOADING_OK";
-    static public String BROWSE_OK = "fr.flagadajones.MediaController.upnp.UpnpServerDevice.BROWSE_OK";
-    static public String LOADING_PISTE = "fr.flagadajones.MediaController.upnp.UpnpServerDevice.LOADING_PISTE";
-    static public String LOADING_PISTE_OK = "fr.flagadajones.MediaController.upnp.UpnpServerDevice.LOADING_PISTE_OK";
+    private static final Logger log = Logger.getLogger(UpnpServerDevice.class.getName());
     Service<Device, Service> contentDirectoryService = null;
     PisteDAO pisteDao = null;
     AlbumDAO albumDao = null;
     ArtisteDAO artisteDao = null;
-    BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
 
-            if (UpnpServerDevice.BROWSE_OK.equals(action)) {
-                if (!listeNoeud.isEmpty()) {
-                    String noeud = listeNoeud.remove(0);
-                    browse(noeud,UpnpServerDevice.BROWSE_OK);
-                } else {
+    @Subscribe
+    public void onBrowseOk(UpnpServerBrowseOkEvent event) {
+        if (!listeNoeud.isEmpty()) {
+            String noeud = listeNoeud.remove(0);
+            browse(noeud, new UpnpServerBrowseOkEvent());
+        } else {
 
-                    Application.instance.unregisterReceiver(mStatusListener);
-                    Application.activity.showToast("Chargement terminé", true);
+            BusManager.getInstance().unregister(this);
+            Application.activity.showToast("Chargement terminé", true);
 
-                }
-            }
         }
-    };
+    }
+
     private List<String> listeNoeud = new ArrayList<String>();
     private List<Album> tmpAlbums = new ArrayList<Album>();
     private List<Piste> tmpPistes = new ArrayList<Piste>();
@@ -80,8 +77,7 @@ public class UpnpServerDevice extends UpnpDevice {
         super(device);
         if (device.isFullyHydrated()) {
             if (contentDirectoryService == null)
-                contentDirectoryService = device
-                        .findService(new UDAServiceType("ContentDirectory"));
+                contentDirectoryService = device.findService(new UDAServiceType("ContentDirectory"));
             // browseAlbums();
 
         }
@@ -91,8 +87,7 @@ public class UpnpServerDevice extends UpnpDevice {
         super.setDevice(device);
         if (device.isFullyHydrated()) {
             if (contentDirectoryService == null)
-                contentDirectoryService = device
-                        .findService(new UDAServiceType("ContentDirectory"));
+                contentDirectoryService = device.findService(new UDAServiceType("ContentDirectory"));
             if (selected)
                 browseAlbums();
 
@@ -119,40 +114,34 @@ public class UpnpServerDevice extends UpnpDevice {
     public void browseAlbums() {
         listeNoeud.clear();
         IntentFilter f = new IntentFilter();
-        f.addAction(UpnpServerDevice.BROWSE_OK);
-        Application.instance.registerReceiver(mStatusListener,
-                new IntentFilter(f));
+        BusManager.getInstance().register(this);
 
         initDao();
 
-        browse("0",UpnpServerDevice.BROWSE_OK);
+        browse("0", new UpnpServerBrowseOkEvent());
     }
 
     public void loadPiste(String noeud) {
-        Intent i = new Intent(UpnpServerDevice.LOADING_PISTE);
-        Application.instance.sendBroadcast(i);
+        BusManager.getInstance().post(new UpnpServerLoadingPisteEvent());
         initDao();
-        browse(noeud,UpnpServerDevice.LOADING_PISTE_OK);
+        browse(noeud, new UpnpServerLoadingPisteOkEvent());
 
     }
 
-    public void browse(String noeud, final String intentFilter) {
-        
-        Browse browseAction = new Browse(contentDirectoryService, noeud,
-                BrowseFlag.DIRECT_CHILDREN) {
+    public void browse(String noeud, final UpnpServerEvent event) {
+
+        Browse browseAction = new Browse(contentDirectoryService, noeud, BrowseFlag.DIRECT_CHILDREN) {
 
             @Override
-            public void received(ActionInvocation actionInvocation,
-                                 DIDLContent didl) {
+            public void received(ActionInvocation actionInvocation, DIDLContent didl) {
                 if (didl.getContainers() != null) {
                     for (Container iterable_element : didl.getContainers()) {
                         if (iterable_element instanceof MusicAlbum) {
                             createMusicAlbum((MusicAlbum) iterable_element);
-                            //TODO : remettre pour chargement des pistes de l'album
-                            //listeNoeud.add(iterable_element.getId());
-//							log.warning("Ajoute 1 album " + listeNoeud.size());
-                        } else if (iterable_element.getTitle()
-                                .equals("Musique")) {
+                            // TODO : remettre pour chargement des pistes de l'album
+                            // listeNoeud.add(iterable_element.getId());
+                            // log.warning("Ajoute 1 album " + listeNoeud.size());
+                        } else if (iterable_element.getTitle().equals("Musique")) {
                             listeNoeud.add(iterable_element.getId());
                             break;
                         } else if (iterable_element.getTitle().equals("Album")) {
@@ -160,9 +149,11 @@ public class UpnpServerDevice extends UpnpDevice {
                             break;
                         }
                     }
-                    //log.warning("Insertion album ");
-                    insertAlbums();
-                    //log.warning("Insertion Ok");
+                    // log.warning("Insertion album ");
+                    albumDao.insertAlbums(tmpAlbums);
+                    BusManager.getInstance().post(new UpnpServerFindAlbumEvent());
+
+                    // log.warning("Insertion Ok");
                 }
                 if (didl.getItems() != null) {
                     for (Item iterable_element : didl.getItems()) {
@@ -171,12 +162,11 @@ public class UpnpServerDevice extends UpnpDevice {
                             createMusicTrack((MusicTrack) iterable_element);
                         }
                     }
-                    insertPistes();
+                    pisteDao.insertPistes(tmpPistes);
 
                 }
 
-                Intent i = new Intent(intentFilter);
-                Application.instance.sendBroadcast(i);
+                BusManager.getInstance().post(event);
 
             }
 
@@ -198,15 +188,14 @@ public class UpnpServerDevice extends UpnpDevice {
             }
 
             @Override
-            public void failure(ActionInvocation invocation,
-                                UpnpResponse operation, String defaultMsg) {
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 Application.activity.showToast(defaultMsg, true);
-                Intent i = new Intent(UpnpServerDevice.BROWSE_OK);
-                Application.instance.sendBroadcast(i);
+                // FIXME : ajouter un evenement ERROR
+                BusManager.getInstance().post(new UpnpServerBrowseOkEvent());
+
             }
         };
-        
-        
+
         UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(browseAction);
     }
 
@@ -236,8 +225,7 @@ public class UpnpServerDevice extends UpnpDevice {
             Artiste artiste = artisteDao.getArtiste(musiqueAlbum.getCreator());
             int artisteId = -1;
             if (artiste == null) {
-                artiste = artisteDao.insertArtiste(new Artiste(0, musiqueAlbum
-                        .getCreator(), 1));
+                artiste = artisteDao.insertArtiste(new Artiste(0, musiqueAlbum.getCreator(), 1));
             } else {
                 artisteId = artiste.getId();
             }
@@ -250,8 +238,7 @@ public class UpnpServerDevice extends UpnpDevice {
                 // album.icone = ((RemoteDevice)
                 // device).normalizeURI(musiqueAlbum.getFirstAlbumArtURI()).toString();
                 album.icone = ((RemoteDevice) device).normalizeURI(
-                        URI.create(musiqueAlbum.getFirstAlbumArtURI().getPath()
-                                + "?scale=160x160")).toString();
+                        URI.create(musiqueAlbum.getFirstAlbumArtURI().getPath() + "?scale=160x160")).toString();
 
             tmpAlbums.add(album);
 
@@ -265,102 +252,6 @@ public class UpnpServerDevice extends UpnpDevice {
             int i = 0;
             // TODO: handle exception
         }
-    }
-
-    public void insertAlbums() {
-        if (tmpAlbums == null || tmpAlbums.size() == 0)
-            return;
-        // Application.activity.showToast("Insert Albums", true);
-        // The InsertHelper needs to have the db instance + the name of the
-        // table where you want to add the data
-        SQLiteDatabase database = MySQLOpenHelper.instance.getBaseDonnees();
-        InsertHelper ih = new InsertHelper(database,
-                MySQLOpenHelper.TABLE_ALBUMS);
-
-        final int albumArt = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART);
-        final int artisteId = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID);
-        final int albumId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ID);
-        final int nbTrack = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK);
-        final int albumNom = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_NOM);
-        final int ordre = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_ALBUM_ORDER);
-
-        Collections.sort(tmpAlbums);
-
-        database.setLockingEnabled(false);
-        int number = 1;
-        try {
-            for (Album album : tmpAlbums) {
-                ih.prepareForReplace();
-                ih.bind(albumArt, album.icone);
-                ih.bind(artisteId, album.artisteId);
-                ih.bind(albumId, album.upnpId);
-                ih.bind(nbTrack, album.nbTracks);
-                ih.bind(albumNom, album.nom);
-                ih.bind(ordre, number);
-
-                ih.execute();
-                number++;
-            }
-        } catch (Exception e) {
-            log.warning("erreur");
-            e.printStackTrace();
-        } finally {
-            if (ih != null)
-                ih.close();
-            database.setLockingEnabled(true);
-        }
-        tmpAlbums.clear();
-
-        // Application.activity.showToast("Albums OK", true);
-        // Application.instance.unregisterReceiver(mStatusListener);
-        Intent i = new Intent(UpnpServerDevice.FIND_ALBUM);
-        Application.instance.sendBroadcast(i);
-
-    }
-
-    public void insertPistes() {
-        if (tmpPistes == null || tmpPistes.size() == 0)
-            return;
-   //     Application.activity.showToast("Insert Pistes", true);
-        // The InsertHelper needs to have the db instance + the name of the
-        // table where you want to add the data
-        SQLiteDatabase database = MySQLOpenHelper.instance.getBaseDonnees();
-        InsertHelper ih = new InsertHelper(database,
-                MySQLOpenHelper.TABLE_PISTES);
-
-        final int albumId = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID);
-        final int duree = ih
-                .getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_DUREE);
-        final int pisteId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_ID);
-        final int nom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_NOM);
-        final int url = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_URL);
-
-        database.setLockingEnabled(false);
-        try {
-            for (Piste piste : tmpPistes) {
-                ih.prepareForReplace();
-                ih.bind(albumId, piste.albumId);
-                ih.bind(duree, piste.duree);
-                ih.bind(pisteId, piste.upnpId);
-                ih.bind(nom, piste.nom);
-                ih.bind(url, piste.url);
-                ih.execute();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (ih != null)
-                ih.close();
-            database.setLockingEnabled(true);
-        }
-        tmpPistes.clear();
-      //   Application.activity.showToast("Pistes OK", true);
     }
 
 }

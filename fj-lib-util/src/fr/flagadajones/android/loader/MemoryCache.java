@@ -1,4 +1,4 @@
-package fr.fladajonesjones.MediaControler.loader;
+package fr.flagadajones.android.loader;
 
 import java.util.Collections;
 import java.util.Iterator;

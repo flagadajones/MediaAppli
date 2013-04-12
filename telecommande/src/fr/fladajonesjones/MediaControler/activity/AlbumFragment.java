@@ -3,6 +3,8 @@ package fr.fladajonesjones.MediaControler.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.squareup.otto.Subscribe;
+
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,11 +22,15 @@ import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RowGridAdapter;
 import fr.fladajonesjones.MediaControler.database.AlbumDAO;
+import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Row;
 import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
 import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
+import fr.flagadajones.media.util.BusManager;
 
 public class AlbumFragment extends Fragment {
     LayoutInflater inflater;
@@ -32,28 +38,39 @@ public class AlbumFragment extends Fragment {
     ProgressDialog progressDialog;
     AlbumDAO albumDao = new AlbumDAO();
 
-    BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (UpnpServerDevice.FIND_ALBUM.equals(action)) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusManager.getInstance().register(this);
+    }
 
-                // Album album=intent.getParcelableExtra("album");
-                rowGridAdapter.clear();
-                rowGridAdapter.addAll(initRow(albumDao.getAllAlbums(true, 0)));
-                rowGridAdapter.notifyDataSetChanged();
-
-            } else if (UpnpServerDevice.LOADING_PISTE.equals(action)) {
-                progressDialog.show();
-
-            } else if (UpnpServerDevice.LOADING_PISTE_OK.equals(action)) {
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusManager.getInstance().unregister(this);
+    }
+    
+    @Subscribe
+    public void onFindAlbum(UpnpServerFindAlbumEvent event){
+        // Album album=intent.getParcelableExtra("album");
+        rowGridAdapter.clear();
+        rowGridAdapter.addAll(initRow(albumDao.getAllAlbums(true, 0)));
+        rowGridAdapter.notifyDataSetChanged();
+    }
+    
+    @Subscribe
+    public void onLoadingPiste(UpnpServerLoadingPisteEvent event){
+        progressDialog.show();
+    }
+    
+    @Subscribe
+    public void onLoadingPisteOk(UpnpServerLoadingPisteOkEvent event){
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
-    };
+    }
+    
+   
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -72,11 +89,6 @@ public class AlbumFragment extends Fragment {
 
         initGridAlbum(layout);
 
-        IntentFilter f = new IntentFilter();
-        f.addAction(UpnpServerDevice.FIND_ALBUM);
-        f.addAction(UpnpServerDevice.LOADING_PISTE);
-        f.addAction(UpnpServerDevice.LOADING_PISTE_OK);
-        Application.instance.registerReceiver(mStatusListener, new IntentFilter(f));
 
         return layout;
     }
@@ -162,7 +174,6 @@ public class AlbumFragment extends Fragment {
     public void onDestroyView() {
     	// TODO Auto-generated method stub
     	super.onDestroyView();
-    	Application.instance.unregisterReceiver(mStatusListener);
     }
 
 }

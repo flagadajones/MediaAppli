@@ -4,38 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
-import fr.fladajonesjones.MediaControler.Application;
+
+import com.squareup.otto.Subscribe;
+
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.AlbumFragment;
 import fr.fladajonesjones.MediaControler.activity.DeviceFragment;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
 import fr.fladajonesjones.MediaControler.activity.RadioGridViewFragment;
 import fr.fladajonesjones.MediaControler.activity.RendererGridFragment;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import fr.flagadajones.media.util.BusManager;
 
 public class MenuDrawerUtil {
-	static{
-		 BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-		        @Override
-		        public void onReceive(Context context, Intent intent) {
-		          
-		        	mAdapter.notifyDataSetChanged();
-		        }
-		    };
-		IntentFilter f = new IntentFilter();
-        f.addAction(UpnpRendererDevice.STATUT_CHANGED);
-		 Application.instance.registerReceiver(mStatusListener, new IntentFilter(f));
+    static {
+        BusManager.getInstance().register(new Object() {
+            @Subscribe
+            public void onStatutchange(UpnpRendererStatutChangeEvent event) {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
-	}
+    }
     public static MenuDrawer mMenuDrawer;
 
     public static MenuAdapter mAdapter;
@@ -46,7 +42,6 @@ public class MenuDrawerUtil {
     public static int mActivePosition = -1;
     public static FragmentActivity mActivity;
 
-
     // private static Parcelable parc = null;
 
     // public static void onRestoreDrawerState() {
@@ -54,12 +49,10 @@ public class MenuDrawerUtil {
     // mMenuDrawer.onRestoreDrawerState(parc);
     // }
 
-   
-    
     private static void initAdapter() {
         mAdapter.clear();
         mAdapter.addAll(items);
-        List<Object> l=new ArrayList<Object>();
+        List<Object> l = new ArrayList<Object>();
         l.add(new Category("En Cours"));
         mAdapter.addAll(l);
         mAdapter.addAll(configs);
@@ -127,15 +120,17 @@ public class MenuDrawerUtil {
             if (item instanceof Item && ((Item) item).mTitle.equals("Musique")) {
                 replaceFragment(new AlbumFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Renderers")) {
-            	//replaceFragment(new DeviceFragment());
-            	replaceFragment(new RendererGridFragment());
+                // replaceFragment(new DeviceFragment());
+                replaceFragment(new RendererGridFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Servers")) {
-            	replaceFragment(new DeviceFragment());
-            	//replaceFragment(new DashBoardFragment());
+                replaceFragment(new DeviceFragment());
+                // replaceFragment(new DashBoardFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Radio")) {
                 replaceFragment(new RadioGridViewFragment());
             } else if (item instanceof UpnpRendererDevice) {
-                replaceFragment(new NowPlayingFragment((UpnpRendererDevice) item));
+                NowPlayingFragment fragment = new NowPlayingFragment();
+                fragment.renderer = (UpnpRendererDevice) item;
+                replaceFragment(fragment);
             }
 
         }

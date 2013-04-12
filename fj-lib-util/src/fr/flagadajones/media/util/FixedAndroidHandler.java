@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.flagadajones.mediarenderer.util;
+package fr.flagadajones.media.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

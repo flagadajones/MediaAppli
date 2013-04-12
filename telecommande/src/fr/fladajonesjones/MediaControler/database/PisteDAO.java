@@ -1,9 +1,11 @@
 package fr.fladajonesjones.MediaControler.database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
 import fr.fladajonesjones.MediaControler.model.Piste;
 
@@ -133,4 +135,40 @@ public class PisteDAO {
         return maBaseDonnees.delete(MySQLOpenHelper.TABLE_PISTES, where, whereArgs);
     }
 
+    
+    public void insertPistes(List<Piste> tmpPistes) {
+        if (tmpPistes == null || tmpPistes.size() == 0)
+            return;
+        // Application.activity.showToast("Insert Pistes", true);
+        // The InsertHelper needs to have the db instance + the name of the
+        // table where you want to add the data
+        InsertHelper ih = new InsertHelper(maBaseDonnees, MySQLOpenHelper.TABLE_PISTES);
+
+        final int albumId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID);
+        final int duree = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_DUREE);
+        final int pisteId = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_ID);
+        final int nom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_NOM);
+        final int url = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_URL);
+
+        maBaseDonnees.setLockingEnabled(false);
+        try {
+            for (Piste piste : tmpPistes) {
+                ih.prepareForReplace();
+                ih.bind(albumId, piste.albumId);
+                ih.bind(duree, piste.duree);
+                ih.bind(pisteId, piste.upnpId);
+                ih.bind(nom, piste.nom);
+                ih.bind(url, piste.url);
+                ih.execute();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ih != null)
+                ih.close();
+            maBaseDonnees.setLockingEnabled(true);
+        }
+        tmpPistes.clear();
+        // Application.activity.showToast("Pistes OK", true);
+    }
 }

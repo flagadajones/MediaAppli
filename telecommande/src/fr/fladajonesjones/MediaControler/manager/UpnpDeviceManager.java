@@ -21,11 +21,15 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.database.DeviceDAO;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererAddEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererRemoveEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerAddEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerRemoveEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpService;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServiceClient;
+import fr.flagadajones.media.util.BusManager;
 
 public class UpnpDeviceManager {
     private static String MEDIARENDERER_TYPE = "urn:schemas-upnp-org:device:MediaRenderer:1";
@@ -40,9 +44,6 @@ public class UpnpDeviceManager {
     static public AndroidUpnpService upnpService;
     private BrowseRegistryListener registryListener = new BrowseRegistryListener();
 
-    
-    
-    
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -64,16 +65,6 @@ public class UpnpDeviceManager {
             upnpService = null;
         }
     };
-
-    private List<UpnpServiceClient> clients = new ArrayList<UpnpServiceClient>();
-
-    public void register(UpnpServiceClient client) {
-        clients.add(client);
-    }
-
-    public void unregister(UpnpServiceClient client) {
-        clients.remove(client);
-    }
 
     public static UpnpDeviceManager getInstance() {
         if (instance == null) {
@@ -138,12 +129,11 @@ public class UpnpDeviceManager {
         rendererDevice.remove(device);
 
     }
-    
-    
-    public void search(){
+
+    public void search() {
         if (upnpService == null)
             return;
-         
+
         upnpService.getControlPoint().search(new UDADeviceTypeHeader(new UDADeviceType("MediaServer")));
         upnpService.getControlPoint().search(new UDADeviceTypeHeader(new UDADeviceType("MediaRenderer")));
     }
@@ -151,19 +141,14 @@ public class UpnpDeviceManager {
     public static class BrowseRegistryListener extends DefaultRegistryListener {
 
         /* Discovery performance optimization for very slow Android devices! */
-/*
-        @Override
-        public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
-            deviceAdded(device);
-        }
-
-        @Override
-        public void remoteDeviceDiscoveryFailed(Registry registry, final RemoteDevice device, final Exception ex) {
-             Application.activity.showToast("Discovery failed of '" + device.getDisplayString() + "': "
-             + (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"), true);
-            deviceRemoved(device);
-        }
-*/
+        /*
+         * @Override public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
+         * deviceAdded(device); }
+         * @Override public void remoteDeviceDiscoveryFailed(Registry registry, final RemoteDevice device, final
+         * Exception ex) { Application.activity.showToast("Discovery failed of '" + device.getDisplayString() + "': " +
+         * (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"), true); deviceRemoved(device);
+         * }
+         */
         /* End of optimization, you can remove the whole block if your Android handset is fast (>= 600 Mhz) */
 
         @Override
@@ -203,11 +188,8 @@ public class UpnpDeviceManager {
                     }
                 }
 
-                for (UpnpServiceClient client : UpnpDeviceManager.getInstance().clients) {
-                    client.onServerDeviceAdded(d);
-                }
+                BusManager.getInstance().post(new UpnpServerAddEvent(d));
 
-                // serverListAdapter.notifyDataSetChanged();
             } else if (MEDIARENDERER_TYPE.equals(device.getType().toString())) {
                 UpnpRendererDevice d = new UpnpRendererDevice(device);
                 int pos = UpnpDeviceManager.getInstance().rendererDevice.indexOf(d);
@@ -221,12 +203,11 @@ public class UpnpDeviceManager {
                         UpnpDeviceManager.getInstance().lstRenderer.get(position).setDevice(device);
                     } else {
                         UpnpDeviceManager.getInstance().lstRenderer.add(d);
-                       
+
                     }
                 }
-                for (UpnpServiceClient client : UpnpDeviceManager.getInstance().clients) {
-                    client.onRendererDeviceAdded(d);
-                }
+
+                BusManager.getInstance().post(new UpnpRendererAddEvent(d));
 
             }
 
@@ -238,17 +219,15 @@ public class UpnpDeviceManager {
                 UpnpServerDevice serveur = new UpnpServerDevice(device);
                 UpnpDeviceManager.getInstance().lstServer.remove(serveur);
 
-                for (UpnpServiceClient client : UpnpDeviceManager.getInstance().clients) {
-                    client.onServerDeviceRemoved(serveur);
-                }
+                BusManager.getInstance().post(new UpnpServerRemoveEvent(serveur));
+
             }
 
             if (MEDIARENDERER_TYPE.equals(device.getType().toString())) {
                 UpnpRendererDevice renderer = new UpnpRendererDevice(device);
                 UpnpDeviceManager.getInstance().lstRenderer.remove(renderer);
-                for (UpnpServiceClient client : UpnpDeviceManager.getInstance().clients) {
-                    client.onRendererDeviceRemoved(renderer);
-                }
+                BusManager.getInstance().post(new UpnpRendererRemoveEvent(renderer));
+
             }
 
         }

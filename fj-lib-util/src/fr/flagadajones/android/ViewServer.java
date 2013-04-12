@@ -1,4 +1,4 @@
-package fr.fladajonesjones.MediaControler;
+package fr.flagadajones.android;
 /*
  * Copyright (C) 2011 The Android Open Source Project
  *

@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+
+import com.squareup.otto.Subscribe;
+
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
+import fr.fladajonesjones.MediaControler.events.UpnpServerBrowseOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Row;
 import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
+import fr.flagadajones.media.util.BusManager;
 
 public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 
@@ -41,20 +41,17 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 
    static Album album;
     static UpnpRendererDevice selectedDevice;
-static BroadcastReceiver mStatusListener = new BroadcastReceiver() {
-        
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-           
-            if (UpnpServerDevice.LOADING_PISTE_OK.equals(action)) {
-                    Application.instance.unregisterReceiver(mStatusListener);
-                  //  Application.activity.showToast("Chargement Piste ok", true);
-                    selectedDevice.playMusique(album);
-                }
-            }
-        
+    
+    static Object eventSub = new Object(){
+    @Subscribe public void onUpnpServerBrowseOk(UpnpServerBrowseOkEvent event){
+            BusManager.getInstance().unregister(this);
+            
+            selectedDevice.playMusique(album);
+        }
     };
+    
+    
+
     
     private View.OnClickListener myOnClickListener = new View.OnClickListener() {
 
@@ -86,9 +83,7 @@ static BroadcastReceiver mStatusListener = new BroadcastReceiver() {
         if (album.isPisteLoaded()) {
             selectedDevice.playMusique(album);
         } else {
-            IntentFilter f = new IntentFilter();
-            f.addAction(UpnpServerDevice.LOADING_PISTE_OK);
-            Application.instance.registerReceiver(mStatusListener, new IntentFilter(f));
+            BusManager.getInstance().register(eventSub);
 
            UpnpDeviceManager.getInstance().libraryDevice.loadPiste(album.upnpId);
         }
