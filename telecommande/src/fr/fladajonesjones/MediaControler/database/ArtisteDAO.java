@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import fr.fladajonesjones.MediaControler.model.Artiste;
+import fr.fladajonesjones.media.model.Artiste;
 
 public class ArtisteDAO {
     private SQLiteDatabase maBaseDonnees;

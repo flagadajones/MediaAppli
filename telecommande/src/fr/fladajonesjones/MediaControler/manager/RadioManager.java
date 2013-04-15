@@ -8,7 +8,7 @@ import org.xmlpull.v1.XmlPullParser;
 import android.content.Context;
 import android.util.Xml;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.model.Radio;
+import fr.fladajonesjones.media.model.Radio;
 
 public class RadioManager {
 	Context context;
@@ -45,9 +45,9 @@ public class RadioManager {
 						currentRadio = new Radio();
 					} else if (currentRadio != null) {
 						if (name.equalsIgnoreCase(NAME)) {
-							currentRadio.nom = parser.nextText();
+							currentRadio.titre = parser.nextText();
 						} else if (name.equalsIgnoreCase(IMAGE)) {
-							currentRadio.icone = parser.nextText();
+							currentRadio.albumArt = parser.nextText();
 						} else if (name.equalsIgnoreCase(FLUX)) {
 							currentRadio.url = parser.nextText();
 				

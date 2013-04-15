@@ -1,16 +1,16 @@
 package fr.flagadajones.mediarenderer.events;
 
-import fr.flagadajones.mediarenderer.AudioItem;
+import fr.fladajonesjones.media.model.Piste;
 
 public class PlayerInitializeEvent {
 	public int pos = -1;
-	public AudioItem item;
+	public Piste item;
 
 	public PlayerInitializeEvent(int pos) {
 		this.pos = pos;
 	}
 
-	public PlayerInitializeEvent(AudioItem url) {
+	public PlayerInitializeEvent(Piste url) {
 		this.item = url;
 	}
 }

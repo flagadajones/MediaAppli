@@ -1,15 +1,12 @@
 package fr.fladajonesjones.MediaControler.database;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.DatabaseUtils.InsertHelper;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import fr.fladajonesjones.MediaControler.model.Album;
 
 public class MySQLOpenHelper extends SQLiteOpenHelper {
 

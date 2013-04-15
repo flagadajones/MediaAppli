@@ -3,13 +3,7 @@ package fr.fladajonesjones.MediaControler.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.squareup.otto.Subscribe;
-
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import fr.fladajonesjones.MediaControler.Application;
+
+import com.squareup.otto.Subscribe;
+
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RowGridAdapter;
 import fr.fladajonesjones.MediaControler.database.AlbumDAO;
@@ -26,10 +22,9 @@ import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
-import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Row;
 import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
+import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 
 public class AlbumFragment extends Fragment {

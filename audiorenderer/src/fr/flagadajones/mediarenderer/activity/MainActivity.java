@@ -25,7 +25,6 @@ import fr.flagadajones.mediarenderer.Application;
 import fr.flagadajones.mediarenderer.R;
 import fr.flagadajones.mediarenderer.events.PlayerChangeSongEvent;
 import fr.flagadajones.mediarenderer.events.PlayerErrorEvent;
-import fr.flagadajones.mediarenderer.events.PlayerInitializeStartEvent;
 import fr.flagadajones.mediarenderer.events.PlayerInitializeSuccess;
 import fr.flagadajones.mediarenderer.events.PlayerPauseEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
@@ -41,7 +40,7 @@ public class MainActivity extends Activity {
     private TextView songName;
     private TextView artisteName;
     private ListView pisteListe;
-
+    PisteRawAdapter adapter = new PisteRawAdapter(this);
     private boolean mBound = false;
 
     @Override
@@ -75,6 +74,7 @@ public class MainActivity extends Activity {
         artisteName = (TextView) findViewById(R.id.ArtisteName);
         songName = (TextView) findViewById(R.id.SongName);
         pisteListe = (ListView) findViewById(R.id.Piste);
+        pisteListe.setAdapter(adapter);
 
     }
 
@@ -133,25 +133,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    @Subscribe
-    public void onInitializePlayerStart(final PlayerInitializeStartEvent event) {
-        // mProgressDialog = ProgressDialog.show(this, "", message, true);
-        // mProgressDialog.getWindow().setGravity(Gravity.TOP);
-        // mProgressDialog.setCancelable(true);
-        // mProgressDialog.setOnCancelListener(new OnCancelListener() {
-        //
-        // @Override
-        // public void onCancel(DialogInterface dialogInterface) {
-        // MainActivity.this.mService.resetMediaPlayer();
-        // final ToggleButton playPauseButton = (ToggleButton)
-        // findViewById(R.id.playPauseButton);
-        // playPauseButton.setChecked(false);
-        // }
-        //
-        // });
-        //
-    }
-
+   
     @Subscribe
     public void onErrorPlayer(final PlayerErrorEvent event) {
     }
@@ -201,14 +183,11 @@ public class MainActivity extends Activity {
     public void onChangeSong(final PlayerChangeSongEvent event) {
         runOnUiThread(new Runnable() {
             public void run() {
-
                 Application.imageLoader.DisplayImage(event.audioItem.albumArt, albumArt);
-                songName.setText(event.audioItem.title);
+                songName.setText(event.audioItem.titre);
                 artisteName.setText(event.audioItem.artiste);
-                PisteRawAdapter adapter = new PisteRawAdapter(MainActivity.this);
+                adapter.clear();
                 adapter.addAll(event.playlist);
-                pisteListe.setAdapter(adapter);
-
             }
         });
     }

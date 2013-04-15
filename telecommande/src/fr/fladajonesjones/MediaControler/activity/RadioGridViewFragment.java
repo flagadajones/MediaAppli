@@ -18,8 +18,8 @@ import fr.fladajonesjones.MediaControler.adapter.RadioGridAdapter;
 import fr.fladajonesjones.MediaControler.manager.RadioManager;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
-import fr.fladajonesjones.MediaControler.model.Radio;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import fr.fladajonesjones.media.model.Radio;
 
 public class RadioGridViewFragment extends Fragment {
 

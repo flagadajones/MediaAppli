@@ -41,15 +41,15 @@ public class MediaRenderer {
 
     private static final String NAMESPACE = "http://flagadajones.fr/mediarenderer/";
     private static final String PREF_UUID = "uuid";
-    public static final long LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS = 2000000;
-    final private static Logger log = Logger.getLogger(MediaRenderer.class.getName());
+    private static final long LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS = 100000;
+    private static final Logger log = Logger.getLogger(MediaRenderer.class.getName());
 
-    final protected LocalServiceBinder binder = new AnnotationLocalServiceBinder();
-    final protected LastChange avTransportLastChange = new LastChange(new AVTransportLastChangeParser());
-    final protected LastChange renderingControlLastChange = new LastChange(new RenderingControlLastChangeParser());
-    final protected ServiceManager<MyConnectionManagerService> connectionManager;
-    final protected ServiceManager<MyAVTransportService> avTransport;
-    final protected ServiceManager<MyAudioRenderingControlService> renderingControl;
+    protected final LocalServiceBinder binder = new AnnotationLocalServiceBinder();
+    protected final LastChange avTransportLastChange = new LastChange(new AVTransportLastChangeParser());
+    protected final LastChange renderingControlLastChange = new LastChange(new RenderingControlLastChangeParser());
+    protected final ServiceManager<MyConnectionManagerService> connectionManager;
+    protected final ServiceManager<MyAVTransportService> avTransport;
+    protected final ServiceManager<MyAudioRenderingControlService> renderingControl;
 
     final protected LocalDevice device;
 

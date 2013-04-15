@@ -11,8 +11,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.model.Musique;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import fr.fladajonesjones.media.model.Musique;
 
 public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> {
 
@@ -47,9 +47,9 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
 			deviceName.setText(item.getName());
 			Application.imageLoader.DisplayImage(item.icone, deviceIcone);
 			Musique musique = item.getMusique();
-			Application.imageLoader.DisplayImage(musique.icone, albumArt);
+			Application.imageLoader.DisplayImage(musique.albumArt, albumArt);
 			artisteName.setText("artiste");
-			albumName.setText(musique.nom);
+			albumName.setText(musique.titre);
 			positionPiste.setMax(10);
 			positionPiste.setProgress(5);
 

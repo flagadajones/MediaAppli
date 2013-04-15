@@ -23,13 +23,15 @@ import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.model.MediaInfo;
 import org.fourthline.cling.support.model.PositionInfo;
 
-import android.content.Intent;
 import fr.fladajonesjones.MediaControler.Application;
+import fr.fladajonesjones.MediaControler.database.PisteDAO;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererMetaChangeEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
-import fr.fladajonesjones.MediaControler.model.Musique;
+import fr.fladajonesjones.media.model.Album;
+import fr.fladajonesjones.media.model.Musique;
 import fr.flagadajones.media.util.BusManager;
+import fr.flagadajones.media.util.UpnpTransformer;
 
 public class UpnpRendererDevice extends UpnpDevice {
     Service<Device, Service> transPortService = null;
@@ -40,7 +42,6 @@ public class UpnpRendererDevice extends UpnpDevice {
     private boolean playing = false;
     private boolean connected = false;
     SubscriptionCallback transPortServicecallback = null;
-
 
     public UpnpRendererDevice() {
 
@@ -97,13 +98,22 @@ public class UpnpRendererDevice extends UpnpDevice {
             transPortService = device.findService(new UDAServiceType("AVTransport"));
         this.musique = musique;
         // TODO: Si liste piste vide get liste piste
+
+        if (musique instanceof Album) {
+            Album album = (Album) musique;
+
+            if (!album.isPisteLoaded()) {
+                PisteDAO pisteDAO = new PisteDAO();
+                album.setPistes(pisteDAO.getAllPistes(album.upnpId));
+            }
+        }
         ActionCallback setAVTransportURIAction = new SetAVTransportURI(transPortService, musique.getUrl(),
-                musique.getMetaData()) {
+                UpnpTransformer.albumToMetaData((Album) musique)) {
             @Override
             public void success(ActionInvocation invocation) {
 
                 super.success(invocation);
-                play();
+                // play();
                 BusManager.getInstance().post(new UpnpRendererStatutChangeEvent());
 
             }
@@ -160,8 +170,8 @@ public class UpnpRendererDevice extends UpnpDevice {
 
             @Override
             public void received(ActionInvocation invocation, MediaInfo mediaInfo) {
-                // TODO Auto-generated method stub
                 device.mediaInfo = mediaInfo;
+                device.musique = UpnpTransformer.metaDataToMusique(mediaInfo.getCurrentURIMetaData());
 
                 BusManager.getInstance().post(new UpnpRendererMetaChangeEvent());
             }
@@ -210,13 +220,14 @@ public class UpnpRendererDevice extends UpnpDevice {
         ActionCallback playAction = new Play(transPortService) {
             @Override
             public void success(ActionInvocation invocation) {
-            	// TODO Auto-generated method stub
-            	super.success(invocation);
+                // TODO Auto-generated method stub
+                super.success(invocation);
                 playing = true;
                 startRepeatingTask();
 
             }
-        	@Override
+
+            @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 Application.activity.showToast(defaultMsg, true);
             }

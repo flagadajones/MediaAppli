@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.model.Radio;
+import fr.fladajonesjones.media.model.Radio;
 
 public class RadioGridAdapter extends ArrayAdapter<Radio> {
 
@@ -44,10 +44,10 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 		Radio item = getItem(position);
 
 		   
-        Application.imageLoader.DisplayImage(item.icone, holder.radioIcone);
+        Application.imageLoader.DisplayImage(item.albumArt, holder.radioIcone);
 
 		
-		holder.radioName.setText(item.nom);
+		holder.radioName.setText(item.titre);
 
 		return row;
 	}

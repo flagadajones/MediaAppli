@@ -1,37 +1,67 @@
 package fr.flagadajones.mediarenderer.player;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
 import android.util.Log;
-import fr.flagadajones.mediarenderer.AudioItem;
+import fr.fladajonesjones.media.model.Piste;
 
 /**
  * A subclass of android.media.MediaPlayer which provides methods for state-management, data-source management, etc.
  * @author rootlicker http://speakingcode.com
  */
-public class StatefulMediaPlayer extends android.media.MediaPlayer {
+public class StatefulMediaPlayer extends android.media.MediaPlayer implements
+        android.media.MediaPlayer.OnPreparedListener, OnErrorListener, OnCompletionListener {
+
+    final private static Logger log = Logger.getLogger(StatefulMediaPlayer.class.getName());
+
     /**
      * Set of states for StatefulMediaPlayer:<br>
      * EMPTY, CREATED, PREPARED, STARTED, PAUSED, STOPPED, ERROR
      * @author rootlicker
      */
     public enum MPStates {
-        EMPTY, CREATED, PREPARED, STARTED, PAUSED, STOPPED, ERROR
+        IDLE, INITIALIZED, PREPARING, PREPARED, STARTED, PAUSED, STOPPED, ERROR, PLAYBACKCOMPLETED, END
     }
 
+    private OnPreparedListener onPreparedListener;
+    private OnErrorListener onErrorListener;
+    private OnCompletionListener onCompletionListener;
     private MPStates mState;
+
+    @Override
+    public void setOnPreparedListener(OnPreparedListener listener) {
+        onPreparedListener = listener;
+        super.setOnPreparedListener(this);
+    }
+
+    @Override
+    public void setOnErrorListener(OnErrorListener listener) {
+        onErrorListener = listener;
+
+        super.setOnErrorListener(this);
+    }
+
+    @Override
+    public void setOnCompletionListener(OnCompletionListener listener) {
+        onCompletionListener = listener;
+        super.setOnCompletionListener(this);
+    };
 
     /**
      * Sets a StatefulMediaPlayer's data source as the provided StreamStation
      * @param audioItem the StreamStation to set as the data source
      */
-    public void setAudioItem(AudioItem audioItem) {
-
+    public void setAudioItem(Piste audioItem) {
         try {
             reset();
             setDataSource(audioItem.url);
-            setState(MPStates.CREATED);
+            setState(MPStates.INITIALIZED);
         } catch (Exception e) {
             Log.e("StatefulMediaPlayer", "setDataSource failed");
             setState(MPStates.ERROR);
@@ -43,7 +73,7 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer {
      */
     public StatefulMediaPlayer() {
         super();
-        setState(MPStates.CREATED);
+        setState(MPStates.IDLE);
     }
 
     /**
@@ -51,12 +81,12 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer {
      * StreamStation's URL as the data source.
      * @param audioItem The StreamStation to use as the data source
      */
-    public StatefulMediaPlayer(AudioItem audioItem) {
+    public StatefulMediaPlayer(Piste audioItem) {
         super();
         this.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             setDataSource(audioItem.url);
-            setState(MPStates.CREATED);
+            setState(MPStates.INITIALIZED);
         } catch (Exception e) {
             Log.e("StatefulMediaPlayer", "setDataSourceFailed");
             setState(MPStates.ERROR);
@@ -66,7 +96,7 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer {
     @Override
     public void reset() {
         super.reset();
-        this.mState = MPStates.EMPTY;
+        setState(MPStates.IDLE);
     }
 
     @Override
@@ -92,7 +122,7 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer {
     @Override
     public void release() {
         super.release();
-        setState(MPStates.EMPTY);
+        setState(MPStates.END);
     }
 
     @Override
@@ -104,34 +134,35 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer {
     @Override
     public void prepareAsync() throws IllegalStateException {
         super.prepareAsync();
-        setState(MPStates.PREPARED);
+        setState(MPStates.PREPARING);
     }
 
     public MPStates getState() {
         return mState;
     }
 
-    public void next() {
-
-    }
-
-    public void prev() {
-
-    }
+    // public void next() {
+    //
+    // }
+    //
+    // public void prev() {
+    //
+    // }
 
     /**
      * @param state the state to set
      */
     public void setState(MPStates state) {
+        log.log(Level.WARNING, state.toString());
         this.mState = state;
     }
 
-    public boolean isCreated() {
-        return (mState == MPStates.CREATED);
+    public boolean isInitialized() {
+        return (mState == MPStates.INITIALIZED);
     }
 
-    public boolean isEmpty() {
-        return (mState == MPStates.EMPTY);
+    public boolean isIdle() {
+        return (mState == MPStates.IDLE);
     }
 
     public boolean isStopped() {
@@ -148,5 +179,36 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer {
 
     public boolean isPrepared() {
         return (mState == MPStates.PREPARED);
+    }
+
+    public boolean isPreparing() {
+        return (mState == MPStates.PREPARING);
+    }
+
+    public boolean isPlaybackCompleted() {
+        return (mState == MPStates.PLAYBACKCOMPLETED);
+    }
+    
+    public boolean isEnd() {
+        return (mState == MPStates.END);
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        setState(MPStates.PREPARED);
+        onPreparedListener.onPrepared(mp);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        setState(MPStates.PLAYBACKCOMPLETED);
+        onCompletionListener.onCompletion(mp);
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        setState(MPStates.ERROR);
+        return onErrorListener.onError(mp, what, extra);
+
     }
 }

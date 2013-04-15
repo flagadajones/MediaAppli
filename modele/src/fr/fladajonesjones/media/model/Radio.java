@@ -1,4 +1,4 @@
-package fr.fladajonesjones.MediaControler.model;
+package fr.fladajonesjones.media.model;
 
 import java.net.URI;
 
@@ -13,19 +13,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Radio extends Musique implements Parcelable {
-    
-    
-    public String getUrl(){
+
+    public String getUrl() {
         return url;
     }
+
     public String getMetaData() {
         if (metaData == null) {
             DIDLContent didl = new DIDLContent();
 
             AudioBroadcast item = new AudioBroadcast();
             // item.setRadioBand(radio.nom);
-            item.setTitle(nom);
-            item.setId(nom);
+            item.setTitle(titre);
+            item.setId(titre);
             item.setParentID("0");
             // item.setRadioCallSign(radio.nom);
             item.addResource(new Res(MimeType.valueOf("audio/mp3"), null, url));
@@ -33,7 +33,7 @@ public class Radio extends Musique implements Parcelable {
             didl.addItem(item);
 
             try {
-                item.addProperty(new DIDLObject.Property.UPNP.ALBUM_ART_URI(new URI(icone)));
+                item.addProperty(new DIDLObject.Property.UPNP.ALBUM_ART_URI(new URI(albumArt)));
                 metaData = new DIDLParser().generate(didl);
             } catch (Exception e1) {
                 // Toast.makeText(Application.instance, e1.getMessage(), Toast.LENGTH_LONG).show();
@@ -46,14 +46,18 @@ public class Radio extends Musique implements Parcelable {
     }
 
     public Radio(String nom, String icone, String url) {
-        this.nom = nom;
-        this.icone = icone;
+        this.titre = nom;
+        this.albumArt = icone;
         this.url = url;
 
     }
 
     public Radio() {
 
+    }
+@Override
+    public String getDuree() {
+        return "00:00:00";
     }
 
     public Radio(Parcel in) {
@@ -82,23 +86,17 @@ public class Radio extends Musique implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         // TODO Auto-generated method stub
         // On ecrit dans le parcel les donnees de notre objet
-        dest.writeString(this.nom);
-        dest.writeString(this.icone);
+        dest.writeString(this.titre);
+        dest.writeString(this.albumArt);
         dest.writeString(this.url);
     }
 
     // On va ici hydrater notre objet a partir du Parcel
     public void getFromParcel(Parcel in) {
-        nom = in.readString();
-        icone = in.readString();
+        titre = in.readString();
+        albumArt = in.readString();
         url = in.readString();
 
-    }
-
-    @Override
-    public long getDuration() {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
 }

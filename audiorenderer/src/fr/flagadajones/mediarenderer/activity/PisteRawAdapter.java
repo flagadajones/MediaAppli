@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import fr.flagadajones.mediarenderer.AudioItem;
+import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.mediarenderer.R;
 
-public class PisteRawAdapter extends ArrayAdapter<AudioItem> {
+public class PisteRawAdapter extends ArrayAdapter<Piste> {
 
     private LayoutInflater inflater;
 
@@ -38,10 +38,10 @@ public class PisteRawAdapter extends ArrayAdapter<AudioItem> {
         } else {
             holder = (PisteRowHolder) row.getTag();
         }
-        AudioItem item = getItem(position);
+        Piste item = getItem(position);
 
-        holder.pisteTitre.setText(item.title);
-        holder.pisteDuree.setText(item.duration);
+        holder.pisteTitre.setText(item.titre);
+        holder.pisteDuree.setText(item.duree);
         return row;
     }
 

@@ -28,7 +28,7 @@ public class UpdateThread {
             public void run() {
                 onTimerTick();
             }
-        }, 0, 2000L);
+        }, 0, 5000L);
         isRunning = true;
     }
 

@@ -1,8 +1,8 @@
-package fr.fladajonesjones.MediaControler.model;
+package fr.fladajonesjones.media.model;
 
 public class Piste extends Musique {
-
-    public String duree;
+    public     String artiste;
+    public String duree="00:00:00";
     public String albumId;
     public String getUrl(){
         return url;
@@ -12,22 +12,17 @@ public class Piste extends Musique {
     }
     public Piste(String upnpId, String nom, String duree, String albumId, String url) {
         this.upnpId = upnpId;
-        this.nom = nom;
+        this.titre = nom;
         this.duree = duree;
         this.albumId = albumId;
         this.url = url;
     }
-
     @Override
-    public String getMetaData() {
-
-        return "NO METADATA";
+    public String getDuree() {
+        
+        return duree;
     }
 
-    @Override
-    public long getDuration() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+
 
 }

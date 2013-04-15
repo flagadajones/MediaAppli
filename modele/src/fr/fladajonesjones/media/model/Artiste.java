@@ -1,4 +1,4 @@
-package fr.fladajonesjones.MediaControler.model;
+package fr.fladajonesjones.media.model;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package fr.fladajonesjones.MediaControler.upnp;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -21,18 +20,13 @@ import org.fourthline.cling.support.model.container.MusicAlbum;
 import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
 
+import android.content.IntentFilter;
+
 import com.squareup.otto.Subscribe;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.DatabaseUtils.InsertHelper;
-import android.database.sqlite.SQLiteDatabase;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.database.AlbumDAO;
 import fr.fladajonesjones.MediaControler.database.ArtisteDAO;
-import fr.fladajonesjones.MediaControler.database.MySQLOpenHelper;
 import fr.fladajonesjones.MediaControler.database.PisteDAO;
 import fr.fladajonesjones.MediaControler.events.UpnpServerBrowseOkEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerEvent;
@@ -40,9 +34,9 @@ import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
-import fr.fladajonesjones.MediaControler.model.Album;
-import fr.fladajonesjones.MediaControler.model.Artiste;
-import fr.fladajonesjones.MediaControler.model.Piste;
+import fr.fladajonesjones.media.model.Album;
+import fr.fladajonesjones.media.model.Artiste;
+import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
 
 public class UpnpServerDevice extends UpnpDevice {
@@ -212,7 +206,7 @@ public class UpnpServerDevice extends UpnpDevice {
 
         piste.albumId = musiqueTrack.getParentID();
 
-        piste.nom = musiqueTrack.getTitle();
+        piste.titre = musiqueTrack.getTitle();
         // piste.duree=musiqueTrack.getDuration();
         for (Res resource : musiqueTrack.getResources()) {
             piste.duree = resource.getDuration();
@@ -238,12 +232,12 @@ public class UpnpServerDevice extends UpnpDevice {
             album.artiste = artiste;
             album.artisteId = artiste.getId();
 
-            album.nom = musiqueAlbum.getTitle();
+            album.titre = musiqueAlbum.getTitle();
             album.nbTracks = musiqueAlbum.getChildCount();
             if (musiqueAlbum.getFirstAlbumArtURI() != null)
                 // album.icone = ((RemoteDevice)
                 // device).normalizeURI(musiqueAlbum.getFirstAlbumArtURI()).toString();
-                album.icone = ((RemoteDevice) device).normalizeURI(
+                album.albumArt = ((RemoteDevice) device).normalizeURI(
                         URI.create(musiqueAlbum.getFirstAlbumArtURI().getPath() + "?scale=160x160")).toString();
 
             tmpAlbums.add(album);

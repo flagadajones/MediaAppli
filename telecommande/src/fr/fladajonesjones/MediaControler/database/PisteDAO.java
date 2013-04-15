@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
-import fr.fladajonesjones.MediaControler.model.Piste;
+import fr.fladajonesjones.media.model.Piste;
 
 public class PisteDAO {
     private SQLiteDatabase maBaseDonnees;
@@ -98,7 +98,7 @@ public class PisteDAO {
         ContentValues valeurs = new ContentValues();
 
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_ID, piste.upnpId);
-        valeurs.put(MySQLOpenHelper.COLONNE_PISTE_NOM, piste.nom);
+        valeurs.put(MySQLOpenHelper.COLONNE_PISTE_NOM, piste.titre);
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_DUREE, piste.duree);
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, piste.albumId);
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_URL, piste.url);
@@ -110,7 +110,7 @@ public class PisteDAO {
         ContentValues valeurs = new ContentValues();
 
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_ID, piste.upnpId);
-        valeurs.put(MySQLOpenHelper.COLONNE_PISTE_NOM, piste.nom);
+        valeurs.put(MySQLOpenHelper.COLONNE_PISTE_NOM, piste.titre);
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_DUREE, piste.duree);
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, piste.albumId);
         valeurs.put(MySQLOpenHelper.COLONNE_PISTE_URL, piste.url);
@@ -157,7 +157,7 @@ public class PisteDAO {
                 ih.bind(albumId, piste.albumId);
                 ih.bind(duree, piste.duree);
                 ih.bind(pisteId, piste.upnpId);
-                ih.bind(nom, piste.nom);
+                ih.bind(nom, piste.titre);
                 ih.bind(url, piste.url);
                 ih.execute();
             }

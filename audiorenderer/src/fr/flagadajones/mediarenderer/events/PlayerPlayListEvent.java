@@ -2,13 +2,13 @@ package fr.flagadajones.mediarenderer.events;
 
 import java.util.List;
 
-import fr.flagadajones.mediarenderer.AudioItem;
+import fr.fladajonesjones.media.model.Piste;
 
 public class PlayerPlayListEvent {
 
-	public List<AudioItem> list;
+	public List<Piste> list;
 	
-	public PlayerPlayListEvent(List<AudioItem> list) {
+	public PlayerPlayListEvent(List<Piste> list) {
 		this.list=list;
 	}
 }

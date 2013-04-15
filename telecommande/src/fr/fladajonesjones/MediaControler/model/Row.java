@@ -3,6 +3,9 @@ package fr.fladajonesjones.MediaControler.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.fladajonesjones.media.model.Album;
+import fr.fladajonesjones.media.model.Artiste;
+
 public class Row {
 public List<RowArtiste> lstArtiste=new ArrayList<RowArtiste>(5);
 public List<Album> lstAlbum=new ArrayList<Album>(5);

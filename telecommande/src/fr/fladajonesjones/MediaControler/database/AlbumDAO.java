@@ -9,10 +9,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
-import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
-import fr.fladajonesjones.MediaControler.model.Album;
-import fr.fladajonesjones.MediaControler.model.Artiste;
-import fr.flagadajones.media.util.BusManager;
+import fr.fladajonesjones.media.model.Album;
+import fr.fladajonesjones.media.model.Artiste;
 
 public class AlbumDAO {
     private SQLiteDatabase maBaseDonnees;
@@ -154,10 +152,10 @@ public class AlbumDAO {
         ContentValues valeurs = new ContentValues();
 
         valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ID, album.upnpId);
-        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_NOM, album.nom);
+        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_NOM, album.titre);
         valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK, album.nbTracks);
         valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, album.artisteId);
-        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART, album.icone);
+        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART, album.albumArt);
         maBaseDonnees.insert(MySQLOpenHelper.TABLE_ALBUMS, null, valeurs);
         return album;
     }
@@ -171,10 +169,10 @@ public class AlbumDAO {
         ContentValues valeurs = new ContentValues();
 
         valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ID, album.upnpId);
-        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_NOM, album.nom);
+        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_NOM, album.titre);
         valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK, album.nbTracks);
         valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, album.artisteId);
-        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART, album.icone);
+        valeurs.put(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART, album.albumArt);
         return maBaseDonnees.update(MySQLOpenHelper.TABLE_ALBUMS, valeurs, MySQLOpenHelper.COLONNE_ALBUM_ID + " = \""
                 + album.upnpId + "\"", null);
     }
@@ -216,11 +214,11 @@ public class AlbumDAO {
         try {
             for (Album album : tmpAlbums) {
                 ih.prepareForReplace();
-                ih.bind(albumArt, album.icone);
+                ih.bind(albumArt, album.albumArt);
                 ih.bind(artisteId, album.artisteId);
                 ih.bind(albumId, album.upnpId);
                 ih.bind(nbTrack, album.nbTracks);
-                ih.bind(albumNom, album.nom);
+                ih.bind(albumNom, album.titre);
                 ih.bind(ordre, number);
 
                 ih.execute();

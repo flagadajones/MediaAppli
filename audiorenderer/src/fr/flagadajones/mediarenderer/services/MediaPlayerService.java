@@ -20,14 +20,14 @@ import android.util.Log;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
+import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
-import fr.flagadajones.mediarenderer.AudioItem;
+import fr.flagadajones.media.util.UpnpTransformer;
 import fr.flagadajones.mediarenderer.activity.MainActivity;
 import fr.flagadajones.mediarenderer.events.PlayerChangeSongEvent;
 import fr.flagadajones.mediarenderer.events.PlayerClearEvent;
 import fr.flagadajones.mediarenderer.events.PlayerErrorEvent;
 import fr.flagadajones.mediarenderer.events.PlayerInitializeEvent;
-import fr.flagadajones.mediarenderer.events.PlayerInitializeStartEvent;
 import fr.flagadajones.mediarenderer.events.PlayerInitializeSuccess;
 import fr.flagadajones.mediarenderer.events.PlayerNextEvent;
 import fr.flagadajones.mediarenderer.events.PlayerPauseEvent;
@@ -42,14 +42,20 @@ import fr.flagadajones.mediarenderer.player.StatefulMediaPlayer;
 
 public class MediaPlayerService extends Service implements OnBufferingUpdateListener, OnInfoListener,
         OnPreparedListener, OnErrorListener, OnCompletionListener {
-    public StatefulMediaPlayer mMediaPlayer = new StatefulMediaPlayer();
+    protected StatefulMediaPlayer mMediaPlayer = new StatefulMediaPlayer();
     private UpdateThread updateThread = new UpdateThread(this);
-    private AudioItem mAudioItem;
-    public List<fr.flagadajones.mediarenderer.AudioItem> playlist = new ArrayList<fr.flagadajones.mediarenderer.AudioItem>();
-    public int trackPosition;
+    private List<Piste> playlist = new ArrayList<Piste>();
+    private String mediaDuration="00:00:00";
+    private int trackPosition;
 
     public MediaPlayerService() {
         BusManager.getInstance().register(this);
+
+        mMediaPlayer.setOnBufferingUpdateListener(this);
+        mMediaPlayer.setOnInfoListener(this);
+        mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
+
     }
 
     @Override
@@ -58,30 +64,20 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         BusManager.getInstance().unregister(this);
     }
 
-    public AudioItem getAudioItem() {
-        return mAudioItem;
-
-    }
-
     @Produce
     public PlayerSongUpdateEvent updateMediaInfo() {
         PlayerSongUpdateEvent event = new PlayerSongUpdateEvent();
         event.playListSize = playlist.size();
-        event.trackPosition = trackPosition;
-        if (mAudioItem != null) {
-            event.trackUrl = mAudioItem.url;
-            event.trackDuration = mAudioItem.duration;
+        if (event.playListSize != 0) {
+            event.trackPosition = trackPosition;
 
-            // FIXME : corriger avec les vraies valeurs
-            event.mediaDuration = "00:00;00";
-            event.mediaUrl = mAudioItem.url;
+            Piste piste = playlist.get(trackPosition);
+            event.trackUrl = piste.url;
+            event.trackDuration = piste.duree;
+            event.mediaDuration = mediaDuration;
+            event.mediaUrl = piste.url;
         }
         return event;
-    }
-
-    public void setAudioItem(AudioItem audioItem) {
-        this.mAudioItem = audioItem;
-        mMediaPlayer.setAudioItem(audioItem);
     }
 
     @Subscribe
@@ -89,31 +85,27 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         mMediaPlayer.setVolume(event.volume, event.volume);
     }
 
-    public StatefulMediaPlayer getMediaPlayer() {
-        return mMediaPlayer;
-    }
-
     @Subscribe
-    public void initializePlayer(PlayerInitializeEvent event) {
-        if (event.pos != -1)
-            initializePlayer(playlist.get(event.pos));
-        else
-            initializePlayer(event.item);
+    public void onInitializePlayer(PlayerInitializeEvent event) {
+        if (event.pos != -1) {
+            initializePlayer();
+            trackPosition = event.pos;
+        } else {
+            trackPosition = 0;
+            playlist.clear();
+            playlist.add(event.item);
+            mediaDuration=event.item.duree;
+            initializePlayer();
+        }
     }
 
-    private void initializePlayer(AudioItem audioStream) {
+    private void initializePlayer() {
 
-        BusManager.getInstance().post(new PlayerInitializeStartEvent("Connecting..."));
-        mMediaPlayer.setAudioItem(audioStream);
-        trackPosition = playlist.indexOf(audioStream);
-        mAudioItem = audioStream;
+        Piste piste = playlist.get(trackPosition);
+        mMediaPlayer.setAudioItem(piste);
 
-        mMediaPlayer.setOnBufferingUpdateListener(this);
-        mMediaPlayer.setOnInfoListener(this);
-        mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setOnCompletionListener(this);
-        mMediaPlayer.prepareAsync();
-        BusManager.getInstance().post(new PlayerChangeSongEvent(audioStream, playlist));
+        // mMediaPlayer.prepareAsync();
+        BusManager.getInstance().post(new PlayerChangeSongEvent(piste, playlist));
         BusManager.getInstance().post(updateMediaInfo());
 
     }
@@ -130,11 +122,11 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        int index = playlist.indexOf(mAudioItem);
-        if (index < playlist.size() - 1) {
-            initializePlayer(playlist.get(index + 1));
+        if (trackPosition < playlist.size() - 1) {
+            trackPosition = trackPosition + 1;
+            initializePlayer();
         } else {
-            mp.reset();
+            mMediaPlayer.reset();
         }
     }
 
@@ -163,20 +155,44 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     @Subscribe
     public void pauseMediaPlayer(PlayerPauseEvent event) {
-        Log.d("MediaPlayerService", "pauseMediaPlayer() called");
-        mMediaPlayer.pause();
-        stopForeground(true);
+        if (mMediaPlayer.isStarted()) {
+            Log.d("MediaPlayerService", "pauseMediaPlayer() called");
 
-        updateThread.stop();
+            mMediaPlayer.pause();
+            stopForeground(true);
 
+            if (UpdateThread.isRunning())
+                updateThread.stop();
+
+        }
     }
 
     @Subscribe
     public void startMediaPlayer(PlayerStartEvent event) {
-        if (mMediaPlayer.isStopped() || mMediaPlayer.isEmpty()) {
+        if (mMediaPlayer.isStopped() || mMediaPlayer.isInitialized()) {
             mMediaPlayer.prepareAsync();
             return;
         }
+
+        if (mMediaPlayer.isPrepared() || mMediaPlayer.isPaused() || mMediaPlayer.isPlaybackCompleted()) {
+            initNotification();
+
+            Log.d("MediaPlayerService", "startMediaPlayer() called");
+            try {
+                mMediaPlayer.start();
+                if (!UpdateThread.isRunning())
+                    updateThread.start();
+
+            } catch (Exception e) {
+                Log.e("MediaPlayerService", e.toString());
+            }
+        } else {
+            Log.e("MediaPlayerService : Start Impossible sur Etat :", mMediaPlayer.getState().toString());
+        }
+
+    }
+
+    private void initNotification() {
         Context context = getApplicationContext();
 
         Notification notification = new Notification();
@@ -189,71 +205,64 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         CharSequence contentTitle = "MediaPlayerService Is Playing";
-        CharSequence contentText = mAudioItem.title;
+        CharSequence contentText = playlist.get(trackPosition).titre;
         notification.setLatestEventInfo(context, contentTitle, contentText, pendingIntent);
         startForeground(1, notification);
 
-        Log.d("MediaPlayerService", "startMediaPlayer() called");
-        try {
-            mMediaPlayer.start();
-        } catch (Exception e) {
-            Log.e("MediaPlayerService", e.toString());
-        }
-        updateThread.start();
     }
 
     @Subscribe
     public void stopMediaPlayer(PlayerStopEvent event) {
-        stopForeground(true);
-        mMediaPlayer.stop();
-        mMediaPlayer.seekTo(0);
+        if (mMediaPlayer.isPaused() || mMediaPlayer.isPlaybackCompleted() || mMediaPlayer.isStarted()
+                || mMediaPlayer.isStopped() || mMediaPlayer.isPrepared()) {
+            stopForeground(true);
+            mMediaPlayer.stop();
+            mMediaPlayer.seekTo(0);
 
-        updateThread.stop();
+            if (UpdateThread.isRunning())
+                updateThread.stop();
+            BusManager.getInstance().post(updateMediaInfo());
+        } else {
+            Log.e("MediaPlayerService : Stop Impossible sur Etat :", mMediaPlayer.getState().toString());
+        }
     }
 
-    public void resetMediaPlayer() {
-        stopForeground(true);
-        mMediaPlayer.reset();
-
-    }
-
-    // public void pause() {
-    // mMediaPlayer.pause();
-    // BusManager.getInstance().post(new PlayerPauseEvent());
-    // }
     @Subscribe
     public void nextSong(PlayerNextEvent event) {
-        int index = playlist.indexOf(mAudioItem);
-        if (index < playlist.size() - 1) {
-            initializePlayer(playlist.get(index + 1));
-
+        if (trackPosition < playlist.size() - 1) {
+            trackPosition = trackPosition + 1;
+            initializePlayer();
         }
     }
 
     @Subscribe
     public void onPrevSong(PlayerPrevEvent event) {
-        int index = playlist.indexOf(mAudioItem);
-        if (index > 0) {
-            initializePlayer(playlist.get(index - 1));
+        if (trackPosition > 0) {
+            trackPosition = trackPosition - 1;
+            initializePlayer();
         }
     }
 
     @Subscribe
     public void seekTo(PlayerSeekEvent event) {
-
         mMediaPlayer.seekTo(event.msec);
+        BusManager.getInstance().post(updateMediaInfo());
 
     }
 
     @Subscribe
     public void clearPlayList(PlayerClearEvent event) {
         playlist.clear();
+        mMediaPlayer.reset();
         BusManager.getInstance().post(updateMediaInfo());
+
     }
 
     @Subscribe
-    public void setPlayList(PlayerPlayListEvent event) {
+    public void onPlayList(PlayerPlayListEvent event) {
         playlist = event.list;
+        mediaDuration=UpnpTransformer.calculTotalTime(playlist);
+        BusManager.getInstance().post(updateMediaInfo());
     }
 
     @Override

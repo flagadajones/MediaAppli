@@ -19,116 +19,134 @@ import fr.flagadajones.mediarenderer.upnp.MediaRenderer;
 import fr.flagadajones.mediarenderer.upnp.service.MyRendererUpnpService;
 
 public class Application extends android.app.Application {
-	final private static Logger log = Logger.getLogger(Application.class
-			.getName());
-	static public ImageLoader imageLoader = null;
-	public static Application instance = null;
-	public static AudioItem item;
+    final private static Logger log = Logger.getLogger(Application.class.getName());
+    static public ImageLoader imageLoader = null;
+    public static Application instance = null;
 
-	public static MediaRenderer mediaRenderer;
-	public static AndroidUpnpService upnpService;
-	// ###############################################################################
-	// UPNP
-	// ###############################################################################
-	private ServiceConnection upnpServiceConnection = new ServiceConnection() {
+    public static MediaRenderer mediaRenderer;
+    public static AndroidUpnpService upnpService;
+    
+    // ###############################################################################
+    // UPNP Service
+    // ###############################################################################
+    private ServiceConnection upnpServiceConnection = new ServiceConnection() {
 
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			upnpService = (AndroidUpnpService) service;
-			// Add the bound local device to the registry
-			try {
-				mediaRenderer = new MediaRenderer();
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            upnpService = (AndroidUpnpService) service;
+            // Add the bound local device to the registry
+            try {
+                mediaRenderer = new MediaRenderer();
+                upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
+                mediaRenderer.runLastChangePushThread();
 
-				upnpService.getRegistry().addDevice(mediaRenderer.getDevice());
-				mediaRenderer.runLastChangePushThread();
+            } catch (Exception e) {
+                log.log(Level.SEVERE, e.getMessage(), e);
+            }
 
-			} catch (Exception e) {
-				log.log(Level.SEVERE, e.getMessage(), e);
-			}
+        }
 
-		}
+        public void onServiceDisconnected(ComponentName className) {
+            upnpService = null;
+        }
+    };
 
-		public void onServiceDisconnected(ComponentName className) {
-			upnpService = null;
-		}
-	};
+    public void bindToUpnpService() {
+        Intent intent = new Intent(this, MyRendererUpnpService.class);
 
-	// ###############################################################################
-	// MediaPlayerService
-	// ###############################################################################
+        if (upnpServiceRunning()) {
+            // Bind to LocalService
+            bindService(intent, upnpServiceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            startService(intent);
+            bindService(intent, upnpServiceConnection, Context.BIND_AUTO_CREATE);
+        }
 
-	private boolean mBound;
+    }
 
-	/**
-	 * Defines callbacks for service binding, passed to bindService()
-	 */
-	private ServiceConnection mediaPlayerServiceConnection = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName className,
-				IBinder serviceBinder) {
-			Log.d("Application", "service connected");
-			mBound = true;
-		}
+    private boolean upnpServiceRunning() {
 
-		@Override
-		public void onServiceDisconnected(ComponentName arg0) {
-			mBound = false;
-		}
-	};
+        ActivityManager manager = (ActivityManager) Application.instance.getSystemService(ACTIVITY_SERVICE);
 
-	public void bindToService() {
-		Intent intent = new Intent(this, MediaPlayerService.class);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("fr.flagadajones.mediarenderer.upnp.service.MyRendererUpnpService".equals(service.service
+                    .getClassName())) {
+                return true;
+            }
+        }
 
-		if (mediaPlayerServiceRunning()) {
-			// Bind to LocalService
-			bindService(intent, mediaPlayerServiceConnection,
-					Context.BIND_AUTO_CREATE);
-		} else {
-			startService(intent);
-			bindService(intent, mediaPlayerServiceConnection,
-					Context.BIND_AUTO_CREATE);
-		}
+        return false;
+    }
 
-	}
+    // ###############################################################################
+    // MediaPlayerService
+    // ###############################################################################
 
-	private boolean mediaPlayerServiceRunning() {
+    private boolean mBound;
 
-		ActivityManager manager = (ActivityManager) Application.instance
-				.getSystemService(ACTIVITY_SERVICE);
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection mediaPlayerServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
+            Log.d("Application", "service connected");
+            mBound = true;
+        }
 
-		for (RunningServiceInfo service : manager
-				.getRunningServices(Integer.MAX_VALUE)) {
-			if ("fr.flagadajones.mediarenderer.services.MediaPlayerService"
-					.equals(service.service.getClassName())) {
-				return true;
-			}
-		}
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
-		return false;
-	}
+    public void bindToMediaPlayerService() {
+        Intent intent = new Intent(this, MediaPlayerService.class);
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+        if (mediaPlayerServiceRunning()) {
+            // Bind to LocalService
+            bindService(intent, mediaPlayerServiceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            startService(intent);
+            bindService(intent, mediaPlayerServiceConnection, Context.BIND_AUTO_CREATE);
+        }
 
-		instance = this;
-//		org.teleal.common.logging.LoggingUtil
-//				.resetRootHandler(new FixedAndroidHandler());
+    }
 
-		imageLoader = new ImageLoader(getApplicationContext(),R.drawable.stub);
+    private boolean mediaPlayerServiceRunning() {
 
-		java.util.logging.Logger.getLogger("org.teleal.cling").setLevel(
-				Level.OFF);
+        ActivityManager manager = (ActivityManager) Application.instance.getSystemService(ACTIVITY_SERVICE);
 
-		bindService(new Intent(this, MyRendererUpnpService.class),
-				upnpServiceConnection, Context.BIND_AUTO_CREATE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("fr.flagadajones.mediarenderer.services.MediaPlayerService".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
 
-		bindToService();
+        return false;
+    }
 
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-	public void onTerminate() {
-		super.onTerminate();
-		getApplicationContext().unbindService(upnpServiceConnection);
-	}
+        instance = this;
+        // org.teleal.common.logging.LoggingUtil
+        // .resetRootHandler(new FixedAndroidHandler());
+
+        imageLoader = new ImageLoader(getApplicationContext(), R.drawable.stub);
+
+        java.util.logging.Logger.getLogger("org.teleal.cling").setLevel(Level.OFF);
+
+        bindToUpnpService();
+
+        bindToMediaPlayerService();
+
+    }
+
+    public void onTerminate() {
+        super.onTerminate();
+        getApplicationContext().unbindService(upnpServiceConnection);
+        getApplicationContext().unbindService(mediaPlayerServiceConnection);
+    }
 
 }

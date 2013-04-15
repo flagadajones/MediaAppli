@@ -1,9 +1,5 @@
 package fr.fladajonesjones.MediaControler.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,7 +11,6 @@ import android.widget.GridView;
 
 import com.squareup.otto.Subscribe;
 
-import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RendererStatusGridAdapter;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererAddEvent;
@@ -23,7 +18,6 @@ import fr.fladajonesjones.MediaControler.events.UpnpRendererRemoveEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
-import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.flagadajones.media.util.BusManager;
 
 public class RendererGridFragment extends Fragment {

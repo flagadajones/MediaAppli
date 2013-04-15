@@ -22,13 +22,12 @@ import com.squareup.otto.Subscribe;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.events.UpnpServerBrowseOkEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
-import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Row;
 import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 
 public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
@@ -224,14 +223,14 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
         for (Album iterable_element : item.lstAlbum) {
             AlbumHolder holderAlbum = holder.albums[numAlbum];
             holderAlbum.album = iterable_element;
-            holderAlbum.albumName.setText(iterable_element.nom);
+            holderAlbum.albumName.setText(iterable_element.titre);
             holderAlbum.albumName.setVisibility(View.VISIBLE);
 //            ImageTag tag = Application.imageTagFactory.build(iterable_element.icone);
 //            holderAlbum.albumIcone.setTag(tag);
 //            Application.thumbnailImageLoader.getLoader().load(holderAlbum.albumIcone);
            
             //Application.imageLoader.DisplayImage(iterable_element.icone,  holderAlbum.albumIcone);
-            Application.imageLoader.DisplayImage(iterable_element.icone,  holderAlbum.albumName);
+            Application.imageLoader.DisplayImage(iterable_element.albumArt,  holderAlbum.albumName);
             
             numAlbum++;
         }

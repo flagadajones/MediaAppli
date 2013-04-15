@@ -3,14 +3,8 @@ package fr.fladajonesjones.MediaControler.activity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.squareup.otto.Subscribe;
-
 import net.simonvt.menudrawer.MenuDrawer;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -21,13 +15,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
+
+import com.squareup.otto.Subscribe;
+
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.flagadajones.android.ViewServer;
 import fr.flagadajones.media.util.BusManager;
 

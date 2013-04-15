@@ -17,8 +17,8 @@ import fr.flagadajones.mediarenderer.Application;
 import fr.flagadajones.mediarenderer.events.PlayerSetVolumeEvent;
 
 public class MyAudioRenderingControlService extends AbstractAudioRenderingControl {
-    AudioManager audMgr = (AudioManager) Application.instance.getSystemService(Context.AUDIO_SERVICE);
-    boolean mute = false;
+    private AudioManager audMgr = (AudioManager) Application.instance.getSystemService(Context.AUDIO_SERVICE);
+    private boolean mute = false;
 
     public MyAudioRenderingControlService(LastChange lastChange) {
         super(lastChange);
