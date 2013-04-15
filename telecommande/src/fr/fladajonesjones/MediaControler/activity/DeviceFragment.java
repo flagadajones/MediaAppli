@@ -28,42 +28,42 @@ import fr.flagadajones.media.util.BusManager;
 public class DeviceFragment extends Fragment {
 
     @Subscribe
-    public void onRendererDeviceAdded(UpnpRendererAddEvent event) {
-        // getActivity().runOnUiThread(new Runnable() {
-        // public void run() {
+    public void onRendererDeviceAdded(final UpnpRendererAddEvent event) {
+        getActivity().runOnUiThread(new Runnable() {
+         public void run() {
         if (rendererListAdapter.getPosition(event.device) == -1)
             rendererListAdapter.add(event.device);
         else
             rendererListAdapter.notifyDataSetChanged();
-        // }});
+         }});
     }
 
     @Subscribe
-    public void onRendererDeviceRemoved(UpnpRendererRemoveEvent event) {
-        // getActivity().runOnUiThread(new Runnable() {
-        // public void run() {
+    public void onRendererDeviceRemoved(final UpnpRendererRemoveEvent event) {
+         getActivity().runOnUiThread(new Runnable() {
+         public void run() {
         rendererListAdapter.remove(event.device);
-        // }});
+         }});
 
     }
 
     @Subscribe
-    public void onServerDeviceAdded(UpnpServerAddEvent event) {
-        // getActivity().runOnUiThread(new Runnable() {
-        // public void run() {
+    public void onServerDeviceAdded(final  UpnpServerAddEvent event) {
+         getActivity().runOnUiThread(new Runnable() {
+         public void run() {
         if (serverListAdapter.getPosition(event.device) == -1)
             serverListAdapter.add(event.device);
         else
             serverListAdapter.notifyDataSetChanged();
-        // }});
+         }});
     }
 
     @Subscribe
-    public void onServerDeviceRemoved(UpnpServerRemoveEvent event) {
-        // getActivity().runOnUiThread(new Runnable() {
-        // public void run() {
+    public void onServerDeviceRemoved(final UpnpServerRemoveEvent event) {
+         getActivity().runOnUiThread(new Runnable() {
+         public void run() {
         serverListAdapter.remove(event.device);
-        // }});
+         }});
     }
 
     // private static final Logger log =

@@ -31,28 +31,33 @@ public class RendererGridFragment extends Fragment {
 	  
 	
 	        @Subscribe
-	        public void onStatutChange(UpnpRendererStatutChangeEvent event){
-	            rendererListAdapter.notifyDataSetChanged();
+	        public void onStatutChange(final UpnpRendererStatutChangeEvent event){
+	        	  getActivity().runOnUiThread(new Runnable() {
+	 	             public void run() {
+	 	          
+	        	rendererListAdapter.notifyDataSetChanged();
+	 	            }});
+
 	        }
 	        
 	        
 	        @Subscribe
-	        public void onRendererDeviceAdded(UpnpRendererAddEvent event) {
-	            // getActivity().runOnUiThread(new Runnable() {
-	            // public void run() {
+	        public void onRendererDeviceAdded(final UpnpRendererAddEvent event) {
+	             getActivity().runOnUiThread(new Runnable() {
+	             public void run() {
 	            if (rendererListAdapter.getPosition(event.device) == -1)
 	                rendererListAdapter.add(event.device);
 	            else
 	                rendererListAdapter.notifyDataSetChanged();
-	            // }});
+	             }});
 	        }
 
 	        @Subscribe
-	        public void onRendererDeviceRemoved(UpnpRendererRemoveEvent event) {
-	            // getActivity().runOnUiThread(new Runnable() {
-	            // public void run() {
+	        public void onRendererDeviceRemoved(final UpnpRendererRemoveEvent event) {
+	            getActivity().runOnUiThread(new Runnable() {
+	             public void run() {
 	            rendererListAdapter.remove(event.device);
-	            // }});
+	             }});
 
 	        }
 

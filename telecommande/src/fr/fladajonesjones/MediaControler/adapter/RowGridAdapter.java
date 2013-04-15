@@ -23,6 +23,7 @@ import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.events.UpnpServerBrowseOkEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.model.Album;
 import fr.fladajonesjones.MediaControler.model.Row;
@@ -43,7 +44,7 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
     static UpnpRendererDevice selectedDevice;
     
     static Object eventSub = new Object(){
-    @Subscribe public void onUpnpServerBrowseOk(UpnpServerBrowseOkEvent event){
+    @Subscribe public void onUpnpServerLoadingPisteOk(UpnpServerLoadingPisteOkEvent event){
             BusManager.getInstance().unregister(this);
             
             selectedDevice.playMusique(album);

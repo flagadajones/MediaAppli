@@ -9,30 +9,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
-
-import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.AlbumFragment;
 import fr.fladajonesjones.MediaControler.activity.DeviceFragment;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
 import fr.fladajonesjones.MediaControler.activity.RadioGridViewFragment;
 import fr.fladajonesjones.MediaControler.activity.RendererGridFragment;
-import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
-import fr.flagadajones.media.util.BusManager;
 
 public class MenuDrawerUtil {
-    static {
-        BusManager.getInstance().register(new Object() {
-            @Subscribe
-            public void onStatutchange(UpnpRendererStatutChangeEvent event) {
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-    }
-    public static MenuDrawer mMenuDrawer;
+     public static MenuDrawer mMenuDrawer;
 
     public static MenuAdapter mAdapter;
     private static MenuListView mList;

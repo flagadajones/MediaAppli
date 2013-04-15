@@ -52,22 +52,34 @@ public class AlbumFragment extends Fragment {
     
     @Subscribe
     public void onFindAlbum(UpnpServerFindAlbumEvent event){
-        // Album album=intent.getParcelableExtra("album");
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+
+    	// Album album=intent.getParcelableExtra("album");
         rowGridAdapter.clear();
         rowGridAdapter.addAll(initRow(albumDao.getAllAlbums(true, 0)));
         rowGridAdapter.notifyDataSetChanged();
-    }
+            }});
+            }
     
     @Subscribe
     public void onLoadingPiste(UpnpServerLoadingPisteEvent event){
-        progressDialog.show();
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+
+    	progressDialog.show();
+            }});
     }
     
     @Subscribe
     public void onLoadingPisteOk(UpnpServerLoadingPisteOkEvent event){
-        if (progressDialog.isShowing()) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+
+    	if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+            }});
     }
     
    

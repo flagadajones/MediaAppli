@@ -14,5 +14,6 @@ public class MyRendererUpnpService extends AndroidUpnpServiceImpl {
         return new AndroidUpnpServiceConfiguration() ;
     }
     
+    
 
 }

@@ -89,10 +89,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 
     public void playMusique(Musique musique) {
         setTransportURI(musique);
-        startRepeatingTask();
-        play();
         this.musique = musique;
-        BusManager.getInstance().post(new UpnpRendererStatutChangeEvent());
     }
 
     public void setTransportURI(Musique musique) {
@@ -106,7 +103,8 @@ public class UpnpRendererDevice extends UpnpDevice {
             public void success(ActionInvocation invocation) {
 
                 super.success(invocation);
-                playing = true;
+                play();
+                BusManager.getInstance().post(new UpnpRendererStatutChangeEvent());
 
             }
 
@@ -211,6 +209,14 @@ public class UpnpRendererDevice extends UpnpDevice {
 
         ActionCallback playAction = new Play(transPortService) {
             @Override
+            public void success(ActionInvocation invocation) {
+            	// TODO Auto-generated method stub
+            	super.success(invocation);
+                playing = true;
+                startRepeatingTask();
+
+            }
+        	@Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 Application.activity.showToast(defaultMsg, true);
             }
@@ -289,7 +295,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             };
     }
 
-    private final static int INTERVAL = 1000;// * 60 * 2; //2 minutes
+    private final static int INTERVAL = 1000000;// * 60 * 2; //2 minutes
     // Handler m_handler = new Handler();
 
     Runnable m_handlerTask = new Runnable() {

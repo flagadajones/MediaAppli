@@ -58,9 +58,9 @@ public class DashBoardActivity extends FragmentActivity {
         Application.activity = this;
         // Activate StrictMode
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-            .detectAll().penaltyLog().penaltyDeath().build());
+            .detectAll().penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
-            .penaltyLog().penaltyDeath().build());
+            .penaltyLog().build());
         
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(true); 
