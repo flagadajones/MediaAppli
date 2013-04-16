@@ -14,6 +14,7 @@ import com.squareup.otto.Subscribe;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RendererStatusGridAdapter;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererAddEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererMetaChangeEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererRemoveEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
@@ -32,7 +33,15 @@ public class RendererGridFragment extends Fragment {
 	        	rendererListAdapter.notifyDataSetChanged();
 	 	            }});
 
-	        }
+	        }@Subscribe
+	    	public void onMetaChanged(UpnpRendererMetaChangeEvent event){
+	        	 getActivity().runOnUiThread(new Runnable() {
+	 	             public void run() {
+	 	          
+	        	rendererListAdapter.notifyDataSetChanged();
+	 	            }});
+	    	}
+	    	
 	        
 	        
 	        @Subscribe

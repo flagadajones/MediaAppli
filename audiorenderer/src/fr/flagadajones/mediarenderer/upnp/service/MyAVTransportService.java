@@ -29,6 +29,7 @@ import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
 import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
+import fr.flagadajones.media.util.StringUtils;
 import fr.flagadajones.media.util.UpnpTransformer;
 import fr.flagadajones.mediarenderer.events.PlayerClearEvent;
 import fr.flagadajones.mediarenderer.events.PlayerInitializeEvent;
@@ -40,6 +41,7 @@ import fr.flagadajones.mediarenderer.events.PlayerSeekEvent;
 import fr.flagadajones.mediarenderer.events.PlayerSongUpdateEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
 import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
+import fr.flagadajones.mediarenderer.events.PlayerUpdatePosEvent;
 
 public class MyAVTransportService extends AbstractAVTransportService {
 
@@ -53,11 +55,12 @@ public class MyAVTransportService extends AbstractAVTransportService {
     private TransportSettings transportSettings = new TransportSettings(PlayMode.NORMAL);
     private TransportState transportState = TransportState.NO_MEDIA_PRESENT;
     private TransportStatus transportStatus = TransportStatus.OK;
-
+    PlayerSongUpdateEvent eventUpdate;
     private String metaData = "";
 
     public MyAVTransportService(LastChange lastChange) {
         super(lastChange);
+        BusManager.getInstance().register(this);
 
     }
 
@@ -66,7 +69,7 @@ public class MyAVTransportService extends AbstractAVTransportService {
     // /////////////////////////////////////////////////////////////////////////////////////
     @Subscribe
     public void updateSongInfo(PlayerSongUpdateEvent event) {
-
+this.eventUpdate=event;
         if (event.playListSize == 0) {
             mediaInfo = new MediaInfo();
             positionInfo = new PositionInfo();
@@ -74,8 +77,17 @@ public class MyAVTransportService extends AbstractAVTransportService {
             mediaInfo = new MediaInfo(event.mediaUrl, metaData, new UnsignedIntegerFourBytes(event.playListSize),
 
             event.mediaDuration, StorageMedium.NETWORK);
-            positionInfo = new PositionInfo(event.trackPosition,event.trackDuration,event.trackUrl,"00:00:00","00:00:00");
+            
+            //positionInfo = new PositionInfo(event.trackPosition,metaData,event.trackUrl);
         }
+    }
+    
+    @Subscribe
+    public void updatePositionInfo(PlayerUpdatePosEvent event){
+    	int timePos=event.pos/1000;
+    	String time=StringUtils.makeTimeString(timePos);
+    	positionInfo = new PositionInfo(eventUpdate.trackPosition,eventUpdate.trackDuration,metaData,eventUpdate.trackUrl,time,time,timePos,timePos);
+           	
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +207,12 @@ public class MyAVTransportService extends AbstractAVTransportService {
 
         getLastChange().setEventedValue(0, new AVTransportVariable.CurrentTransportActions(transportAction));
 
+    }
+    
+    @Override
+    protected void finalize() throws Throwable {
+    	super.finalize();
+    	BusManager.getInstance().unregister(this);
     }
 
     // ////////////////////////////////////////////////////////////////////////////

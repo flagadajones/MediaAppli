@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
     private TextView songName;
     private TextView artisteName;
     private ListView pisteListe;
-    PisteRawAdapter adapter = new PisteRawAdapter(this);
+    PisteRawAdapter adapter = null;
     private boolean mBound = false;
 
     @Override
@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
             mBound = false;
         }
     };
+    
 
     private void initViews() {
         buttonPlayPause = (Button) findViewById(R.id.ButtonPlayStop);
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        adapter = new PisteRawAdapter(this);
         // Activate StrictMode
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
             .detectAll().penaltyLog().build());
