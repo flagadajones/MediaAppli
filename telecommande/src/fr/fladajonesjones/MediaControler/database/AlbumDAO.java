@@ -3,6 +3,7 @@ package fr.fladajonesjones.MediaControler.database;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.content.ContentValues;
@@ -64,6 +65,8 @@ public class AlbumDAO {
     }
 
     public ArrayList<Album> getAllAlbums(boolean complet, int number) {
+        Long debut=System.currentTimeMillis();
+
         if (complet == false) {
             return getAllAlbums();
         }
@@ -83,7 +86,7 @@ public class AlbumDAO {
 
         // Ferme le curseur pour liberer les ressources.
         c.close();
-
+        log.log(Level.WARNING,"getAllAlbums :"+number+" - "+(System.currentTimeMillis()-debut));
         return retour;
     }
 
@@ -117,7 +120,6 @@ public class AlbumDAO {
     }
 
     public ArrayList<Album> cursorToAlbums(Cursor c, boolean complet) {
-        long debut = System.currentTimeMillis();
         // Si la requete ne renvoie pas de resultat.
         int taille = c.getCount();
         if (taille == 0) {
@@ -127,7 +129,6 @@ public class AlbumDAO {
         c.moveToFirst();
         // log.warning("temps debut " + (System.currentTimeMillis()-debut));
         do {
-            debut = System.currentTimeMillis();
 
             Album album = new Album(c.getString(MySQLOpenHelper.COLONNE_ALBUM_ID_ID),
                     c.getString(MySQLOpenHelper.COLONNE_ALBUM_NOM_ID),
@@ -135,7 +136,6 @@ public class AlbumDAO {
                     c.getInt(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID_ID),
                     c.getString(MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART_ID));
             // log.warning("temps album " + (System.currentTimeMillis()-debut));
-            debut = System.currentTimeMillis();
             if (complet) {
                 album.artiste = new Artiste(c.getInt(MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID_ID), c.getString(5),
                         c.getInt(6));
@@ -209,7 +209,7 @@ public class AlbumDAO {
 
         Collections.sort(tmpAlbums);
 
-        maBaseDonnees.setLockingEnabled(false);
+       // maBaseDonnees.setLockingEnabled(false);
         int number = 1;
         try {
             for (Album album : tmpAlbums) {
@@ -225,12 +225,11 @@ public class AlbumDAO {
                 number++;
             }
         } catch (Exception e) {
-            log.warning("erreur");
-            e.printStackTrace();
+            log.log(Level.SEVERE,"erreur",e);
         } finally {
             if (ih != null)
                 ih.close();
-            maBaseDonnees.setLockingEnabled(true);
+    //        maBaseDonnees.setLockingEnabled(true);
         }
         tmpAlbums.clear();
 

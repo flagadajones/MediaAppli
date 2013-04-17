@@ -1,4 +1,4 @@
-package fr.flagadajones.mediarenderer.events;
+package fr.flagadajones.mediarenderer.events.fromupnpservice;
 
 import fr.fladajonesjones.media.model.Piste;
 

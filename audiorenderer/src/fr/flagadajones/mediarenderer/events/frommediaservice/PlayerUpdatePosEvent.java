@@ -1,4 +1,4 @@
-package fr.flagadajones.mediarenderer.events;
+package fr.flagadajones.mediarenderer.events.frommediaservice;
 
 public class PlayerUpdatePosEvent {
     public int pos;

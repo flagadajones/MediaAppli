@@ -21,15 +21,15 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 import fr.flagadajones.media.util.BusManager;
+import fr.flagadajones.media.util.StringUtils;
 import fr.flagadajones.mediarenderer.Application;
 import fr.flagadajones.mediarenderer.R;
-import fr.flagadajones.mediarenderer.events.PlayerChangeSongEvent;
-import fr.flagadajones.mediarenderer.events.PlayerErrorEvent;
-import fr.flagadajones.mediarenderer.events.PlayerInitializeSuccess;
-import fr.flagadajones.mediarenderer.events.PlayerPauseEvent;
-import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
-import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
-import fr.flagadajones.mediarenderer.events.PlayerUpdatePosEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerChangeSongEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerErrorEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerUpdatePosEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
 
 public class MainActivity extends Activity {
@@ -125,15 +125,6 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    @Subscribe
-    public void onInitializePlayerSuccess(final PlayerInitializeSuccess event) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-
-                seekBar.setMax(event.duree);
-            }
-        });
-    }
 
    
     @Subscribe
@@ -188,6 +179,7 @@ public class MainActivity extends Activity {
                 Application.imageLoader.DisplayImage(event.audioItem.albumArt, albumArt);
                 songName.setText(event.audioItem.titre);
                 artisteName.setText(event.audioItem.artiste);
+                seekBar.setMax(StringUtils.makeLongFromStringTime(event.audioItem.duree).intValue());
                 adapter.clear();
                 adapter.addAll(event.playlist);
             }
