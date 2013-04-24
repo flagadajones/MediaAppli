@@ -39,7 +39,7 @@
 		<dependency>
 		    
 		      <groupId>com.larswerkman</groupId>
-    <artifactId>colorpicker</artifactId>
+    <artifactId>HoloCircleSeekBar</artifactId>
 		    <version>7</version>
 		</dependency>
 
