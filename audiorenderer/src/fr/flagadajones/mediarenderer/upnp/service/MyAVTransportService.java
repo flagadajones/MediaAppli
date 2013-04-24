@@ -31,17 +31,16 @@ import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.StringUtils;
 import fr.flagadajones.media.util.UpnpTransformer;
-import fr.flagadajones.mediarenderer.events.PlayerClearEvent;
-import fr.flagadajones.mediarenderer.events.PlayerInitializeEvent;
-import fr.flagadajones.mediarenderer.events.PlayerNextEvent;
-import fr.flagadajones.mediarenderer.events.PlayerPauseEvent;
-import fr.flagadajones.mediarenderer.events.PlayerPlayListEvent;
-import fr.flagadajones.mediarenderer.events.PlayerPrevEvent;
-import fr.flagadajones.mediarenderer.events.PlayerSeekEvent;
-import fr.flagadajones.mediarenderer.events.PlayerSongUpdateEvent;
-import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
-import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
-import fr.flagadajones.mediarenderer.events.PlayerUpdatePosEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerSongUpdateEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerUpdatePosEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerInitializeEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerNextEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPlayListEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPrevEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSeekEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
 
 public class MyAVTransportService extends AbstractAVTransportService {
 
@@ -68,7 +67,7 @@ public class MyAVTransportService extends AbstractAVTransportService {
     // / OTTO
     // /////////////////////////////////////////////////////////////////////////////////////
     @Subscribe
-    public void updateSongInfo(PlayerSongUpdateEvent event) {
+    public void onUpdateSongInfo(PlayerSongUpdateEvent event) {
 this.eventUpdate=event;
         if (event.playListSize == 0) {
             mediaInfo = new MediaInfo();
@@ -83,7 +82,7 @@ this.eventUpdate=event;
     }
     
     @Subscribe
-    public void updatePositionInfo(PlayerUpdatePosEvent event){
+    public void onUpdatePositionInfo(PlayerUpdatePosEvent event){
     	int timePos=event.pos/1000;
     	String time=StringUtils.makeTimeString(timePos);
     	positionInfo = new PositionInfo(eventUpdate.trackPosition,eventUpdate.trackDuration,metaData,eventUpdate.trackUrl,time,time,timePos,timePos);
@@ -159,7 +158,6 @@ this.eventUpdate=event;
                 return;
 
             if (musique instanceof Album) {
-                BusManager.getInstance().post(new PlayerClearEvent());
                 BusManager.getInstance().post(new PlayerPlayListEvent(((Album) musique).getPistes()));
                 BusManager.getInstance().post(new PlayerInitializeEvent(0));
             } else if (musique instanceof Piste) {

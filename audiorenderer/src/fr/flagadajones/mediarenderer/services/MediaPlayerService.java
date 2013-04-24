@@ -24,20 +24,18 @@ import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.UpnpTransformer;
 import fr.flagadajones.mediarenderer.activity.MainActivity;
-import fr.flagadajones.mediarenderer.events.PlayerChangeSongEvent;
-import fr.flagadajones.mediarenderer.events.PlayerClearEvent;
-import fr.flagadajones.mediarenderer.events.PlayerErrorEvent;
-import fr.flagadajones.mediarenderer.events.PlayerInitializeEvent;
-import fr.flagadajones.mediarenderer.events.PlayerInitializeSuccess;
-import fr.flagadajones.mediarenderer.events.PlayerNextEvent;
-import fr.flagadajones.mediarenderer.events.PlayerPauseEvent;
-import fr.flagadajones.mediarenderer.events.PlayerPlayListEvent;
-import fr.flagadajones.mediarenderer.events.PlayerPrevEvent;
-import fr.flagadajones.mediarenderer.events.PlayerSeekEvent;
-import fr.flagadajones.mediarenderer.events.PlayerSetVolumeEvent;
-import fr.flagadajones.mediarenderer.events.PlayerSongUpdateEvent;
-import fr.flagadajones.mediarenderer.events.PlayerStartEvent;
-import fr.flagadajones.mediarenderer.events.PlayerStopEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerChangeSongEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerErrorEvent;
+import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerSongUpdateEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerInitializeEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerNextEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPlayListEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPrevEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSeekEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSetVolumeEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
 import fr.flagadajones.mediarenderer.player.StatefulMediaPlayer;
 
 public class MediaPlayerService extends Service implements OnBufferingUpdateListener, OnInfoListener,
@@ -45,7 +43,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
     protected StatefulMediaPlayer mMediaPlayer = new StatefulMediaPlayer();
     private UpdateThread updateThread = new UpdateThread(this);
     private List<Piste> playlist = new ArrayList<Piste>();
-    private String mediaDuration="00:00:00";
+    private String mediaDuration = "00:00:00";
     private int trackPosition;
 
     public MediaPlayerService() {
@@ -81,7 +79,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
     }
 
     @Subscribe
-    public void setVolume(PlayerSetVolumeEvent event) {
+    public void onSetVolume(PlayerSetVolumeEvent event) {
         mMediaPlayer.setVolume(event.volume, event.volume);
     }
 
@@ -94,7 +92,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
             trackPosition = 0;
             playlist.clear();
             playlist.add(event.item);
-            mediaDuration=event.item.duree;
+            mediaDuration = event.item.duree;
             initializePlayer();
         }
     }
@@ -144,7 +142,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     @Override
     public void onPrepared(MediaPlayer player) {
-        BusManager.getInstance().post(new PlayerInitializeSuccess(player.getDuration()));
+   
         BusManager.getInstance().post(new PlayerStartEvent());
     }
 
@@ -228,7 +226,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
     }
 
     @Subscribe
-    public void nextSong(PlayerNextEvent event) {
+    public void onNextSong(PlayerNextEvent event) {
         if (trackPosition < playlist.size() - 1) {
             trackPosition = trackPosition + 1;
             initializePlayer();
@@ -244,24 +242,20 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
     }
 
     @Subscribe
-    public void seekTo(PlayerSeekEvent event) {
+    public void onSeekTo(PlayerSeekEvent event) {
         mMediaPlayer.seekTo(event.msec);
         BusManager.getInstance().post(updateMediaInfo());
 
     }
 
     @Subscribe
-    public void clearPlayList(PlayerClearEvent event) {
-        playlist.clear();
-        mMediaPlayer.reset();
-        BusManager.getInstance().post(updateMediaInfo());
-
-    }
-
-    @Subscribe
     public void onPlayList(PlayerPlayListEvent event) {
+
         playlist = event.list;
-        mediaDuration=UpnpTransformer.calculTotalTime(playlist);
+        mMediaPlayer.reset();
+        if (playlist != null) {
+            mediaDuration = UpnpTransformer.calculTotalTime(playlist);
+        }
         BusManager.getInstance().post(updateMediaInfo());
     }
 

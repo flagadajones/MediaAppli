@@ -1,4 +1,4 @@
-package fr.flagadajones.mediarenderer.events;
+package fr.flagadajones.mediarenderer.events.frommediaservice;
 
 public class PlayerSongUpdateEvent {
 	public String mediaUrl;

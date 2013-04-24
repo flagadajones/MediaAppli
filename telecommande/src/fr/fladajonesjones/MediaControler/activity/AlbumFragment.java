@@ -2,6 +2,8 @@ package fr.fladajonesjones.MediaControler.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -24,6 +26,7 @@ import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 import fr.fladajonesjones.MediaControler.model.Row;
 import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
+import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 
@@ -33,6 +36,7 @@ public class AlbumFragment extends Fragment {
     ProgressDialog progressDialog;
     AlbumDAO albumDao = new AlbumDAO();
 
+    private static final Logger log = Logger.getLogger(AlbumFragment.class.getName());
     @Override
     public void onResume() {
         super.onResume();
@@ -94,8 +98,9 @@ public class AlbumFragment extends Fragment {
         View layout = inflater.inflate(R.layout.activity_album_list_view, null);
         this.inflater = inflater;
 
+        Long debut=System.currentTimeMillis();
         initGridAlbum(layout);
-
+        log.log(Level.WARNING,"onViewCreated :"+(System.currentTimeMillis()-debut));
 
         return layout;
     }
@@ -109,9 +114,23 @@ public class AlbumFragment extends Fragment {
         listView.setAdapter(rowGridAdapter);
 
         // Album album=intent.getParcelableExtra("album");
-        rowGridAdapter.addAll(initRow(albumDao.getAllAlbums(true, 15)));
-        rowGridAdapter.notifyDataSetChanged();
 
+     
+        new AsyncTask<Void, Void, List<Row>>() {
+            @Override
+            protected void onPostExecute(List<Row> result) {
+//                rowGridAdapter.clear();
+                rowGridAdapter.addAll(result);
+                rowGridAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected List<Row> doInBackground(Void... params) {
+                return initRow(albumDao.getAllAlbums(true, 15));
+            }
+        }.execute();
+
+        
         new AsyncTask<Void, Void, List<Row>>() {
             @Override
             protected void onPostExecute(List<Row> result) {
@@ -132,6 +151,9 @@ public class AlbumFragment extends Fragment {
     }
 
     private List<Row> initRow(List<Album> lstAlbum) {
+        Long debut=System.currentTimeMillis();
+        
+
         List<Row> liste = new ArrayList<Row>();
         String[] allColors = getActivity().getResources().getStringArray(R.array.colors);
 
@@ -174,12 +196,12 @@ public class AlbumFragment extends Fragment {
             liste.remove(liste.size() - 1);
         }
 
+        log.log(Level.WARNING,"initRow :"+(System.currentTimeMillis()-debut));
         return liste;
     }
     
     @Override
     public void onDestroyView() {
-    	// TODO Auto-generated method stub
     	super.onDestroyView();
     }
 
