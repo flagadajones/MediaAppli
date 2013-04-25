@@ -31,12 +31,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.simonvt</groupId>
-			<artifactId>android-menudrawer</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-		
-		<dependency>
 		    
 		      <groupId>com.larswerkman</groupId>
     <artifactId>HoloCircleSeekBar</artifactId>
