@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <ListView
         android:id="@+id/Piste"
@@ -11,13 +11,20 @@
         android:layout_alignParentRight="true"
         tools:listitem="@layout/piste_row" />
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentLeft="true"
-    android:layout_toLeftOf="@+id/Piste"
-    android:orientation="vertical" >
-
+    <fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar
+        android:id="@+id/Position"
+        android:layout_width="285dp"
+        android:layout_height="290dp"
+        app:end_angle="270"
+        app:init_position="70"
+        app:max="270"
+        app:rotate_angle="-180"
+        app:start_angle="0"
+        app:text_color="#FF0000"
+        app:text_size="65"
+        app:wheel_active_color="#00BFFF"
+        app:wheel_size="4"
+        app:wheel_unactive_color="#FFCCCCCC" />
     <ImageView
         android:id="@+id/AlbumArt"
         android:layout_width="200dp"
@@ -42,19 +49,18 @@
         android:gravity="center_horizontal"
         android:text="Titre" />
 
-    <SeekBar
-        android:id="@+id/Position"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-/>
+ 
 
     <Button
-        android:id="@+id/ButtonPlayStop"
+        android:id="@+id/ButtonPrev"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Play"
-        android:textSize="15pt"
-        android:textStyle="bold" />
+android:background="@drawable/playerprev" />
+    
+    <Button
+        android:id="@+id/ButtonNext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+android:background="@drawable/playernext" />
 
-</LinearLayout>
 </RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp" 
+    >
+
+    <include layout="@layout/player_card" android:background="@drawable/card_background_shadow"
+    android:layout_width="290dp"
+    android:layout_height="match_parent" android:layout_marginRight="10dp"/>
+   
+    <ListView android:id="@+id/pisteListe" android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_background_shadow"
+        tools:listitem="@layout/piste_row" android:listSelector="@drawable/selector_background_piste">
+
+    </ListView>
+    
+      <!--   <com.fima.cardsui.views.CardUI
+             android:id="@+id/pistecardsview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /> -->
+
+</LinearLayout>

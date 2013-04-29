@@ -11,59 +11,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    
-      <ImageView
-        android:id="@+id/AlbumArt"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignBottom="@+id/ButtonNext"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/bg_img_loading" />
-      
-      
-    <fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar
-        android:id="@+id/Position"
-        android:layout_width="285dp"
-        android:layout_height="290dp"
-        app:end_angle="180"
-        app:init_position="90"
-        app:show_text="false"
-        app:max="180"
-        app:rotate_angle="180"
-        app:start_angle="0"
-        app:text_color="#FF0000"
-        app:text_size="65"
-        app:thumb="@drawable/playerplay"
-        app:wheel_active_color="#00BFFF"
-        app:wheel_size="4"
-        app:wheel_unactive_color="#FFCCCCCC" />
-
     <TextView
         android:id="@+id/ArtisteName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/SongName"
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
         android:text="Artiste" />
-
-    <Button
-        android:id="@+id/ButtonNext"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_above="@+id/ArtisteName"
-        android:layout_alignRight="@+id/ArtisteName"
-        android:background="@drawable/playernext" />
-
-    <Button
-        android:id="@+id/ButtonPrev"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignBaseline="@+id/ButtonNext"
-        android:layout_alignBottom="@+id/ButtonNext"
-        android:layout_alignLeft="@+id/Position"
-        android:background="@drawable/playerprev" />
 
   
 
@@ -75,5 +30,60 @@
         android:layout_below="@+id/ArtisteName"
         android:gravity="center_horizontal"
         android:text="Titre" />
+    
+     <!--  <ListView
+          android:id="@+id/Piste"
+          android:layout_width="300dp"
+          android:layout_height="match_parent"
+          android:layout_alignParentRight="true"
+          android:layout_toRightOf="@+id/AlbumArt"
+          tools:listitem="@layout/piste_row" />
+ -->
+
+      <ImageView
+          android:id="@+id/AlbumArt"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          android:layout_alignBottom="@+id/SongName"
+          android:layout_marginLeft="16dp"
+          android:layout_toRightOf="@+id/ButtonPrev"
+          android:src="@drawable/bg_img_loading" />
+
+      <Button
+          android:id="@+id/ButtonNext"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_alignParentRight="true"
+          android:layout_below="@+id/ButtonPrev"
+          android:background="@drawable/playernext" />
+
+      <Button
+          android:id="@+id/ButtonPrev"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_alignBottom="@+id/Position"
+          android:layout_marginBottom="14dp"
+          android:layout_marginRight="39dp"
+          android:layout_toLeftOf="@+id/ButtonNext"
+          android:background="@drawable/playerprev" />
+
+      <fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar
+          android:id="@+id/Position"
+          android:layout_width="200dp"
+          android:layout_height="600dp"
+          android:layout_alignLeft="@+id/ArtisteName"
+          android:layout_alignParentTop="true"
+          app:end_angle="180"
+          app:init_position="90"
+          app:max="180"
+          app:rotate_angle="180"
+          app:show_text="false"
+          app:start_angle="0"
+          app:text_color="#FF0000"
+          app:text_size="65"
+          app:thumb="@drawable/playerplay"
+          app:wheel_active_color="#00BFFF"
+          app:wheel_size="4"
+          app:wheel_unactive_color="#FFCCCCCC" />
 
 </RelativeLayout>
