@@ -89,83 +89,16 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.device_now_playing, container, false);
+        View root = inflater.inflate(R.layout.renderer_now_playing, container, false);
 
-        mTrackName = (TextView) root.findViewById(R.id.audio_player_track);
-        mTrackName.setOnClickListener(new OnClickListener() {
+        mTrackName = (TextView) root.findViewById(R.id.SongName);
 
-            @Override
-            public void onClick(View v) {
-                tracksBrowser();
-            }
-        });
-        mAlbumArtistName = (TextView) root.findViewById(R.id.audio_player_album_artist);
-        mAlbumArtistName.setOnClickListener(new OnClickListener() {
+        mAlbumArtistName = (TextView) root.findViewById(R.id.ArtisteName);
 
-            @Override
-            public void onClick(View v) {
-                tracksBrowserArtist();
-            }
-        });
+        mAlbumArt = (ImageView) root.findViewById(R.id.AlbumArt);
 
-        mTotalTime = (TextView) root.findViewById(R.id.audio_player_total_time);
-        mCurrentTime = (TextView) root.findViewById(R.id.audio_player_current_time);
-
-        mAlbumArt = (ImageView) root.findViewById(R.id.audio_player_album_art);
-
-        mPrev = (ImageButton) root.findViewById(R.id.audio_player_prev);
-        mPlay = (ImageButton) root.findViewById(R.id.audio_player_play);
-        mNext = (ImageButton) root.findViewById(R.id.audio_player_next);
-
-        // mPrev.setRepeatListener(mRewListener, 260);
-        // mPrev.setOnClickListener(new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // if (MusicUtils.mService == null)
-        // return;
-        // try {
-        // if (MusicUtils.mService.position() < 2000) {
-        // MusicUtils.mService.prev();
-        // } else {
-        // MusicUtils.mService.seek(0);
-        // MusicUtils.mService.play();
-        // }
-        // } catch (RemoteException ex) {
-        // ex.printStackTrace();
-        // }
-        // }
-        // });
-
-        mPlay.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                doPauseResume();
-            }
-        });
-
-        // mNext.setRepeatListener(mFfwdListener, 260);
-        // mNext.setOnClickListener(new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // if (MusicUtils.mService == null)
-        // return;
-        // try {
-        // MusicUtils.mService.next();
-        // } catch (RemoteException ex) {
-        // ex.printStackTrace();
-        // }
-        // }
-        // });
-
-        mProgress = (SeekBar) root.findViewById(android.R.id.progress);
-        if (mProgress instanceof SeekBar) {
-            SeekBar seeker = mProgress;
-            seeker.setOnSeekBarChangeListener(mSeekListener);
-        }
-        mProgress.setMax(1000);
+        mPrev = (ImageButton) root.findViewById(R.id.ButtonPrev);
+        mNext = (ImageButton) root.findViewById(R.id.ButtonNext);
 
         return root;
     }

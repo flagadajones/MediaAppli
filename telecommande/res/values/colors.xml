@@ -1,23 +1,17 @@
 <resources>
- <!-- A semi-transparent dark Holo shade of blue -->
-    <color name="holo_blue_dark">#ff0099cc</color>
 
-    
+    <!-- A semi-transparent dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
     <color name="md__transparent">#00000000</color>
-<color name="green">#FF00FF00</color>
-<color name="blue">#FF0000FF</color>
-<color name="black">#FFFFFFFF</color>
-<color name="white">#FFFFFFFF</color>
-<color name="transparent_black">#00FFFFFF</color>
-<!-- <color name="holo_blue_dark">#00FFFFFF</color> -->
-<color name="transparent_black">#00FFFFFF</color>
+    <color name="blue">#FF0000FF</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent_black">#00FFFFFF</color>
     <color name="md__defaultBackground">#FF555555</color>
-    
-    
     <color name="golden">#f2a400</color>
     <color name="red">#e00707</color>
     <color name="green">#4ac925</color>
     <color name="skyblue">#00d5f2</color>
     <color name="holoblue">#ff33b6ea</color>
-    
+
 </resources>

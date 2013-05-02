@@ -25,14 +25,14 @@ public class DashBoardFragment extends Fragment {
 		
 		View layout = inflater.inflate(R.layout.fragment_dashboard, null);
 
-		// Création de la liste de Fragments que fera défiler le PagerAdapter
+		// Crï¿½ation de la liste de Fragments que fera dï¿½filer le PagerAdapter
 		List<Fragment> fragments = new ArrayList<Fragment>();
 
 		// Ajout des Fragments dans la liste
 		fragments.add(Fragment.instantiate(getActivity(),RendererGridFragment.class.getName()));
-		fragments.add(Fragment.instantiate(getActivity(),DeviceFragment.class.getName()));
+		fragments.add(Fragment.instantiate(getActivity(),ServerGridFragment.class.getName()));
 
-		// Création de l'adapter qui s'occupera de l'affichage de la liste de
+		// Crï¿½ation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
 		this.mPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), fragments);
 

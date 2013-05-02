@@ -64,15 +64,15 @@ public class MenuAdapter extends BaseAdapter {
         return false;
     }
 
-    public View renduCategory(Category cateogory, View v, ViewGroup parent) {
-        if (v == null) {
-            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.menu_row_category, parent, false);
-        }
-        ((TextView) v).setText(cateogory.mTitle);
-        return v;
-    }
+//    public View renduCategory(Category cateogory, View v, ViewGroup parent) {
+//        if (v == null) {
+//            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(
+//                    Context.LAYOUT_INFLATER_SERVICE);
+//            v = inflater.inflate(R.layout.menu_row_category, parent, false);
+//        }
+//        ((TextView) v).setText(cateogory.mTitle);
+//        return v;
+//    }
 
     public View renduItem(Item item, View v, ViewGroup parent) {
         if (v == null) {
@@ -95,9 +95,7 @@ public class MenuAdapter extends BaseAdapter {
         View v = convertView;
         Object item = getItem(position);
 
-        if (item instanceof Category) {
-            v = renduCategory((Category) item, v, parent);
-        } else if (item instanceof Item) {
+        if (item instanceof Item) {
             v = renduItem((Item) item, v, parent);
         }
 

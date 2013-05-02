@@ -104,16 +104,7 @@ public class RendererGridFragment extends Fragment {
 			rendererListAdapter
 					.addAll(UpnpDeviceManager.getInstance().lstRenderer);
 		rendererListView.setAdapter(rendererListAdapter);
-
-		rendererListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				if (id == -1)
-					return;
-			}
-		});
+		
 	}
 
 	@Override

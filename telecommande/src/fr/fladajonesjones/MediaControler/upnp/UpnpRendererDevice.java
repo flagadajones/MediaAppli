@@ -42,8 +42,8 @@ public class UpnpRendererDevice extends UpnpDevice {
 	MediaInfo mediaInfo;
 	TransportInfo transportInfo;
 	public String statut;
-	private boolean playing = false;
-	private boolean connected = false;
+	public boolean playing = false;
+	public boolean connected = false;
 	SubscriptionCallback transPortServicecallback = null;
 
 	public UpnpRendererDevice() {

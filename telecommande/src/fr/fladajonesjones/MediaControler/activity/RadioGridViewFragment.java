@@ -76,7 +76,7 @@ public class RadioGridViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.activity_radio_grid_view, null);
+        View layout = inflater.inflate(R.layout.fragment_radio_grid_view, null);
         this.inflater = inflater;
 
         initGridRadio(layout);

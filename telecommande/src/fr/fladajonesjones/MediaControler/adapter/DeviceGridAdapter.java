@@ -30,7 +30,7 @@ public class DeviceGridAdapter extends ArrayAdapter<UpnpDevice>{
         
 		if (row ==null){
 			LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
-			row = inflater.inflate(R.layout.device_adapter_gridrow, null, false);
+			row = inflater.inflate(R.layout.popup_renderer_grid_item, null, false);
 	        
 			holder=new DeviceDisplayHolder();
 			holder.deviceIcone=(ImageView)row.findViewById(R.id.deviceIcone);

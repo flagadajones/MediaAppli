@@ -106,11 +106,18 @@ public class UpnpDeviceManager {
     }
 
     public void setLibraryDevice(UpnpServerDevice device) {
+        
         if (libraryDevice != null)
             deviceDAO.removeDevice(libraryDevice.getUdn());
-
+if(device!=null){
         deviceDAO.insertDevice(device);
+}
         libraryDevice = device;
+
+    }
+
+    public UpnpServerDevice getLibraryDevice() {
+        return libraryDevice;
 
     }
 

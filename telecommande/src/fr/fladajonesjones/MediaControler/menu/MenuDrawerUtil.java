@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.AlbumFragment;
-import fr.fladajonesjones.MediaControler.activity.DeviceFragment;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
 import fr.fladajonesjones.MediaControler.activity.RadioGridViewFragment;
 import fr.fladajonesjones.MediaControler.activity.RendererGridFragment;
+import fr.fladajonesjones.MediaControler.activity.ServerGridFragment;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 
 public class MenuDrawerUtil {
@@ -38,9 +38,9 @@ public class MenuDrawerUtil {
     private static void initAdapter() {
         mAdapter.clear();
         mAdapter.addAll(items);
-        List<Object> l = new ArrayList<Object>();
-        l.add(new Category("En Cours"));
-        mAdapter.addAll(l);
+//        List<Object> l = new ArrayList<Object>();
+//        l.add(new Category("En Cours"));
+//        mAdapter.addAll(l);
         mAdapter.addAll(configs);
         mAdapter.notifyDataSetChanged();
     }
@@ -109,7 +109,7 @@ public class MenuDrawerUtil {
                 // replaceFragment(new DeviceFragment());
                 replaceFragment(new RendererGridFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Server")) {
-                replaceFragment(new DeviceFragment());
+                replaceFragment(new ServerGridFragment());
                 // replaceFragment(new DashBoardFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Radio")) {
                 replaceFragment(new RadioGridViewFragment());
