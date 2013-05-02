@@ -32,7 +32,7 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 		if (row == null) {
 			LayoutInflater inflater = ((Activity) getContext())
 					.getLayoutInflater();
-			row = inflater.inflate(R.layout.radio_gridrow, null, false);
+			row = inflater.inflate(R.layout.radio_grid_item, null, false);
 
 			holder = new RadioHolder();
 			holder.radioIcone = (ImageView) row.findViewById(R.id.radioIcone);

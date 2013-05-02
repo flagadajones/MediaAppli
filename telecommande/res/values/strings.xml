@@ -9,4 +9,8 @@
     Do not translate. Duration format for duration >= 1 hour
     <string name="durationformatlong" translatable="false"><xliff:g id="format">%1$d:%3$02d:%5$02d</xliff:g></string>
  -->
+ 
+ 
+ 	<string name="overflow">Menu Overflow</string>
+	<string name="color_stripe">Color Stripe</string>
 </resources>

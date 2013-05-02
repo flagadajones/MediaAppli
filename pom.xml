@@ -28,7 +28,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<sdk>
-						<platform>17</platform>
+						<platform>15</platform>
 					</sdk>
 					<apkDebug>true</apkDebug>
 					<deleteConflictingFiles>true</deleteConflictingFiles>

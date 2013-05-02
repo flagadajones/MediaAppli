@@ -33,7 +33,7 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
 		LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
 
 		if (item.isPlaying()) {
-			row = inflater.inflate(R.layout.renderer_status_playing_grid_item,
+			row = inflater.inflate(R.layout.renderer_grid_item_status_playing,
 					null, false);
 			ImageView deviceIcone = (ImageView) row
 					.findViewById(R.id.deviceIcone);
@@ -65,11 +65,11 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
 		} else {
 			if (item.isConnected())
 				row = inflater
-						.inflate(R.layout.renderer_status_nomedia_grid_item,
+						.inflate(R.layout.renderer_grid_item_status_nomedia,
 								null, false);
 			else
 				row = inflater.inflate(
-						R.layout.renderer_status_notconnected_grid_item, null,
+						R.layout.renderer_grid_item_status_notconnected, null,
 						false);
 			ImageView deviceIcone = (ImageView) row
 					.findViewById(R.id.deviceIcone);

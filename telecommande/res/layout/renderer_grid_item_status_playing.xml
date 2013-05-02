@@ -1,0 +1,117 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background_shadow"
+    android:orientation="vertical"
+    android:paddingBottom="6dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="100" >
+
+        <ImageView
+            android:id="@+id/stripe"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:adjustViewBounds="true"
+            android:background="@color/red"
+            android:baselineAlignBottom="true"
+            android:contentDescription="@string/color_stripe"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dip"
+            android:layout_weight="90"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/contentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dip"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/deviceIcone"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:padding="2dip"
+                    android:src="@drawable/bg_img_loading" />
+
+                <TextView
+                    android:id="@+id/deviceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="8dip"
+                    android:fontFamily="sans-serif-thin"
+                    android:padding="2dip"
+                    android:text="Nom Lecteur"
+                    android:textColor="#33B6EA"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/rendererStatusAlbumArt"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:padding="2dip"
+                    android:src="@drawable/bg_img_loading" />
+
+                <SeekBar
+                    android:id="@+id/rendererStatusPositionPiste"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/rendererStatusAlbumArt"
+                    android:layout_toRightOf="@id/rendererStatusAlbumArt" />
+
+                <TextView
+                    android:id="@+id/rendererStatusSongName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/rendererStatusPositionPiste"
+                    android:layout_toRightOf="@id/rendererStatusAlbumArt"
+                    android:gravity="center_horizontal"
+                    android:text="Titre" />
+
+                <TextView
+                    android:id="@+id/rendererStatusArtisteName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/rendererStatusSongName"
+                    android:layout_toRightOf="@id/rendererStatusAlbumArt"
+                    android:gravity="center_horizontal"
+                    android:text="Artiste" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/overflow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selectable_background_cardbank"
+                android:contentDescription="@string/overflow"
+                android:padding="2dip"
+                android:src="@drawable/abs__ic_menu_moreoverflow_holo_light" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

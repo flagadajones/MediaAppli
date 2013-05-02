@@ -1,25 +1,24 @@
-<RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-     android:layout_width="290dp"
-    android:layout_height="290dp" android:background="@drawable/card_background_shadow"
-    >
+    android:layout_width="@dimen/SeekLayoutWidth"
+    android:layout_height="@dimen/SeekLayoutWidth"
+    android:background="@drawable/card_background_shadow" >
 
-       <ImageView
-           android:id="@+id/AlbumArt"
-           android:layout_width="100dp"
-           android:layout_height="100dp"
-           android:layout_alignBottom="@+id/Position"
-           android:layout_centerHorizontal="true"
-           android:src="@drawable/bg_img_loading" />
-    
+    <ImageView
+        android:id="@+id/AlbumArt"
+        android:layout_width="@dimen/ImagePlayerSize"
+        android:layout_height="@dimen/ImagePlayerSize"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/bg_img_loading" />
+
     <fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar
         android:id="@+id/Position"
-         android:layout_width="270dp"
-        android:layout_height="135dp"
-     
-        android:layout_alignParentTop="true"
-             android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/SeekWidth"
+        android:layout_height="@dimen/SeekHeight"
+        android:layout_alignBottom="@+id/AlbumArt"
+        android:layout_centerHorizontal="true"
         app:end_angle="180"
         app:init_position="0"
         app:max="180"
@@ -33,40 +32,42 @@
         app:wheel_size="4"
         app:wheel_unactive_color="#FFCCCCCC" />
 
-       <Button
-           android:id="@+id/ButtonPrev"
-           android:layout_width="48dp"
-           android:layout_height="48dp"
-           android:paddingTop="24dp"
-           android:layout_alignParentLeft="true"
-           android:layout_below="@+id/AlbumArt"
-           android:background="@drawable/playerprev" />
+    <TextView
+        android:id="@+id/SongName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ArtisteName"
+        android:gravity="center_horizontal"
+        android:text="Titre" />
 
-           <TextView
-           android:id="@+id/SongName"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_alignParentLeft="true"
-           android:layout_below="@+id/ArtisteName"
-           android:gravity="center_horizontal"
-           android:text="Titre" />
-       <TextView
-           android:id="@+id/ArtisteName"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_alignParentLeft="true"
-           android:layout_alignTop="@+id/ButtonPrev"
-           android:gravity="center_horizontal"
-           android:text="Artiste" />
+    <Button
+        android:id="@+id/ButtonNext"
+        android:layout_width="@dimen/ButtonPlayerSize"
+        android:layout_height="@dimen/ButtonPlayerSize"
+        android:layout_alignBaseline="@+id/SongName"
+        android:layout_alignBottom="@+id/SongName"
+        android:layout_marginLeft="46dp"
+        android:layout_toRightOf="@+id/AlbumArt"
+        android:background="@drawable/playernext" />
 
-       <Button
-           android:id="@+id/ButtonNext"
-           android:layout_width="48dp"
-           android:layout_height="48dp"
-           android:layout_alignParentRight="true"
-           android:layout_below="@+id/AlbumArt"
-           android:background="@drawable/playernext" />
+    <Button
+        android:id="@+id/ButtonPrev"
+        android:layout_width="@dimen/ButtonPlayerSize"
+        android:layout_height="@dimen/ButtonPlayerSize"
+        android:layout_alignBaseline="@+id/SongName"
+        android:layout_alignBottom="@+id/SongName"
+        android:layout_marginRight="46dp"
+        android:layout_toLeftOf="@+id/AlbumArt"
+        android:background="@drawable/playerprev" />
+
+    <TextView
+        android:id="@+id/ArtisteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/AlbumArt"
+        android:gravity="center_horizontal"
+        android:text="Artiste" />
 
 </RelativeLayout>
-
-     
