@@ -45,7 +45,7 @@ public class Application extends android.app.Application {
 
         UpnpDeviceManager.getInstance();
       
-        initMock();
+      //  initMock();
 
     }
 

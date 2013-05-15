@@ -127,11 +127,12 @@ this.eventUpdate=event;
         try {
             seekMode = SeekMode.valueOrExceptionOf(unit);
 
-            if (!seekMode.equals(SeekMode.REL_TIME)) {
+            if (!seekMode.equals(SeekMode.REL_TIME) && !seekMode.equals(SeekMode.TRACK_NR)) {
                 throw new IllegalArgumentException();
             }
 
-            BusManager.getInstance().post(new PlayerSeekEvent(Integer.valueOf(target)));
+            if (seekMode.equals(SeekMode.TRACK_NR))
+            BusManager.getInstance().post(new PlayerSeekEvent(0,Integer.valueOf(target)));
 
         } catch (IllegalArgumentException ex) {
             log.log(Level.SEVERE, ex.getMessage(), ex);

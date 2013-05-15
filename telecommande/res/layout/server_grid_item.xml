@@ -1,14 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="6dp"
-    android:orientation="vertical" 
-    android:background="@drawable/card_background_shadow" >
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:paddingBottom="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:background="@drawable/card_background_shadow"
         android:orientation="horizontal"
         android:weightSum="100" >
 
@@ -44,19 +41,19 @@
 
             android:padding="2dip"
             android:gravity="center_vertical"
-            android:src="@drawable/bg_img_loading" />
+            android:src="@drawable/bg_img_loading"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/deviceName"
             android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="8dip" 
                 android:padding="2dip"
-                android:fontFamily="sans-serif-thin"
                 android:text="Nom Lecteur"
                 android:textColor="#33B6EA"
-                android:textSize="24sp" 
-                />
+                android:textSize="24sp"
+                android:gravity="center_vertical"/>
         </LinearLayout>
 
             <TextView
@@ -67,7 +64,7 @@
                 android:layout_marginLeft="8dip"
                 android:layout_marginRight="48dip"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
+
                 android:gravity="center_vertical|center_horizontal"
                 android:maxLines="3"
                 android:text="Non Disponible"
@@ -78,7 +75,7 @@
         <LinearLayout
             android:layout_width="0dip"
             android:layout_height="fill_parent"
-            android:layout_weight="10"
+            android:layout_weight="7"
             android:orientation="vertical" >
 
             <ImageView
@@ -88,7 +85,7 @@
                 android:background="@drawable/selectable_background_cardbank"
                 android:contentDescription="@string/overflow"
                 android:padding="2dip"
-                android:src="@drawable/abs__ic_menu_moreoverflow_holo_light" />
+                android:src="@drawable/abs__ic_menu_moreoverflow_holo_light"
+                android:layout_gravity="right"/>
         </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

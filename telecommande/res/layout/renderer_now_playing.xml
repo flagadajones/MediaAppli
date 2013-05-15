@@ -23,7 +23,8 @@
         android:layout_marginLeft="10dp"
         android:background="@drawable/card_background_shadow"
         android:listSelector="@drawable/selector_background_piste"
-        tools:listitem="@layout/piste_row" >
+        tools:listitem="@layout/piste_row"
+        android:choiceMode="singleChoice">
     </ListView>
 
     <!--

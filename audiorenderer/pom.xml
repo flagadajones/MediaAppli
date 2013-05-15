@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>audiorenderer</artifactId>
 
-	<!-- <packaging>apk</packaging> -->
+	<packaging>apk</packaging>
 	<build>
 
 		<sourceDirectory>src</sourceDirectory>

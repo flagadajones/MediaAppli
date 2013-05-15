@@ -102,7 +102,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         Piste piste = playlist.get(trackPosition);
         mMediaPlayer.setAudioItem(piste);
 
-        // mMediaPlayer.prepareAsync();
+        mMediaPlayer.prepareAsync();
         BusManager.getInstance().post(new PlayerChangeSongEvent(piste, playlist));
         BusManager.getInstance().post(updateMediaInfo());
 
@@ -123,6 +123,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         if (trackPosition < playlist.size() - 1) {
             trackPosition = trackPosition + 1;
             initializePlayer();
+            BusManager.getInstance().post(new PlayerStartEvent());
         } else {
             mMediaPlayer.reset();
         }
@@ -243,7 +244,14 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     @Subscribe
     public void onSeekTo(PlayerSeekEvent event) {
-        mMediaPlayer.seekTo(event.msec);
+                    if(event.seekType==0){
+                        trackPosition=event.pos;
+
+        initializePlayer();
+        BusManager.getInstance().post(new PlayerStartEvent());
+                    }
+        //mMediaPlayer.seekTo(event.msec);
+
         BusManager.getInstance().post(updateMediaInfo());
 
     }

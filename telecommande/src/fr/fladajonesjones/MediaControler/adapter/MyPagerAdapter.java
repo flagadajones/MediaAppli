@@ -9,7 +9,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
 	private final List<Fragment> fragments;
 
-	//On fournit à l'adapter la liste des fragments à afficher
+	//On fournit a l'adapter la liste des fragments a afficher
 	public MyPagerAdapter(FragmentManager fm, List fragments) {
 		super(fm);
 		this.fragments = fragments;

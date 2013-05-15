@@ -31,12 +31,13 @@ import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
 import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
 import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
+import fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar;
 
 public class MainActivity extends Activity {
 
     private ImageView albumArt;
     private Button buttonPlayPause;
-    private SeekBar seekBar;
+    private HoloCircleSeekBar seekBar;
     private TextView songName;
     private TextView artisteName;
     private ListView pisteListe;
@@ -69,12 +70,13 @@ public class MainActivity extends Activity {
     
 
     private void initViews() {
-        buttonPlayPause = (Button) findViewById(R.id.ButtonPlayStop);
+     //   buttonPlayPause = (Button) findViewById(R.id.ButtonPlayStop);
         albumArt = (ImageView) findViewById(R.id.AlbumArt);
-        seekBar = (SeekBar) findViewById(R.id.Position);
+        seekBar = (HoloCircleSeekBar) findViewById(R.id.Position);
         artisteName = (TextView) findViewById(R.id.ArtisteName);
         songName = (TextView) findViewById(R.id.SongName);
         pisteListe = (ListView) findViewById(R.id.Piste);
+
         pisteListe.setAdapter(adapter);
 
     }
@@ -146,7 +148,7 @@ public class MainActivity extends Activity {
 
         runOnUiThread(new Runnable() {
             public void run() {
-                buttonPlayPause.setText("PLAY");
+       //         buttonPlayPause.setText("PLAY");
             }
         });
     }

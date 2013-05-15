@@ -12,17 +12,14 @@ import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.Service;
 import org.fourthline.cling.model.types.UDAServiceType;
-import org.fourthline.cling.support.avtransport.callback.GetMediaInfo;
-import org.fourthline.cling.support.avtransport.callback.GetPositionInfo;
-import org.fourthline.cling.support.avtransport.callback.GetTransportInfo;
-import org.fourthline.cling.support.avtransport.callback.Play;
-import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
+import org.fourthline.cling.support.avtransport.callback.*;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportLastChangeParser;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable.TransportState;
 import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.model.MediaInfo;
 import org.fourthline.cling.support.model.PositionInfo;
+import org.fourthline.cling.support.model.SeekMode;
 import org.fourthline.cling.support.model.TransportInfo;
 
 import fr.fladajonesjones.MediaControler.Application;
@@ -89,9 +86,6 @@ public class UpnpRendererDevice extends UpnpDevice {
 		return connected;
 	}
 
-	public void seekTo(long pos) {
-
-	}
 
 	public void playMusique(Musique musique) {
 		setTransportURI(musique);
@@ -150,9 +144,10 @@ public class UpnpRendererDevice extends UpnpDevice {
 			@Override
 			public void failure(ActionInvocation invocation,
 					UpnpResponse operation, String defaultMsg) {
-				Application.activity.showToast(defaultMsg, true);
-				stopRepeatingTask();
-				// connected=false;
+                stopRepeatingTask();
+                Application.activity.showToast(defaultMsg, true);
+
+				connected=false;
 
 			}
 
@@ -166,7 +161,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 				else
 					device.playing = false;
 				BusManager.getInstance()
-						.post(new UpnpRendererMetaChangeEvent());
+						.post(new UpnpRendererMetaChangeEvent(UpnpRendererDevice.this));
 			}
 		};
 		UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(
@@ -197,7 +192,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 				// TODO Auto-generated method stub
 				device.positionInfo = positionInfo;
 				BusManager.getInstance()
-						.post(new UpnpRendererMetaChangeEvent());
+						.post(new UpnpRendererMetaChangeEvent(UpnpRendererDevice.this));
 			}
 		};
 		UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(
@@ -230,7 +225,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 						.getCurrentURIMetaData());
 
 				BusManager.getInstance()
-						.post(new UpnpRendererMetaChangeEvent());
+						.post(new UpnpRendererMetaChangeEvent(UpnpRendererDevice.this));
 			}
 		};
 		UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(
@@ -298,6 +293,91 @@ public class UpnpRendererDevice extends UpnpDevice {
 				playAction);
 	}
 
+
+    public void stop(){
+        if (transPortService == null)
+            transPortService = device.findService(new UDAServiceType(
+                    "AVTransport"));
+
+        ActionCallback action = new Stop(transPortService) {
+            @Override
+            public void success(ActionInvocation invocation) {
+                super.success(invocation);
+                playing = true;
+                startRepeatingTask();
+
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation,
+                                UpnpResponse operation, String defaultMsg) {
+                Application.activity.showToast(defaultMsg, true);
+            }
+        };
+
+        UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(
+                action);
+
+    }
+
+    public void seekPiste(int position){
+        seekTo(SeekMode.TRACK_NR,position);
+    }
+    public void seekPos(int position){
+        seekTo(SeekMode.ABS_COUNT,position);
+    }
+    public void seekTo(SeekMode mode, int position){
+        if (transPortService == null)
+            transPortService = device.findService(new UDAServiceType(
+                    "AVTransport"));
+
+        ActionCallback action = new Seek(transPortService, mode,String.valueOf(position)) {
+            @Override
+            public void success(ActionInvocation invocation) {
+                super.success(invocation);
+                playing = true;
+                startRepeatingTask();
+
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation,
+                                UpnpResponse operation, String defaultMsg) {
+                Application.activity.showToast(defaultMsg, true);
+            }
+        };
+
+        UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(
+                action);
+
+    }
+
+    public void pause(){
+        if (transPortService == null)
+            transPortService = device.findService(new UDAServiceType(
+                    "AVTransport"));
+
+        ActionCallback pauseAction = new Pause(transPortService) {
+            @Override
+            public void success(ActionInvocation invocation) {
+                super.success(invocation);
+                playing = true;
+                startRepeatingTask();
+
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation,
+                                UpnpResponse operation, String defaultMsg) {
+                Application.activity.showToast(defaultMsg, true);
+            }
+        };
+
+        UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(
+                pauseAction);
+
+    }
+
 	public void initSubscription() {
 		if (transPortServicecallback == null && transPortService != null)
 			transPortServicecallback = new SubscriptionCallback(
@@ -350,9 +430,17 @@ public class UpnpRendererDevice extends UpnpDevice {
 									.getEventedValue(
 											lastChange.getInstanceIDs()[0],
 											AVTransportVariable.TransportState.class);
-							if (transportState != null)
-								statut = transportState.toString();
-							log.warning(lastChange.toString());
+							if (transportState != null){
+                                transportInfo =new TransportInfo(transportState.getValue());
+                            }
+                            AVTransportVariable.CurrentTrackURI currentTrackURI=
+                                    lastChange.getEventedValue(
+                                            lastChange.getInstanceIDs()[0], AVTransportVariable.CurrentTrackURI.class);
+                            AVTransportVariable.AVTransportURI avTransportURI=
+                                    lastChange.getEventedValue(
+                                            lastChange.getInstanceIDs()[0], AVTransportVariable.AVTransportURI.class);
+
+                            log.warning(lastChange.toString());
 
 							// TODO : gerer les changements autrement qu'avec un
 							// intent

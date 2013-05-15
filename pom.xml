@@ -14,6 +14,10 @@
     <modules>
         <module>audiorenderer</module>
         <module>telecommande</module>
+        <module>android-menudrawer</module>
+        <module>fj-lib-util</module>
+        <module>modele</module>
+        <module>TestSeekBar</module>
     </modules>
 
     <build>
@@ -31,7 +35,7 @@
 						<platform>15</platform>
 					</sdk>
 					<apkDebug>true</apkDebug>
-					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<!--deleteConflictingFiles>true</deleteConflictingFiles-->
 					<extractDuplicates>true</extractDuplicates>
 					
 				</configuration>

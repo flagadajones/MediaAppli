@@ -238,7 +238,7 @@ public class UpnpServerDevice extends UpnpDevice {
                 // album.icone = ((RemoteDevice)
                 // device).normalizeURI(musiqueAlbum.getFirstAlbumArtURI()).toString();
                 album.albumArt = ((RemoteDevice) device).normalizeURI(
-                        URI.create(musiqueAlbum.getFirstAlbumArtURI().getPath() + "?scale=160x160")).toString();
+                        URI.create(musiqueAlbum.getFirstAlbumArtURI().getPath() + "?scale=250x250")).toString();
 
             tmpAlbums.add(album);
 

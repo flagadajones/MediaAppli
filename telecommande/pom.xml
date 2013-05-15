@@ -52,6 +52,12 @@
 			<artifactId>fj-lib-util</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+        <dependency>
+            <groupId>com.squareup.picasso</groupId>
+            <artifactId>picasso</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 	</dependencies>
 
 

@@ -10,14 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
+import android.widget.*;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
@@ -25,6 +19,7 @@ import fr.fladajonesjones.MediaControler.adapter.ServerGridAdapter.DeviceDisplay
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.upnp.UpnpDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
 
 public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> {
@@ -51,7 +46,7 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
             ImageView albumArt = (ImageView) row.findViewById(R.id.rendererStatusAlbumArt);
             TextView artisteName = (TextView) row.findViewById(R.id.rendererStatusArtisteName);
             TextView albumName = (TextView) row.findViewById(R.id.rendererStatusSongName);
-            SeekBar positionPiste = (SeekBar) row.findViewById(R.id.rendererStatusPositionPiste);
+            ProgressBar positionPiste = (ProgressBar) row.findViewById(R.id.rendererStatusPositionPiste);
 
             deviceName.setText(renderer.getName());
             Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
@@ -61,10 +56,19 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
                 Application.imageLoader.DisplayImage(musique.albumArt, albumArt);
 
                 albumName.setText(musique.titre);
+                if(renderer.positionInfo!=null && renderer.getMusique() instanceof Album){
+                    albumName.setText(albumName.getText()+" - "+((Album)renderer.getMusique()).getPistes().get(renderer.positionInfo.getTrack().getValue().intValue()).titre);
+                }
             }
+            if(renderer.positionInfo!=null){
             positionPiste.setMax(new Long(renderer.positionInfo.getTrackDurationSeconds()).intValue());
-            positionPiste.setProgress(renderer.positionInfo.getRelCount());
+                positionPiste.setProgress(renderer.positionInfo.getRelCount());
+            }
+            else{
+            positionPiste.setMax(100);
+                                                                               positionPiste.setProgress(0);
 
+            }
             LinearLayout layout = (LinearLayout) row.findViewById(R.id.contentLayout);
             layout.setClickable(true);
             layout.setFocusable(true);
