@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.upnp.UpnpDevice;
@@ -41,11 +42,14 @@ public class DeviceGridAdapter extends ArrayAdapter<UpnpDevice>{
 			holder=(DeviceDisplayHolder)row.getTag();
 		}
 		UpnpDevice item = getItem(position);
-        
 
-      
-		   
-        Application.imageLoader.DisplayImage(item.icone, holder.deviceIcone);
+
+        if(item.icone!=null)
+        Picasso.with(getContext()).load(item.icone).placeholder(R.drawable.stub)
+                .error(R.drawable.bg_img_notfound).into(holder.deviceIcone);
+
+
+       // Application.imageLoader.DisplayImage(item.icone, holder.deviceIcone);
 
         holder.deviceName.setText(item.getName());
      // holder.deviceName.setText("lecteur");        

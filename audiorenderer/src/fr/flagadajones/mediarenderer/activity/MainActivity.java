@@ -15,10 +15,10 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Picasso;
 
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.StringUtils;
@@ -35,14 +35,26 @@ import fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar;
 
 public class MainActivity extends Activity {
 
+    private static int CODE_RETOUR = 1;
+    PisteRawAdapter adapter = null;
     private ImageView albumArt;
     private Button buttonPlayPause;
     private HoloCircleSeekBar seekBar;
     private TextView songName;
     private TextView artisteName;
     private ListView pisteListe;
-    PisteRawAdapter adapter = null;
     private boolean mBound = false;
+    private ServiceConnection mediaPlayerServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
     @Override
     protected void onResume() {
@@ -56,21 +68,8 @@ public class MainActivity extends Activity {
         BusManager.getInstance().unregister(this);
     }
 
-    private ServiceConnection mediaPlayerServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-    
-
     private void initViews() {
-     //   buttonPlayPause = (Button) findViewById(R.id.ButtonPlayStop);
+        //   buttonPlayPause = (Button) findViewById(R.id.ButtonPlayStop);
         albumArt = (ImageView) findViewById(R.id.AlbumArt);
         seekBar = (HoloCircleSeekBar) findViewById(R.id.Position);
         artisteName = (TextView) findViewById(R.id.ArtisteName);
@@ -87,9 +86,9 @@ public class MainActivity extends Activity {
         adapter = new PisteRawAdapter(this);
         // Activate StrictMode
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-            .detectAll().penaltyLog().build());
+                .detectAll().penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
-            .penaltyLog().build());
+                .penaltyLog().build());
 
         setContentView(R.layout.main);
         initViews();
@@ -127,8 +126,6 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-
-   
     @Subscribe
     public void onErrorPlayer(final PlayerErrorEvent event) {
     }
@@ -148,7 +145,7 @@ public class MainActivity extends Activity {
 
         runOnUiThread(new Runnable() {
             public void run() {
-       //         buttonPlayPause.setText("PLAY");
+                //         buttonPlayPause.setText("PLAY");
             }
         });
     }
@@ -178,7 +175,9 @@ public class MainActivity extends Activity {
     public void onChangeSong(final PlayerChangeSongEvent event) {
         runOnUiThread(new Runnable() {
             public void run() {
-                Application.imageLoader.DisplayImage(event.audioItem.albumArt, albumArt);
+                if (event.audioItem.albumArt != null)
+                    Picasso.with(MainActivity.this).load(event.audioItem.albumArt).into(albumArt);
+                //Application.imageLoader.DisplayImage(event.audioItem.albumArt, albumArt);
                 songName.setText(event.audioItem.titre);
                 artisteName.setText(event.audioItem.artiste);
                 seekBar.setMax(StringUtils.makeLongFromStringTime(event.audioItem.duree).intValue());
@@ -187,8 +186,6 @@ public class MainActivity extends Activity {
             }
         });
     }
-
-    private static int CODE_RETOUR = 1;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

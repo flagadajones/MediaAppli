@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
@@ -49,11 +50,17 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
             ProgressBar positionPiste = (ProgressBar) row.findViewById(R.id.rendererStatusPositionPiste);
 
             deviceName.setText(renderer.getName());
-            Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
+            Picasso.with(getContext()).load(renderer.icone).placeholder(R.drawable.stub)
+                    .error(R.drawable.bg_img_notfound).into(deviceIcone);
+
+         //   Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
             artisteName.setText("artiste");
             Musique musique = renderer.getMusique();
             if (musique != null) {
-                Application.imageLoader.DisplayImage(musique.albumArt, albumArt);
+                Picasso.with(getContext()).load(musique.albumArt).placeholder(R.drawable.stub)
+                        .error(R.drawable.bg_img_notfound).into(albumArt);
+
+              //  Application.imageLoader.DisplayImage(musique.albumArt, albumArt);
 
                 albumName.setText(musique.titre);
                 if(renderer.positionInfo!=null && renderer.getMusique() instanceof Album){
@@ -91,7 +98,11 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
             ImageView deviceIcone = (ImageView) row.findViewById(R.id.deviceIcone);
             TextView deviceName = (TextView) row.findViewById(R.id.deviceName);
             deviceName.setText(renderer.getName());
-            Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
+            if(renderer.icone!=null)
+            Picasso.with(getContext()).load(renderer.icone).placeholder(R.drawable.stub)
+                    .error(R.drawable.bg_img_notfound).into(deviceIcone);
+
+          //  Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
 
         }
 

@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
-import fr.fladajonesjones.MediaControler.Application;
+import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
@@ -91,11 +91,7 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
     }
     
   
-    /**
-     * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the array should be
-     * synchronized on this lock. This lock is also used by the filter (see {@link #getFilter()} to make a synchronized
-     * copy of the original array of data.
-     */
+
     private final Object mLock = new Object();
 
     // Constructor
@@ -228,9 +224,14 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 //            ImageTag tag = Application.imageTagFactory.build(iterable_element.icone);
 //            holderAlbum.albumIcone.setTag(tag);
 //            Application.thumbnailImageLoader.getLoader().load(holderAlbum.albumIcone);
-           
+
+          //  holderAlbum.albumName.setCompoundDrawables(null,activity.getResources().getDrawable(R.drawable.stub),null,null);
+            Picasso.with(activity).load(iterable_element.albumArt).placeholder(R.drawable.stub)
+                    .error(R.drawable.bg_img_notfound).resize(80,80).into(holderAlbum.albumName);
+
             //Application.imageLoader.DisplayImage(iterable_element.icone,  holderAlbum.albumIcone);
-            Application.imageLoader.DisplayImage(iterable_element.albumArt,  holderAlbum.albumName);
+
+           // Application.imageLoader.DisplayImage(iterable_element.albumArt,  holderAlbum.albumName);
             
             numAlbum++;
         }

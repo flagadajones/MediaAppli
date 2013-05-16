@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.media.model.Radio;
@@ -43,8 +44,11 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 		}
 		Radio item = getItem(position);
 
-		   
-        Application.imageLoader.DisplayImage(item.albumArt, holder.radioIcone);
+
+        Picasso.with(getContext()).load(item.albumArt).placeholder(R.drawable.stub)
+                .error(R.drawable.bg_img_notfound).into(holder.radioIcone);
+
+        //Application.imageLoader.DisplayImage(item.albumArt, holder.radioIcone);
 
 		
 		holder.radioName.setText(item.titre);

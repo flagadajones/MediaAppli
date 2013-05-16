@@ -3,6 +3,8 @@ package fr.fladajonesjones.MediaControler.upnp;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import fr.fladajonesjones.media.model.Piste;
+import fr.fladajonesjones.media.model.Radio;
 import org.fourthline.cling.controlpoint.ActionCallback;
 import org.fourthline.cling.controlpoint.SubscriptionCallback;
 import org.fourthline.cling.model.action.ActionInvocation;
@@ -58,7 +60,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	public UpnpRendererDevice(Device device) {
 		super(device);
 		if (device.isFullyHydrated()) {
-			if (transPortService == null)
+		//	if (transPortService == null)
 				transPortService = device.findService(new UDAServiceType(
 						"AVTransport"));
 			initSubscription();
@@ -70,7 +72,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	public void setDevice(Device device) {
 		super.setDevice(device);
 		if (device.isFullyHydrated()) {
-			if (transPortService == null)
+		//	if (transPortService == null)
 				transPortService = device.findService(new UDAServiceType(
 						"AVTransport"));
 			initSubscription();
@@ -93,7 +95,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	}
 
 	public void setTransportURI(Musique musique) {
-		if (transPortService == null)
+		//if (transPortService == null)
 			transPortService = device.findService(new UDAServiceType(
 					"AVTransport"));
 		// this.musique = musique;
@@ -107,9 +109,19 @@ public class UpnpRendererDevice extends UpnpDevice {
 				album.setPistes(pisteDAO.getAllPistes(album.upnpId));
 			}
 		}
+        String metaData="NO_METADATA";
+        if(musique instanceof Album){
+            metaData    =UpnpTransformer.albumToMetaData((Album) musique);
+        }
+        else if (musique instanceof Piste){
+           metaData=UpnpTransformer.pisteToMetaData((Piste) musique);
+        }
+        else { //radio
+            metaData=UpnpTransformer.radioToMetaData((Radio) musique);
+        }
 		ActionCallback setAVTransportURIAction = new SetAVTransportURI(
 				transPortService, musique.getUrl(),
-				UpnpTransformer.albumToMetaData((Album) musique)) {
+				metaData) {
 			@Override
 			public void success(ActionInvocation invocation) {
 
@@ -134,7 +146,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	}
 
 	public void getTransportInfo() {
-		if (transPortService == null)
+		//if (transPortService == null)
 			transPortService = device.findService(new UDAServiceType(
 					"AVTransport"));
 		final UpnpRendererDevice device = this;
@@ -170,7 +182,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	}
 
 	public void getPositionInfo() {
-		if (transPortService == null)
+		//if (transPortService == null)
 			transPortService = device.findService(new UDAServiceType(
 					"AVTransport"));
 		final UpnpRendererDevice device = this;
@@ -201,7 +213,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	}
 
 	public void getMediaInfo() {
-		if (transPortService == null)
+		//if (transPortService == null)
 			transPortService = device.findService(new UDAServiceType(
 					"AVTransport"));
 		final UpnpRendererDevice device = this;
@@ -268,7 +280,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 	// notifications to be sent to all subscribing control points, in all cases.
 
 	public void play() {
-		if (transPortService == null)
+		//if (transPortService == null)
 			transPortService = device.findService(new UDAServiceType(
 					"AVTransport"));
 
@@ -295,7 +307,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 
 
     public void stop(){
-        if (transPortService == null)
+     //   if (transPortService == null)
             transPortService = device.findService(new UDAServiceType(
                     "AVTransport"));
 
@@ -327,7 +339,7 @@ public class UpnpRendererDevice extends UpnpDevice {
         seekTo(SeekMode.ABS_COUNT,position);
     }
     public void seekTo(SeekMode mode, int position){
-        if (transPortService == null)
+      //  if (transPortService == null)
             transPortService = device.findService(new UDAServiceType(
                     "AVTransport"));
 
@@ -353,7 +365,7 @@ public class UpnpRendererDevice extends UpnpDevice {
     }
 
     public void pause(){
-        if (transPortService == null)
+       // if (transPortService == null)
             transPortService = device.findService(new UDAServiceType(
                     "AVTransport"));
 
@@ -413,6 +425,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 					BusManager.getInstance().post(
 							new UpnpRendererStatutChangeEvent());
 					connected = false;
+                    stopRepeatingTask();
 				}
 
 				public void eventReceived(GENASubscription sub) {

@@ -33,6 +33,11 @@
 			<artifactId>modele</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>com.squareup.picasso</groupId>
+            <artifactId>picasso</artifactId>
+            <version>1.0.2-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 
 

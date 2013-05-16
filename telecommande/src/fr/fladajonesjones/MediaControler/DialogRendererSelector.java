@@ -25,21 +25,21 @@ import fr.flagadajones.media.util.ImageUtils;
 public class DialogRendererSelector {
 
     static UpnpRendererDevice selectedDevice = null;
-    static public Album album;
+    static public Musique musique;
 
     static Object eventSub = new Object() {
         @Subscribe
         public void onUpnpServerBrowseOk(UpnpServerLoadingPisteOkEvent event) {
             BusManager.getInstance().unregister(this);
 
-            selectedDevice.playMusique(album);
+            selectedDevice.playMusique(musique);
         }
     };
 
     public static void createDialogSelectionDevice(Activity activity, final Musique musique, Drawable drawable) {
         LayoutInflater inflater = activity.getLayoutInflater();
         View contentView = inflater.inflate(R.layout.popup_play_selector, null);
-        DialogRendererSelector.album = (Album) musique;
+        DialogRendererSelector.musique = musique;
         final DeviceGridAdapter deviceGridAdapter = new DeviceGridAdapter(activity);
 
         deviceGridAdapter.addAll(UpnpDeviceManager.getInstance().rendererDevice);
@@ -59,7 +59,7 @@ public class DialogRendererSelector {
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setView(contentView).setIcon(ImageUtils.resize(drawable)).setTitle(album.titre).setCancelable(true)
+        builder.setView(contentView)/*.setIcon(drawable)*/.setTitle(musique.titre).setCancelable(true)
                 .setPositiveButton("Toujours", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         UpnpDeviceManager.getInstance().setDefaultRenderer(selectedDevice);
@@ -80,13 +80,18 @@ public class DialogRendererSelector {
     }
 
     private static void playMusique() {
-
-        if (album.isPisteLoaded()) {
-            selectedDevice.playMusique(album);
+       if(selectedDevice!=null){
+        if(musique instanceof Album) {
+        if (((Album)musique).isPisteLoaded()) {
+            selectedDevice.playMusique(musique);
         } else {
             BusManager.getInstance().register(eventSub);
-            UpnpDeviceManager.getInstance().libraryDevice.loadPiste(album.upnpId);
+            UpnpDeviceManager.getInstance().libraryDevice.loadPiste(musique.upnpId);
         }
+        }
+        else
+            selectedDevice.playMusique(musique);
 
+       }
     }
 }

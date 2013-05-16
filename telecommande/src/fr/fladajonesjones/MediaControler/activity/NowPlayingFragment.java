@@ -18,6 +18,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.squareup.otto.Subscribe;
 
+import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.PisteRawAdapter;
@@ -157,7 +158,11 @@ public class NowPlayingFragment extends Fragment {
 
         mTrackName.setText(renderer.getMusique().titre);
         //mAlbumArtistNamerenderer=renderer.getMusique().titre;
-        Application.imageLoader.DisplayImage(renderer.getMusique().albumArt, mAlbumArt);
+        Picasso.with(getActivity()).load(renderer.getMusique().albumArt).placeholder(R.drawable.stub)
+                .error(R.drawable.bg_img_notfound).into(mAlbumArt);
+
+
+        // Application.imageLoader.DisplayImage(renderer.getMusique().albumArt, mAlbumArt);
 
         if(renderer.positionInfo!=null){
             mSeekbar.setMax(new Long(renderer.positionInfo.getTrackDurationSeconds()).intValue());

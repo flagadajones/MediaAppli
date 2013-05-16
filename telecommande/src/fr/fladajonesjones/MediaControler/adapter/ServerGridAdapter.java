@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
@@ -60,8 +61,10 @@ public class ServerGridAdapter extends ArrayAdapter<UpnpServerDevice> {
         }
         // url=item.getDevice().getDetails().getPresentationURI().toString()+item.getDevice().getIcons()[0].getUri().toString().substring(1);
 
-        
-        Application.imageLoader.DisplayImage(server.icone, holder.deviceIcone);
+        Picasso.with(getContext()).load(server.icone).placeholder(R.drawable.stub)
+                .error(R.drawable.bg_img_notfound).into(holder.deviceIcone);
+
+        //Application.imageLoader.DisplayImage(server.icone, holder.deviceIcone);
 
         if(server.isSelected() ){
             holder.deviceStrip.setBackgroundColor(getContext().getResources().getColor(R.color.blue));

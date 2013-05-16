@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import fr.fladajonesjones.media.model.Radio;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.DIDLObject;
@@ -164,6 +165,45 @@ public class UpnpTransformer {
 		return metaData;
 		// }
 	}
+    public static String radioToMetaData(Radio radio) {
+        String metaData = "NO METADATA";
+        DIDLContent didl = new DIDLContent();
+
+        didl.addItem(radioMetaData(radio));
+
+        try {
+            metaData = new DIDLParser().generate(didl, true);
+        } catch (Exception e) {
+            // Toast.makeText(Application.instance, e1.getMessage(),
+            // Toast.LENGTH_LONG).show();
+            log.log(Level.SEVERE, e.getMessage(), e);
+            metaData = "NO METADATA";
+
+        }
+        return metaData;
+        // }
+    }
+
+    private static MusicTrack radioMetaData(Radio radio) {
+        MusicTrack radioUpnp = new MusicTrack();
+
+        radioUpnp.setId(radio.upnpId);
+        radioUpnp.setParentID("1");
+        radioUpnp.setRestricted(false);
+        radioUpnp.setTitle(radio.titre);
+        try {
+            if (radio.albumArt != null)
+                radioUpnp
+                        .addProperty(new DIDLObject.Property.UPNP.ALBUM_ART_URI(
+                                new URI(radio.albumArt)));
+        } catch (URISyntaxException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
+        radioUpnp.addResource(new Res("audio/mp3", null,null, null,
+                radio.url));
+
+        return radioUpnp;
+    }
 
 	private static MusicTrack pisteToMetaData(Piste piste, String albumName) {
 		MusicTrack pisteUpnp = new MusicTrack();

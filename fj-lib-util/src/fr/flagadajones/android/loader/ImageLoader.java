@@ -42,7 +42,7 @@ import fr.flagadajones.media.util.StreamUtils;
 	    }
 
 	    final int stub_id;
-	    public void DisplayImage(String url, ImageView imageView)
+/*	    public void DisplayImage(String url, ImageView imageView)
 	    {
 	        imageViews.put(imageView, url);
 	        Bitmap bitmap=memoryCache.get(url);
@@ -70,7 +70,7 @@ import fr.flagadajones.media.util.StreamUtils;
 	            textView.setCompoundDrawables(null,draw,null,null);
 	        }
 	    }
-	        
+	 */
 	    private void queuePhoto(String url, ImageView imageView)
 	    {
 	        PhotoToLoad p=new PhotoToLoad(url, imageView);

@@ -56,6 +56,11 @@
         <dependency>
             <groupId>com.squareup.picasso</groupId>
             <artifactId>picasso</artifactId>
+            <version>1.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp</artifactId>
             <version>1.0.1</version>
         </dependency>
 	</dependencies>
