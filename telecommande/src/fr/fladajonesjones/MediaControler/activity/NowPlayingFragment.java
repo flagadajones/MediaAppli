@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.PisteRawAdapter;
+import fr.fladajonesjones.MediaControler.events.NowPlayingSeekEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererMetaChangeEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Album;
@@ -139,6 +140,14 @@ public class NowPlayingFragment extends Fragment {
     }
 
     @Subscribe
+    public void onNowPlayingSeekEvent(NowPlayingSeekEvent event){
+        if(NowPlayingSeekEvent.TRACK_NB==event.seekType){
+            renderer.seekPiste(event.pos);
+        }
+    }
+
+
+    @Subscribe
     public void onMetaChange(UpnpRendererMetaChangeEvent event) {
                       if (event.renderer==this.renderer){
 
@@ -175,9 +184,14 @@ public class NowPlayingFragment extends Fragment {
         }
 
         adapter.clear();
+        if(renderer.getMusique() instanceof Album){
         adapter.addAll(((Album)renderer.getMusique()).getPistes());
         listePiste.setSelection(renderer.positionInfo.getTrack().getValue().intValue());
         listePiste.setSelected(true);
+            listePiste.setVisibility(View.VISIBLE);
+        }else{
+            listePiste.setVisibility(View.INVISIBLE);
+        }
     }
 
 

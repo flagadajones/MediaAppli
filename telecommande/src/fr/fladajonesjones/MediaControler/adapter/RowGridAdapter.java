@@ -205,8 +205,11 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
         for (RowArtiste iterable_element : item.lstArtiste) {
             TextView t = holder.artisteNames[num];
             t.setText(iterable_element.artiste.getNom());
-            t.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, iterable_element.nbAlbum));
-            t.setBackgroundColor(iterable_element.color);
+            LinearLayout.LayoutParams firstLayoutParam=(LinearLayout.LayoutParams)t.getLayoutParams();
+            LinearLayout.LayoutParams newLayoutParam=new LinearLayout.LayoutParams(firstLayoutParam.width, firstLayoutParam.height, iterable_element.nbAlbum);
+            newLayoutParam.setMargins(firstLayoutParam.leftMargin,firstLayoutParam.topMargin,firstLayoutParam.rightMargin,firstLayoutParam.bottomMargin);
+            t.setLayoutParams(newLayoutParam);
+           // t.setBackgroundColor(iterable_element.color);
             t.setVisibility(View.VISIBLE);
             num++;
         }
@@ -227,7 +230,7 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 
           //  holderAlbum.albumName.setCompoundDrawables(null,activity.getResources().getDrawable(R.drawable.stub),null,null);
             Picasso.with(activity).load(iterable_element.albumArt).placeholder(R.drawable.stub)
-                    .error(R.drawable.bg_img_notfound).resize(80,80).into(holderAlbum.albumName);
+                    .error(R.drawable.bg_img_notfound3).resize(80,80).into(holderAlbum.albumName);
 
             //Application.imageLoader.DisplayImage(iterable_element.icone,  holderAlbum.albumIcone);
 
@@ -243,8 +246,13 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
         if (numAlbum<5){
         	TextView t = holder.artisteNames[num];
             t.setText("");
-            t.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5-num));
-            t.setBackgroundColor(0);
+//            t.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5-num));
+            LinearLayout.LayoutParams firstLayoutParam=(LinearLayout.LayoutParams)t.getLayoutParams();
+            LinearLayout.LayoutParams newLayoutParam=new LinearLayout.LayoutParams(firstLayoutParam.width, firstLayoutParam.height, 5-num);
+            newLayoutParam.setMargins(firstLayoutParam.leftMargin,firstLayoutParam.topMargin,firstLayoutParam.rightMargin,firstLayoutParam.bottomMargin);
+            t.setLayoutParams(newLayoutParam);
+
+            //t.setBackgroundColor(0);
             t.setVisibility(View.VISIBLE);
         }
         

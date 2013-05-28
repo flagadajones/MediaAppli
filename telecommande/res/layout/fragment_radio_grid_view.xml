@@ -12,11 +12,11 @@
         android:id="@+id/radio_gridview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:columnWidth="90dp"
+
         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:numColumns="5"
-        android:stretchMode="none"
+        android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"
         tools:listitem="@layout/radio_grid_item" >
     </GridView>

@@ -103,6 +103,9 @@ public class Application extends android.app.Application {
         renderer.setUdn("renderer3");
         renderer.icone="http://localhost/toto.pnp";
         UpnpDeviceManager.getInstance().lstRenderer.add(renderer);
+
+        MySQLOpenHelper.getInstance(getApplicationContext()).initMock();
+
     }
   
  

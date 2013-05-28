@@ -36,7 +36,6 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 			row = inflater.inflate(R.layout.radio_grid_item, null, false);
 
 			holder = new RadioHolder();
-			holder.radioIcone = (ImageView) row.findViewById(R.id.radioIcone);
 			holder.radioName = (TextView) row.findViewById(R.id.radioName);
 			row.setTag(holder);
 		} else {
@@ -46,7 +45,8 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 
 
         Picasso.with(getContext()).load(item.albumArt).placeholder(R.drawable.stub)
-                .error(R.drawable.bg_img_notfound).into(holder.radioIcone);
+                .error(R.drawable.bg_img_notfound3).resize(80,80).into(holder.radioName);
+
 
         //Application.imageLoader.DisplayImage(item.albumArt, holder.radioIcone);
 
@@ -57,7 +57,6 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 	}
 
 	static class RadioHolder {
-		ImageView radioIcone;
 		TextView radioName;
 	}
 }

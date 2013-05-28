@@ -26,7 +26,6 @@ import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 import fr.fladajonesjones.MediaControler.model.Row;
 import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 
@@ -95,7 +94,7 @@ public class AlbumFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.activity_album_list_view, null);
+        View layout = inflater.inflate(R.layout.fragment_album_list_view, null);
         this.inflater = inflater;
 
         Long debut=System.currentTimeMillis();

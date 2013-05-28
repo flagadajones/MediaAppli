@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/artisteNames"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="@dimen/row_artiste_height"
         android:layout_alignParentTop="true"
         android:background="@null"
         android:gravity="center"
@@ -22,13 +22,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/blue"
+
+            android:background="@drawable/card_background_shadow"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="top|center"
             android:marqueeRepeatLimit="marquee_forever"
             android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+            android:layout_marginLeft="@dimen/row_album_marginLeft"
+            android:layout_marginRight="@dimen/row_album_marginRight"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="Nom Album"
@@ -37,11 +40,15 @@
 
         
         <TextView
+
             android:id="@+id/artisteName2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/green"
+            android:background="@drawable/card_background_shadow"
+            android:layout_marginLeft="@dimen/row_album_marginLeft"
+            android:layout_marginRight="@dimen/row_album_marginRight"
+
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -59,7 +66,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/blue"
+            android:background="@drawable/card_background_shadow"
+            android:layout_marginLeft="@dimen/row_album_marginLeft"
+            android:layout_marginRight="@dimen/row_album_marginRight"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -77,7 +86,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/green"
+            android:background="@drawable/card_background_shadow"
+            android:layout_marginLeft="@dimen/row_album_marginLeft"
+            android:layout_marginRight="@dimen/row_album_marginRight"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -95,7 +106,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/blue"
+            android:background="@drawable/card_background_shadow"
+            android:layout_marginLeft="@dimen/row_album_marginLeft"
+            android:layout_marginRight="@dimen/row_album_marginRight"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -111,7 +124,7 @@
 <LinearLayout
         android:id="@+id/albumNames"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="@dimen/row_album_height"
         android:layout_alignParentTop="true"
         android:background="@null"
         android:gravity="center"
@@ -136,6 +149,7 @@
         android:textStyle="bold" 
         android:layout_marginTop="@dimen/album_marginTop_gridrow"
         android:drawableTop="@drawable/bg_img_notfound3"
+                android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
         />
         <TextView
         android:id="@+id/albumName2"
@@ -154,7 +168,8 @@
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" 
         android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"
+        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+
         />
         <TextView
         android:id="@+id/albumName3"
@@ -173,7 +188,7 @@
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" 
         android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"
+        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
         />
             <TextView
         android:id="@+id/albumName4"
@@ -192,7 +207,7 @@
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" 
         android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"
+        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
         />
         
     <TextView
@@ -210,11 +225,11 @@
         android:singleLine="true"
         android:text="Nom Album"
         android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" 
-     
+        android:textStyle="bold"
+
         android:layout_marginTop="@dimen/album_marginTop_gridrow"
         
-        android:drawableTop="@drawable/bg_img_notfound3"
+        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
         />
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RadioGridAdapter;
@@ -67,7 +68,7 @@ public class RadioGridViewFragment extends Fragment {
                     renderer.playMusique(radio);
                 } else {
                     DialogRendererSelector.createDialogSelectionDevice(getActivity(), radio,
-                            ((ImageView) v.findViewById(R.id.radioIcone)).getDrawable());
+                            ((TextView) v.findViewById(R.id.radioName)).getCompoundDrawables()[1]);
                 }
             }
         });

@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -163,7 +164,31 @@ return instance;
      // Creation de la nouvelle structure.
         onCreate(db);
     }
-    
+
+    public void initMock(){
+
+
+        SQLiteDatabase db = instance.getWritableDatabase();
+        Cursor mCount=db.rawQuery("Select count(*) from "+ TABLE_ALBUMS,null);
+        mCount.moveToFirst();
+        int count = mCount.getInt(0);
+        mCount.close();
+        if (count==0){
+        db.execSQL("INSERT INTO " + TABLE_ARTISTES + " values(1,'artiste 1',1);");
+        db.execSQL("INSERT INTO " + TABLE_ARTISTES + " values(2,'artiste 2',2);");
+        db.execSQL("INSERT INTO " + TABLE_ARTISTES + " values(3,'artiste 3',1);");
+        db.execSQL("INSERT INTO " + TABLE_ARTISTES + " values(4,'artiste 4',1);");
+
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(1,'album1','html',1,13,1);");
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(2,'album2','html',2,13,1);");
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(3,'album3','html',2,13,1);");
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(4,'album4','html',2,13,1);");
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(5,'album5','html',3,13,1);");
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(6,'album6','html',4,13,1);");
+        db.execSQL("INSERT INTO " + TABLE_ALBUMS + " values(7,'album7','html',4,13,1);");
+        }
+
+    }
     
 //    private void insertAlbums(SQLiteDatabase db, List<Album> tmpAlbums) {
 //        if (tmpAlbums == null || tmpAlbums.size() == 0)

@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import fr.fladajonesjones.MediaControler.R;
+import fr.fladajonesjones.MediaControler.events.NowPlayingSeekEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Piste;
+import fr.flagadajones.media.util.BusManager;
 
 public class PisteRawAdapter extends ArrayAdapter<Piste> {
 
@@ -24,10 +26,10 @@ public class PisteRawAdapter extends ArrayAdapter<Piste> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View row = convertView;
-        PisteRowHolder holder = null;
+        PisteRowHolder holder;
 
         if (row == null) {
             row = inflater.inflate(R.layout.piste_row, null, false);
@@ -48,6 +50,14 @@ public class PisteRawAdapter extends ArrayAdapter<Piste> {
 
         holder.pisteTitre.setText(item.titre);
         holder.pisteDuree.setText(item.duree);
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BusManager.getInstance().post(new NowPlayingSeekEvent(NowPlayingSeekEvent.TRACK_NB,position+1));
+            }
+        });
+
         return row;
     }
 
