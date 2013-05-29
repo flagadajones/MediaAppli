@@ -226,23 +226,5 @@ return instance;
 //
 //    }
 
-    
-    public void initMock(){
-        
-        SQLiteDatabase db = instance.getWritableDatabase();
-        db.execSQL("INSERT INTO " + TABLE_ARTISTES + "values('artiste 1',1);");
-        db.execSQL("INSERT INTO " + TABLE_ARTISTES + "values('artiste 2',2);");
-        db.execSQL("INSERT INTO " + TABLE_ARTISTES + "values('artiste 3',1);");
-        db.execSQL("INSERT INTO " + TABLE_ARTISTES + "values('artiste 4',1);");
-        
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album1','html',1,13,1);");
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album2','html',2,13,1);");
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album3','html',2,13,1);");
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album4','html',2,13,1);");
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album5','html',3,13,1);");
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album6','html',4,13,1);");
-        db.execSQL("INSERT INTO " + TABLE_ALBUMS + "values('album7','html',4,13,1);");
-        
-        
-    }
+  
 }

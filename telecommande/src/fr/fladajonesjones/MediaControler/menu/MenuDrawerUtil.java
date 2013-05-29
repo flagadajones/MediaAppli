@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
 import fr.fladajonesjones.MediaControler.activity.RadioGridViewFragment;
 import fr.fladajonesjones.MediaControler.activity.RendererGridFragment;
 import fr.fladajonesjones.MediaControler.activity.ServerGridFragment;
+import fr.fladajonesjones.MediaControler.activity.SettingsActivity;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 
 public class MenuDrawerUtil {
@@ -78,6 +80,7 @@ public class MenuDrawerUtil {
             //configs.add(new Category("Conf"));
             configs.add(new Item("Renderer", R.drawable.menu_player));
             configs.add(new Item("Server", R.drawable.menu_server));
+            configs.add(new Item("Conf", R.drawable.bg_img_notfound));
             mAdapter.addAll(configs);
         }
         // A custom ListView is needed so the drawer can be notified when it's scrolled. This is to update the position
@@ -111,6 +114,11 @@ public class MenuDrawerUtil {
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Server")) {
                 replaceFragment(new ServerGridFragment());
                 // replaceFragment(new DashBoardFragment());
+            } else if (item instanceof Item && ((Item) item).mTitle.equals("Conf")) {
+                Intent intent = new Intent(mActivity, SettingsActivity.class);
+                mActivity.startActivity(intent);    
+                    // replaceFragment(new DashBoardFragment());
+                 
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Radio")) {
                 replaceFragment(new RadioGridViewFragment());
             } else if (item instanceof UpnpRendererDevice) {
