@@ -1,5 +1,6 @@
 package fr.flagadajones.mediarenderer.services;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import com.squareup.otto.Subscribe;
 import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.UpnpTransformer;
+import fr.flagadajones.mediarenderer.M3UParser;
 import fr.flagadajones.mediarenderer.activity.MainActivity;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerChangeSongEvent;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerErrorEvent;
@@ -91,7 +93,22 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         } else {
             trackPosition = 0;
             playlist.clear();
+            if (event.item.getUrl().substring(event.item.getUrl().lastIndexOf('.'),event.item.getUrl().lastIndexOf('.')+4).toLowerCase().equals(".m3u")){
+                try{
+                    M3UParser mpt = new M3UParser();
+                    M3UParser.M3UHolder m3hodler = mpt.parseURL(event.item.getUrl());
+                    for (int n = 0; n < m3hodler.getSize(); n++) {
+                        Piste pis= new Piste();
+                        pis.titre=m3hodler.getName(n);
+                        pis.url=m3hodler.getUrl(n);
+                        playlist.add(pis);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }else{
             playlist.add(event.item);
+            }
             mediaDuration = event.item.duree;
             initializePlayer();
         }

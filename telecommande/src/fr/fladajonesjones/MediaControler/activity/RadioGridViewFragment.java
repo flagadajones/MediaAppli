@@ -52,26 +52,7 @@ public class RadioGridViewFragment extends Fragment {
 
         GridView gridView = (GridView) layout.findViewById(R.id.radio_gridview);
         gridView.setAdapter(radioGridAdapter);
-        gridView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                // dans le cas d'un clique sur une radio, on affiche la fenetre de selection du renderer si on a plus
-                // d'un renderer de disponible
-                final Radio radio = (Radio) radioGridAdapter.getItem(position);
-                // createDialogSelectionDevice(radio, (ImageView) v.findViewById(R.id.radioIcone));
-                if (UpnpDeviceManager.getInstance().rendererDevice.size() == 0) {
-                    return;
-                } else if (UpnpDeviceManager.getInstance().getDefaultRenderer() != null) {
-                    UpnpDeviceManager.getInstance().getDefaultRenderer().playMusique(radio);
-                } else if (UpnpDeviceManager.getInstance().rendererDevice.size() == 1) {
-                    UpnpRendererDevice renderer = UpnpDeviceManager.getInstance().rendererDevice.get(0);
-                    renderer.playMusique(radio);
-                } else {
-                    DialogRendererSelector.createDialogSelectionDevice(getActivity(), radio,
-                            ((TextView) v.findViewById(R.id.radioName)).getCompoundDrawables()[1]);
-                }
-            }
-        });
+
     }
 
     @Override

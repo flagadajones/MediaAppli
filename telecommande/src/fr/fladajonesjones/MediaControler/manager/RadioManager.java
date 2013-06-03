@@ -1,17 +1,20 @@
 package fr.fladajonesjones.MediaControler.manager;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
+import android.net.http.AndroidHttpClient;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -26,7 +29,7 @@ import fr.fladajonesjones.media.model.Radio;
 
 public class RadioManager {
     Context context;
-
+    private static final Logger log = Logger.getLogger(RadioManager.class.getName());
     RadioManager instance;
 
     private List<Radio> radios = null;
@@ -95,20 +98,30 @@ public class RadioManager {
 
     public List<Radio> parseJson() {
         List<Radio> details = null;
-        HttpClient httpclient = new DefaultHttpClient();
+        AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android");
         HttpResponse response;
+        StringBuilder responseString = new StringBuilder();
         try {
-            response = httpclient.execute(new HttpGet("http://192.168.0.32/radioList.json"));
+            response = httpClient.execute(new HttpGet("http://gruault.free.fr/RadioList.json"));
 
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                response.getEntity().writeTo(out);
-                out.close();
-                String responseString = out.toString();
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseString.append(line);
+                }
+                reader.close();
+
                 Gson gson = new GsonBuilder().create();
 
-                details = Arrays.asList(gson.fromJson(responseString, Radio[].class));
+                details = Arrays.asList((Radio[])gson.fromJson(responseString.toString(), Radio[].class));
+
+
+
+
 
             } else {
                 // Closes the connection.
@@ -116,10 +129,15 @@ public class RadioManager {
                 throw new IOException(statusLine.getReasonPhrase());
             }
         } catch (ClientProtocolException e) {
-            e.printStackTrace();
+           log.warning(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning(e.toString());
         }
+        finally {
+            httpClient.close();
+        }
+
+
         return details;
     }
 }

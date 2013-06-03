@@ -163,7 +163,7 @@ this.eventUpdate=event;
                 BusManager.getInstance().post(new PlayerInitializeEvent(0));
             } else if (musique instanceof Piste) {
                 BusManager.getInstance().post(new PlayerInitializeEvent((Piste) musique));
-            }
+        }
 
             getLastChange().setEventedValue(0, new AVTransportVariable.AVTransportURI(uri),
                     new AVTransportVariable.CurrentTrackURI(uri));

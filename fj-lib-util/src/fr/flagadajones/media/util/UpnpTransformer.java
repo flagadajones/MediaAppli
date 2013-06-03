@@ -38,7 +38,7 @@ public class UpnpTransformer {
 			MusicAlbum albumUpnp = null;
 			AudioItem trackUpnp = null;
 
-			if (content.getFirstContainer() != null) {
+			if (content.getContainers().size() != 0) {
 				albumUpnp = (MusicAlbum) content.getFirstContainer();
 				MusicTrack[] tracksUpnp = albumUpnp.getMusicTracks();
 
@@ -187,7 +187,7 @@ public class UpnpTransformer {
     private static MusicTrack radioMetaData(Radio radio) {
         MusicTrack radioUpnp = new MusicTrack();
 
-        radioUpnp.setId(radio.upnpId);
+        radioUpnp.setId((radio.upnpId !=null) ? radio.upnpId : "0");
         radioUpnp.setParentID("1");
         radioUpnp.setRestricted(false);
         radioUpnp.setTitle(radio.titre);

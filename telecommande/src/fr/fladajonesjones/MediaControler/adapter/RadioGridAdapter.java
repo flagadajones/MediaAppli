@@ -5,12 +5,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import fr.fladajonesjones.MediaControler.Application;
+import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
+import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
+import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Radio;
 
 public class RadioGridAdapter extends ArrayAdapter<Radio> {
@@ -41,12 +45,33 @@ public class RadioGridAdapter extends ArrayAdapter<Radio> {
 		} else {
 			holder = (RadioHolder) row.getTag();
 		}
-		Radio item = getItem(position);
+		final Radio item = getItem(position);
 
 
         Picasso.with(getContext()).load(item.albumArt).placeholder(R.drawable.stub)
-                .error(R.drawable.bg_img_notfound3).resize(80,80).into(holder.radioName);
+                .error(R.drawable.bg_img_notfound3).resize(80,80).into(holder.              radioName);
 
+        final View it=row;
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+    public void onClick(View view) {
+        // dans le cas d'un clique sur une radio, on affiche la fenetre de selection du renderer si on a plus
+                // d'un renderer de disponible
+                // createDialogSelectionDevice(radio, (ImageView) v.findViewById(R.id.radioIcone));
+                if (UpnpDeviceManager.getInstance().rendererDevice.size() == 0) {
+                    return;
+                } else if (UpnpDeviceManager.getInstance().getDefaultRenderer() != null) {
+                    UpnpDeviceManager.getInstance().getDefaultRenderer().playMusique(item);
+                } else if (UpnpDeviceManager.getInstance().rendererDevice.size() == 1) {
+                    UpnpRendererDevice renderer = UpnpDeviceManager.getInstance().rendererDevice.get(0);
+                    renderer.playMusique(item);
+                } else {
+                    DialogRendererSelector.createDialogSelectionDevice((Activity) getContext(), item,
+                            ((TextView) it.findViewById(R.id.radioName)).getCompoundDrawables()[1]);
+                }
+            }
+        });
 
         //Application.imageLoader.DisplayImage(item.albumArt, holder.radioIcone);
 
