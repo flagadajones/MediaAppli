@@ -160,7 +160,6 @@ public class AlbumFragment extends Fragment {
         int count = 0;
         Row row = new Row();
         liste.add(row);
-        boolean newA = true;
         RowArtiste rowArtiste = null;
 
         int artisteId = -1;

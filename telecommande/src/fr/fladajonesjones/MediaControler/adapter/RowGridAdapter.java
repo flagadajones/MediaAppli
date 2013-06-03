@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
-
 import com.squareup.picasso.Picasso;
+
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;

@@ -14,6 +14,13 @@ import android.os.Parcelable;
 
 public class Radio extends Musique implements Parcelable {
 
+    public Radio(String id,String nom,String url, String albumArt,int fav){
+        this.upnpId=id;
+        this.titre=nom;
+        this.url=url;
+        this.albumArt=albumArt;
+        this.fav=fav;
+    }
     public String getUrl() {
         return url;
     }

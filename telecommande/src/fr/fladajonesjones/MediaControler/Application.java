@@ -1,16 +1,13 @@
 package fr.fladajonesjones.MediaControler;
 
-import android.net.http.HttpResponseCache;
 import com.squareup.picasso.Picasso;
+
 import fr.fladajonesjones.MediaControler.activity.DashBoardActivity;
 import fr.fladajonesjones.MediaControler.database.MySQLOpenHelper;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.flagadajones.android.loader.ImageLoader;
-
-import java.io.File;
-import java.io.IOException;
 
 public class Application extends android.app.Application {
 

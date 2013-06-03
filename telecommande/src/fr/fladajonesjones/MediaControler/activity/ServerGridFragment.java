@@ -5,25 +5,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.ServerGridAdapter;
-import fr.fladajonesjones.MediaControler.adapter.ServerGridAdapter.DeviceDisplayHolder;
-import fr.fladajonesjones.MediaControler.events.UpnpRendererAddEvent;
-import fr.fladajonesjones.MediaControler.events.UpnpRendererRemoveEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerAddEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpServerRemoveEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
-import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
-import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.flagadajones.media.util.BusManager;
 
 public class ServerGridFragment extends Fragment {

@@ -6,6 +6,7 @@ public String upnpId;
     protected String metaData;
     public String albumArt;
     public String url;
+    public int fav=0;
     
 
     

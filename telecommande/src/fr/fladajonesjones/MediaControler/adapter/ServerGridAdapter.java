@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
-import fr.fladajonesjones.MediaControler.Application;
+
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.upnp.UpnpDevice;

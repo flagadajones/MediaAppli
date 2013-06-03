@@ -150,7 +150,7 @@ public class PisteDAO {
         final int nom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_NOM);
         final int url = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_URL);
 
-        maBaseDonnees.setLockingEnabled(false);
+      //  maBaseDonnees.setLockingEnabled(false);
         try {
             for (Piste piste : tmpPistes) {
                 ih.prepareForReplace();
@@ -166,7 +166,7 @@ public class PisteDAO {
         } finally {
             if (ih != null)
                 ih.close();
-            maBaseDonnees.setLockingEnabled(true);
+       //     maBaseDonnees.setLockingEnabled(true);
         }
         tmpPistes.clear();
         // Application.activity.showToast("Pistes OK", true);

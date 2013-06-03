@@ -20,7 +20,6 @@ import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
 import fr.flagadajones.media.util.BusManager;
-import fr.flagadajones.media.util.ImageUtils;
 
 public class DialogRendererSelector {
 

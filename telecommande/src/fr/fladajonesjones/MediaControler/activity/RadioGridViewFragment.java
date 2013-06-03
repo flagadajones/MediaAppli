@@ -8,24 +8,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RadioGridAdapter;
 import fr.fladajonesjones.MediaControler.manager.RadioManager;
-import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
-import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Radio;
 
 public class RadioGridViewFragment extends Fragment {
 
     LayoutInflater inflater = null;
     RadioGridAdapter radioGridAdapter = null;
+    RadioGridAdapter radioGridAdapterFav = null;
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -33,10 +27,13 @@ public class RadioGridViewFragment extends Fragment {
     };
 
     private void initGridRadio(View layout) {
+        final GridView gridView = (GridView) layout.findViewById(R.id.radio_gridview);
+        final GridView gridViewFav = (GridView) layout.findViewById(R.id.radioFav_gridview);
+
         radioGridAdapter = new RadioGridAdapter(getActivity());
+        radioGridAdapterFav = new RadioGridAdapter(getActivity());
 
         final RadioManager radioManager = new RadioManager(getActivity());
-        // radioManager.parse();
 
         new AsyncTask<Void, Void, List<Radio>>() {
             @Override
@@ -50,8 +47,27 @@ public class RadioGridViewFragment extends Fragment {
             }
         }.execute();
 
-        GridView gridView = (GridView) layout.findViewById(R.id.radio_gridview);
+        new AsyncTask<Void, Void, List<Radio>>() {
+            @Override
+            protected void onPostExecute(List<Radio> result) {
+                if (result.isEmpty()) {
+                    gridViewFav.setVisibility(View.GONE);
+                } else {
+                    gridViewFav.setVisibility(View.VISIBLE);
+                    radioGridAdapterFav.addAll(result);
+                }
+
+            }
+
+            @Override
+            protected List<Radio> doInBackground(Void... params) {
+                return radioManager.getFav(5);
+            }
+
+        }.execute();
+
         gridView.setAdapter(radioGridAdapter);
+        gridViewFav.setAdapter(radioGridAdapterFav);
 
     }
 

@@ -8,6 +8,19 @@
     android:paddingRight="16dp" android:paddingLeft="16dp" 
     android:paddingTop="0dp" android:paddingBottom="0dp">
 
+<GridView
+        android:id="@+id/radioFav_gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="5"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        tools:listitem="@layout/radio_grid_item" >
+    </GridView>
+
     <GridView
         android:id="@+id/radio_gridview"
         android:layout_width="fill_parent"

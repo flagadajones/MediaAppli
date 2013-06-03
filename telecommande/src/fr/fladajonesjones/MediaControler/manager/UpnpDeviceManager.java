@@ -9,7 +9,6 @@ import org.fourthline.cling.model.message.header.UDNHeader;
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.LocalDevice;
 import org.fourthline.cling.model.meta.RemoteDevice;
-import org.fourthline.cling.model.meta.RemoteDeviceIdentity;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.registry.DefaultRegistryListener;
@@ -164,7 +163,10 @@ if(device!=null){
 
             deviceAdded(device);
         }
-
+@Override
+public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
+    deviceAdded(device);
+}
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             deviceRemoved(device);

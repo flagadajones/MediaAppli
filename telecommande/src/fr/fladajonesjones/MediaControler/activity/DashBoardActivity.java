@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -29,13 +28,7 @@ import fr.flagadajones.media.util.BusManager;
 
 public class DashBoardActivity extends FragmentActivity {
 
-    /*
-     * private static final String STATE_MENUDRAWER = "net.simonvt.menudrawer.samples.ContentSample.menuDrawer"; private
-     * static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
-     * private static final String STATE_CONTENT_TEXT = "net.simonvt.menudrawer.samples.ContentSample.contentText";
-     */
 
-    private ProgressDialog pd;
     private Menu menu;
 
     @Subscribe

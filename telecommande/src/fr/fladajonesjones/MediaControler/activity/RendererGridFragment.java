@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.squareup.otto.Subscribe;
@@ -23,105 +21,96 @@ import fr.flagadajones.media.util.BusManager;
 
 public class RendererGridFragment extends Fragment {
 
-	  
-	
-	        @Subscribe
-	        public void onStatutChange(final UpnpRendererStatutChangeEvent event){
-	        	  getActivity().runOnUiThread(new Runnable() {
-	 	             public void run() {
-	 	          
-	        	rendererListAdapter.notifyDataSetChanged();
-	 	            }});
+    @Subscribe
+    public void onStatutChange(final UpnpRendererStatutChangeEvent event) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
 
-	        }@Subscribe
-	    	public void onMetaChanged(UpnpRendererMetaChangeEvent event){
-	        	 getActivity().runOnUiThread(new Runnable() {
-	 	             public void run() {
-	 	          
-	        	rendererListAdapter.notifyDataSetChanged();
-	 	            }});
-	    	}
-	    	
-	        
-	        
-	        @Subscribe
-	        public void onRendererDeviceAdded(final UpnpRendererAddEvent event) {
-	             getActivity().runOnUiThread(new Runnable() {
-	             public void run() {
-	            if (rendererListAdapter.getPosition(event.device) == -1)
-	                rendererListAdapter.add(event.device);
-	            else
-	                rendererListAdapter.notifyDataSetChanged();
-	             }});
-	        }
+                rendererListAdapter.notifyDataSetChanged();
+            }
+        });
 
-	        @Subscribe
-	        public void onRendererDeviceRemoved(final UpnpRendererRemoveEvent event) {
-	            getActivity().runOnUiThread(new Runnable() {
-	             public void run() {
-	            rendererListAdapter.remove(event.device);
-	             }});
+    }
 
-	        }
+    @Subscribe
+    public void onMetaChanged(UpnpRendererMetaChangeEvent event) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
 
-	    
-	        @Override
-	        public void onResume() {
-	            super.onResume();
-	            BusManager.getInstance().register(this);
-	        }
+                rendererListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
-	        @Override
-	        public void onPause() {
-	            super.onPause();
-	            BusManager.getInstance().unregister(this);
-	        }
+    @Subscribe
+    public void onRendererDeviceAdded(final UpnpRendererAddEvent event) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                if (rendererListAdapter.getPosition(event.device) == -1)
+                    rendererListAdapter.add(event.device);
+                else
+                    rendererListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
+    @Subscribe
+    public void onRendererDeviceRemoved(final UpnpRendererRemoveEvent event) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                rendererListAdapter.remove(event.device);
+            }
+        });
 
-	// private static final Logger log =
-	// Logger.getLogger(BrowseActivity.class.getName());
+    }
 
-	
-	private RendererStatusGridAdapter rendererListAdapter;
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusManager.getInstance().register(this);
+    }
 
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		MenuDrawerUtil.toggleMenu();
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusManager.getInstance().unregister(this);
+    }
 
-	};
+    private RendererStatusGridAdapter rendererListAdapter;
 
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MenuDrawerUtil.toggleMenu();
 
-	private void initRendererList(LayoutInflater inflater, View layout) {
-		GridView rendererListView = (GridView) layout
-				.findViewById(R.id.rendererStatus_gridview);
-		rendererListAdapter = new RendererStatusGridAdapter(getActivity());
-		
-		if (UpnpDeviceManager.getInstance().lstRenderer.isEmpty()) {
-			if (UpnpDeviceManager.getInstance().rendererDevice != null)
-				rendererListAdapter
-						.addAll(UpnpDeviceManager.getInstance().rendererDevice);
-		} else
-			rendererListAdapter
-					.addAll(UpnpDeviceManager.getInstance().lstRenderer);
-		rendererListView.setAdapter(rendererListAdapter);
-		
-	}
+    };
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
+    private void initRendererList(LayoutInflater inflater, View layout) {
+        GridView rendererListView = (GridView) layout.findViewById(R.id.rendererStatus_gridview);
+        rendererListAdapter = new RendererStatusGridAdapter(getActivity());
 
-		View layout = inflater.inflate(R.layout.fragment_selected_renderer_status_grid_view, null);
+        if (UpnpDeviceManager.getInstance().lstRenderer.isEmpty()) {
+            if (UpnpDeviceManager.getInstance().rendererDevice != null)
+                rendererListAdapter.addAll(UpnpDeviceManager.getInstance().rendererDevice);
+        } else
+            rendererListAdapter.addAll(UpnpDeviceManager.getInstance().lstRenderer);
+        rendererListView.setAdapter(rendererListAdapter);
 
-		initRendererList(inflater, layout);
+    }
 
-		return layout;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
+        View layout = inflater.inflate(R.layout.fragment_selected_renderer_status_grid_view, null);
 
-	}
+        initRendererList(inflater, layout);
+
+        return layout;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 }

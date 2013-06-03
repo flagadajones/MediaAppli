@@ -10,20 +10,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
-import fr.fladajonesjones.MediaControler.Application;
+
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
-import fr.fladajonesjones.MediaControler.adapter.ServerGridAdapter.DeviceDisplayHolder;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
-import fr.fladajonesjones.MediaControler.upnp.UpnpDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
 
 public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> {
+    PopupMenu popup = null;
 
     public RendererStatusGridAdapter(Context context) {
         super(context, -1);
@@ -33,6 +38,10 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        if (popup != null) {
+            popup.dismiss();
+            popup = null;
+        }
         View row = convertView;
 
         final UpnpRendererDevice renderer = getItem(position);
@@ -53,27 +62,29 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
             Picasso.with(getContext()).load(renderer.icone).placeholder(R.drawable.stub)
                     .error(R.drawable.bg_img_notfound).into(deviceIcone);
 
-         //   Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
+            // Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
             artisteName.setText("artiste");
             Musique musique = renderer.getMusique();
             if (musique != null) {
                 Picasso.with(getContext()).load(musique.albumArt).placeholder(R.drawable.stub)
                         .error(R.drawable.bg_img_notfound).into(albumArt);
 
-              //  Application.imageLoader.DisplayImage(musique.albumArt, albumArt);
+                // Application.imageLoader.DisplayImage(musique.albumArt, albumArt);
 
                 albumName.setText(musique.titre);
-                if(renderer.positionInfo!=null && renderer.getMusique() instanceof Album){
-                    albumName.setText(albumName.getText()+" - "+((Album)renderer.getMusique()).getPistes().get(renderer.positionInfo.getTrack().getValue().intValue()).titre);
+                if (renderer.positionInfo != null && renderer.getMusique() instanceof Album) {
+                    albumName.setText(albumName.getText()
+                            + " - "
+                            + ((Album) renderer.getMusique()).getPistes().get(
+                                    renderer.positionInfo.getTrack().getValue().intValue()).titre);
                 }
             }
-            if(renderer.positionInfo!=null){
-            positionPiste.setMax(new Long(renderer.positionInfo.getTrackDurationSeconds()).intValue());
+            if (renderer.positionInfo != null) {
+                positionPiste.setMax(Long.valueOf(renderer.positionInfo.getTrackDurationSeconds()).intValue());
                 positionPiste.setProgress(renderer.positionInfo.getRelCount());
-            }
-            else{
-            positionPiste.setMax(100);
-                                                                               positionPiste.setProgress(0);
+            } else {
+                positionPiste.setMax(100);
+                positionPiste.setProgress(0);
 
             }
             LinearLayout layout = (LinearLayout) row.findViewById(R.id.contentLayout);
@@ -85,8 +96,7 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
                 public void onClick(View v) {
                     NowPlayingFragment fragment = new NowPlayingFragment();
                     fragment.renderer = renderer;
-                    replaceFragment(fragment); // TODO Auto-generated method stub
-
+                    replaceFragment(fragment);
                 }
             });
 
@@ -98,15 +108,13 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
             ImageView deviceIcone = (ImageView) row.findViewById(R.id.deviceIcone);
             TextView deviceName = (TextView) row.findViewById(R.id.deviceName);
             deviceName.setText(renderer.getName());
-            if(renderer.icone!=null)
-            Picasso.with(getContext()).load(renderer.icone).placeholder(R.drawable.stub)
-                    .error(R.drawable.bg_img_notfound).into(deviceIcone);
+            if (renderer.icone != null)
+                Picasso.with(getContext()).load(renderer.icone).placeholder(R.drawable.stub)
+                        .error(R.drawable.bg_img_notfound).into(deviceIcone);
 
-          //  Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
+            // Application.imageLoader.DisplayImage(renderer.icone, deviceIcone);
 
         }
-
-        // holder.deviceName.setText("lecteur");
 
         ImageView overflowMenu = (ImageView) row.findViewById(R.id.overflow);
 
@@ -124,7 +132,7 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
 
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(RendererStatusGridAdapter.this.getContext(), v);
+                popup = new PopupMenu(RendererStatusGridAdapter.this.getContext(), v);
                 popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
                     @Override
@@ -143,6 +151,7 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
                         default:
                             return false;
                         }
+
                     }
                 });
                 popup.inflate(R.menu.renderer_device_overflow);
