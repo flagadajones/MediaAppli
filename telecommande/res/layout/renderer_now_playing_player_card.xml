@@ -75,20 +75,16 @@
         android:id="@+id/ButtonStop"
         android:layout_width="@dimen/ButtonPlayerSize"
         android:layout_height="@dimen/ButtonPlayerSize"
-        android:layout_alignBaseline="@+id/ButtonNext"
-        android:layout_alignBottom="@+id/ButtonNext"
-        android:layout_marginLeft="46dp"
+        android:layout_below="@+id/SongName"
         android:layout_toRightOf="@+id/AlbumArt"
-        android:background="@drawable/playernext" />
+        android:text="Stop"/>
 
     <Button
         android:id="@+id/ButtonPause"
         android:layout_width="@dimen/ButtonPlayerSize"
         android:layout_height="@dimen/ButtonPlayerSize"
-        android:layout_alignBaseline="@+id/ButtonPrev"
-        android:layout_alignBottom="@+id/ButtonPrev"
-        android:layout_marginRight="46dp"
+        android:layout_below="@+id/ButtonPrev"
         android:layout_toLeftOf="@+id/AlbumArt"
-        android:background="@drawable/playerprev" />
+        android:text="Pause"/>
 
 </RelativeLayout>

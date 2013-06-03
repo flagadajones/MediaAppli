@@ -32,6 +32,8 @@ public class RadioGridViewFragment extends Fragment {
 
         radioGridAdapter = new RadioGridAdapter(getActivity());
         radioGridAdapterFav = new RadioGridAdapter(getActivity());
+        gridView.setAdapter(radioGridAdapter);
+        gridViewFav.setAdapter(radioGridAdapterFav);
 
         final RadioManager radioManager = new RadioManager(getActivity());
 
@@ -66,8 +68,6 @@ public class RadioGridViewFragment extends Fragment {
 
         }.execute();
 
-        gridView.setAdapter(radioGridAdapter);
-        gridViewFav.setAdapter(radioGridAdapterFav);
 
     }
 

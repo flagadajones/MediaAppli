@@ -2,6 +2,7 @@ package fr.fladajonesjones.MediaControler.upnp;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import org.fourthline.cling.controlpoint.ActionCallback;
 import org.fourthline.cling.controlpoint.SubscriptionCallback;
@@ -52,6 +53,9 @@ public class UpnpRendererDevice extends UpnpDevice {
     public boolean playing = false;
     public boolean connected = false;
     SubscriptionCallback transPortServicecallback = null;
+    private final Semaphore semMediaInfo = new Semaphore(1, true);
+    private final Semaphore semPositionInfo = new Semaphore(1, true);
+    private final Semaphore semTransportInfo = new Semaphore(1, true);
 
     public UpnpRendererDevice() {
 
@@ -151,6 +155,7 @@ public class UpnpRendererDevice extends UpnpDevice {
 
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                semTransportInfo.release();
                 stopRepeatingTask();
                 Application.activity.showToast(defaultMsg, true);
 
@@ -162,6 +167,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             public void received(ActionInvocation invocation, TransportInfo transportInfo) {
                 // TODO Auto-generated method stub
                 device.transportInfo = transportInfo;
+                semTransportInfo.release();
                 if (transportInfo.getCurrentTransportState() == org.fourthline.cling.support.model.TransportState.PLAYING)
                     device.playing = true;
                 else
@@ -182,6 +188,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 Application.activity.showToast(defaultMsg, true);
+                semPositionInfo.release();
                 stopRepeatingTask();
                 // connected=false;
 
@@ -191,6 +198,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             public void received(ActionInvocation invocation, PositionInfo positionInfo) {
                 // TODO Auto-generated method stub
                 device.positionInfo = positionInfo;
+                semPositionInfo.release();
                 BusManager.getInstance().post(new UpnpRendererMetaChangeEvent(UpnpRendererDevice.this));
             }
         };
@@ -207,6 +215,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 Application.activity.showToast(defaultMsg, true);
+                semMediaInfo.release();
                 stopRepeatingTask();
                 // connected=false;
 
@@ -216,7 +225,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             public void received(ActionInvocation invocation, MediaInfo mediaInfo) {
                 device.mediaInfo = mediaInfo;
                 device.musique = UpnpTransformer.metaDataToMusique(mediaInfo.getCurrentURIMetaData());
-
+                semMediaInfo.release();
                 BusManager.getInstance().post(new UpnpRendererMetaChangeEvent(UpnpRendererDevice.this));
             }
         };
@@ -452,8 +461,10 @@ public class UpnpRendererDevice extends UpnpDevice {
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                if(semMediaInfo.tryAcquire())
                 getMediaInfo();
                 // getPositionInfo();
+                if(semTransportInfo.tryAcquire())
                 getTransportInfo();
             }
 
@@ -463,6 +474,7 @@ public class UpnpRendererDevice extends UpnpDevice {
             @Override
             public void run() {
                 // getMediaInfo();
+                if(semPositionInfo.tryAcquire())
                 getPositionInfo();
                 // getTransportInfo();
             }

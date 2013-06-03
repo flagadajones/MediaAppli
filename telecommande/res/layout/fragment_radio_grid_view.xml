@@ -11,7 +11,7 @@
 <GridView
         android:id="@+id/radioFav_gridview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="@dimen/row_artiste_height"
 
         android:gravity="center"
         android:horizontalSpacing="10dp"
@@ -25,7 +25,6 @@
         android:id="@+id/radio_gridview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-
         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:numColumns="5"

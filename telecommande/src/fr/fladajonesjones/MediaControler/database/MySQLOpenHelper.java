@@ -198,15 +198,15 @@ public class MySQLOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP INDEX " + TABLE_DEVICES_INDEX + ";");
         db.execSQL("DROP INDEX " + TABLE_PISTES_INDEX + ";");
         db.execSQL("DROP INDEX " + TABLE_ARTISTES_INDEX + ";");
-        db.execSQL("DROP INDEX " + TABLE_RADIOS_INDEX + ";");
-        db.execSQL("DROP INDEX " + TABLE_VERSIONS_INDEX + ";");
+//        db.execSQL("DROP INDEX " + TABLE_RADIOS_INDEX + ";");
+//        db.execSQL("DROP INDEX " + TABLE_VERSIONS_INDEX + ";");
 
         db.execSQL("DROP TABLE " + TABLE_DEVICES + ";");
         db.execSQL("DROP TABLE " + TABLE_PISTES + ";");
         db.execSQL("DROP TABLE " + TABLE_ALBUMS + ";");
         db.execSQL("DROP TABLE " + TABLE_ARTISTES + ";");
-        db.execSQL("DROP TABLE " + TABLE_RADIOS + ";");
-        db.execSQL("DROP TABLE " + TABLE_VERSIONS + ";");
+//        db.execSQL("DROP TABLE " + TABLE_RADIOS + ";");
+//        db.execSQL("DROP TABLE " + TABLE_VERSIONS + ";");
 
         // Creation de la nouvelle structure.
         onCreate(db);

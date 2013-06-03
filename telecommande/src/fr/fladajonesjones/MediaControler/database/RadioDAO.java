@@ -3,6 +3,8 @@ package fr.fladajonesjones.MediaControler.database;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -13,7 +15,7 @@ import fr.fladajonesjones.media.model.Radio;
 public class RadioDAO {
     private SQLiteDatabase maBaseDonnees;
     private static RadioDAO instance;
-
+    private static final Logger log = Logger.getLogger(RadioDAO.class.getName());
     public static RadioDAO getInstance() {
         if (instance == null) {
             instance = new RadioDAO();
@@ -42,7 +44,7 @@ public class RadioDAO {
                 MySQLOpenHelper.COLONNE_RADIO_NOM, MySQLOpenHelper.COLONNE_RADIO_URL,
                 MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV },
                 MySQLOpenHelper.COLONNE_RADIO_FAV + " > 0 ", null, null, null, MySQLOpenHelper.COLONNE_RADIO_FAV
-                        + " desc, " + MySQLOpenHelper.COLONNE_RADIO_NOM, " LIMIT " + number);
+                        + " desc, " + MySQLOpenHelper.COLONNE_RADIO_NOM,  String.valueOf(number));
 
         ArrayList<Radio> retour = cursorToRadios(c);
         // Ferme le curseur pour liberer les ressources.
@@ -145,13 +147,13 @@ public class RadioDAO {
                 ih.execute();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE,"Error",e);
         } finally {
             if (ih != null)
                 ih.close();
 //            maBaseDonnees.setLockingEnabled(true);
         }
-        tmpRadios.clear();
+      //  tmpRadios.clear();
         // Application.activity.showToast("Pistes OK", true);
     }
 

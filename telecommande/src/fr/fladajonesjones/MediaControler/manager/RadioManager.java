@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
@@ -92,9 +93,10 @@ public class RadioManager {
                 throw new IOException(statusLine.getReasonPhrase());
             }
         } catch (ClientProtocolException e) {
-            log.warning(e.toString());
+            log.log(Level.SEVERE,"Error",e);
+
         } catch (IOException e) {
-            log.warning(e.toString());
+            log.log(Level.SEVERE,"Error",e);
         } finally {
             httpClient.close();
         }

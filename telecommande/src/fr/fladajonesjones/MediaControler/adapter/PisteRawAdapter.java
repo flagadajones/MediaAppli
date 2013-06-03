@@ -54,7 +54,7 @@ public class PisteRawAdapter extends ArrayAdapter<Piste> {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BusManager.getInstance().post(new NowPlayingSeekEvent(NowPlayingSeekEvent.TRACK_NB,position+1));
+                BusManager.getInstance().post(new NowPlayingSeekEvent(NowPlayingSeekEvent.TRACK_NB,position));
             }
         });
 
