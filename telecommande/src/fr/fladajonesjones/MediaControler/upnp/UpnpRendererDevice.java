@@ -5,6 +5,7 @@ import fr.fladajonesjones.MediaControler.database.MySQLOpenHelper;
 import fr.fladajonesjones.MediaControler.database.PisteDAO;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererMetaChangeEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererStatutChangeEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererTransportActionEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
 import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
@@ -421,6 +422,15 @@ public class UpnpRendererDevice extends UpnpDevice {
                             }
                             AVTransportVariable.CurrentTrackURI currentTrackURI = lastChange.getEventedValue(
                                     lastChange.getInstanceIDs()[0], AVTransportVariable.CurrentTrackURI.class);
+                            
+                            AVTransportVariable.CurrentTransportActions currentTransportActions = lastChange.getEventedValue(
+                                    lastChange.getInstanceIDs()[0], AVTransportVariable.CurrentTransportActions.class);
+                            
+                            if(currentTransportActions!=null && currentTransportActions.getValue().length!=0){
+                            
+                            BusManager.getInstance().post(new UpnpRendererTransportActionEvent(currentTransportActions.getValue()));
+                            }
+                            
                             AVTransportVariable.AVTransportURI avTransportURI = lastChange.getEventedValue(
                                     lastChange.getInstanceIDs()[0], AVTransportVariable.AVTransportURI.class);
 

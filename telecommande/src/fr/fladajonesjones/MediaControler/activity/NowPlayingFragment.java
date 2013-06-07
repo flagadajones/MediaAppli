@@ -1,5 +1,6 @@
-
 package fr.fladajonesjones.MediaControler.activity;
+
+import org.fourthline.cling.support.model.TransportAction;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.PisteRawAdapter;
 import fr.fladajonesjones.MediaControler.events.NowPlayingSeekEvent;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererMetaChangeEvent;
+import fr.fladajonesjones.MediaControler.events.UpnpRendererTransportActionEvent;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
@@ -77,7 +79,6 @@ public class NowPlayingFragment extends Fragment {
             }
         });
 
-
         mNext = (Button) root.findViewById(R.id.ButtonNext);
         mNext.setOnClickListener(new OnClickListener() {
             @Override
@@ -129,6 +130,51 @@ public class NowPlayingFragment extends Fragment {
         if (NowPlayingSeekEvent.TRACK_NB == event.seekType) {
             renderer.seekPiste(event.pos);
         }
+    }
+
+    @Subscribe
+    public void onUpnpRendererTransportActionEvent(UpnpRendererTransportActionEvent event) {
+        if (event.actions == null)
+            return;
+
+        desactiveButton(mPlay);
+        desactiveButton(mNext);
+        desactiveButton(mPause);
+        desactiveButton(mPrev);
+        desactiveButton(mStop);
+
+        for (TransportAction action : event.actions) {
+            switch (action) {
+            case Play:
+                activeButton(mPlay);
+                break;
+            case Next:
+                activeButton(mNext);
+                break;
+            case Pause:
+                activeButton(mPause);
+                break;
+            case Previous:
+                activeButton(mPrev);
+                break;
+            case Stop:
+                activeButton(mStop);
+                break;
+            default:
+                break;
+            }
+
+        }
+    }
+
+    private void activeButton(Button button) {
+        button.setEnabled(true);
+        button.setAlpha(1);
+    }
+
+    private void desactiveButton(Button button) {
+        button.setEnabled(false);
+        button.setAlpha(0.2f);
     }
 
     @Subscribe
