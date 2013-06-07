@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-
 import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RendererStatusGridAdapter;
 import fr.fladajonesjones.MediaControler.events.UpnpRendererAddEvent;
@@ -82,7 +80,9 @@ public class RendererGridFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         MenuDrawerUtil.toggleMenu();
 
-    };
+    }
+
+    ;
 
     private void initRendererList(LayoutInflater inflater, View layout) {
         GridView rendererListView = (GridView) layout.findViewById(R.id.rendererStatus_gridview);

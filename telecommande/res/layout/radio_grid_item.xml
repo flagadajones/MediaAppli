@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
+              android:layout_width="match_parent"
 
- android:background="@drawable/card_background_shadow"
-    android:layout_height="@dimen/row_artiste_height"
-    android:layout_alignParentTop="true"
-    android:gravity="center"
-    android:orientation="horizontal"
+              android:background="@drawable/card_background_shadow"
+              android:layout_height="@dimen/row_artiste_height"
+              android:layout_alignParentTop="true"
+              android:gravity="center"
+              android:orientation="horizontal"
 
-    android:paddingTop="20dp"
+              android:paddingTop="20dp"
     >
 
->
+    >
 
     <TextView
         android:id="@+id/radioName"
@@ -30,7 +30,8 @@
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"
         android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+        android:drawableTop="@drawable/bg_img_notfound3"
+        android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
         />
 
 </LinearLayout>

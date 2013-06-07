@@ -1,10 +1,10 @@
 <resources>
 
-    <style name="MenuDrawer" />
+    <style name="MenuDrawer"/>
 
-    <style name="RendererGrid" />
+    <style name="RendererGrid"/>
 
-    <style name="MenuDrawer.Widget" />
+    <style name="MenuDrawer.Widget"/>
 
     <style name="MenuDrawer.Widget.Category">
         <item name="android:textStyle">bold</item>

@@ -1,7 +1,5 @@
 package fr.fladajonesjones.MediaControler.activity;
 
-import java.util.List;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +13,8 @@ import fr.fladajonesjones.MediaControler.manager.RadioManager;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 import fr.fladajonesjones.media.model.Radio;
 
+import java.util.List;
+
 public class RadioGridViewFragment extends Fragment {
 
     LayoutInflater inflater = null;
@@ -24,7 +24,9 @@ public class RadioGridViewFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MenuDrawerUtil.toggleMenu();
-    };
+    }
+
+    ;
 
     private void initGridRadio(View layout) {
         final GridView gridView = (GridView) layout.findViewById(R.id.radio_gridview);

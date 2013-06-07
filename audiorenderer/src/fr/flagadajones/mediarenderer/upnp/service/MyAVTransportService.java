@@ -1,30 +1,6 @@
 package fr.flagadajones.mediarenderer.upnp.service;
 
-import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.fourthline.cling.model.types.ErrorCode;
-import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
-import org.fourthline.cling.support.avtransport.AVTransportErrorCode;
-import org.fourthline.cling.support.avtransport.AVTransportException;
-import org.fourthline.cling.support.avtransport.AbstractAVTransportService;
-import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
-import org.fourthline.cling.support.lastchange.LastChange;
-import org.fourthline.cling.support.model.DeviceCapabilities;
-import org.fourthline.cling.support.model.MediaInfo;
-import org.fourthline.cling.support.model.PlayMode;
-import org.fourthline.cling.support.model.PositionInfo;
-import org.fourthline.cling.support.model.SeekMode;
-import org.fourthline.cling.support.model.StorageMedium;
-import org.fourthline.cling.support.model.TransportAction;
-import org.fourthline.cling.support.model.TransportInfo;
-import org.fourthline.cling.support.model.TransportSettings;
-import org.fourthline.cling.support.model.TransportState;
-import org.fourthline.cling.support.model.TransportStatus;
-
 import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
 import fr.fladajonesjones.media.model.Piste;
@@ -33,21 +9,26 @@ import fr.flagadajones.media.util.StringUtils;
 import fr.flagadajones.media.util.UpnpTransformer;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerSongUpdateEvent;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerUpdatePosEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerInitializeEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerNextEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPlayListEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPrevEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSeekEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.*;
+import org.fourthline.cling.model.types.ErrorCode;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
+import org.fourthline.cling.support.avtransport.AVTransportErrorCode;
+import org.fourthline.cling.support.avtransport.AVTransportException;
+import org.fourthline.cling.support.avtransport.AbstractAVTransportService;
+import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
+import org.fourthline.cling.support.lastchange.LastChange;
+import org.fourthline.cling.support.model.*;
+
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MyAVTransportService extends AbstractAVTransportService {
 
     private static final Logger log = Logger.getLogger(MyAVTransportService.class.getName());
 
     private DeviceCapabilities deviceCapabilities = new DeviceCapabilities(
-            new StorageMedium[] { StorageMedium.NETWORK });
+            new StorageMedium[]{StorageMedium.NETWORK});
     private MediaInfo mediaInfo = new MediaInfo();
     private PositionInfo positionInfo = new PositionInfo();
     private TransportAction[] transportAction = new TransportAction[0];
@@ -68,25 +49,25 @@ public class MyAVTransportService extends AbstractAVTransportService {
     // /////////////////////////////////////////////////////////////////////////////////////
     @Subscribe
     public void onUpdateSongInfo(PlayerSongUpdateEvent event) {
-this.eventUpdate=event;
+        this.eventUpdate = event;
         if (event.playListSize == 0) {
             mediaInfo = new MediaInfo();
             positionInfo = new PositionInfo();
         } else {
             mediaInfo = new MediaInfo(event.mediaUrl, metaData, new UnsignedIntegerFourBytes(event.playListSize),
 
-            event.mediaDuration, StorageMedium.NETWORK);
-            
+                    event.mediaDuration, StorageMedium.NETWORK);
+
             //positionInfo = new PositionInfo(event.trackPosition,metaData,event.trackUrl);
         }
     }
-    
+
     @Subscribe
-    public void onUpdatePositionInfo(PlayerUpdatePosEvent event){
-    	int timePos=event.pos/1000;
-    	String time=StringUtils.makeTimeString(timePos);
-    	positionInfo = new PositionInfo(eventUpdate.trackPosition,eventUpdate.trackDuration,metaData,eventUpdate.trackUrl,time,time,timePos,timePos);
-           	
+    public void onUpdatePositionInfo(PlayerUpdatePosEvent event) {
+        int timePos = event.pos / 1000;
+        String time = StringUtils.makeTimeString(timePos);
+        positionInfo = new PositionInfo(eventUpdate.trackPosition, eventUpdate.trackDuration, metaData, eventUpdate.trackUrl, time, time, timePos, timePos);
+
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +113,7 @@ this.eventUpdate=event;
             }
 
             if (seekMode.equals(SeekMode.TRACK_NR))
-            BusManager.getInstance().post(new PlayerSeekEvent(0,Integer.valueOf(target)));
+                BusManager.getInstance().post(new PlayerSeekEvent(0, Integer.valueOf(target)));
 
         } catch (IllegalArgumentException ex) {
             log.log(Level.SEVERE, ex.getMessage(), ex);
@@ -163,7 +144,7 @@ this.eventUpdate=event;
                 BusManager.getInstance().post(new PlayerInitializeEvent(0));
             } else if (musique instanceof Piste) {
                 BusManager.getInstance().post(new PlayerInitializeEvent((Piste) musique));
-        }
+            }
 
             getLastChange().setEventedValue(0, new AVTransportVariable.AVTransportURI(uri),
                     new AVTransportVariable.CurrentTrackURI(uri));
@@ -183,35 +164,35 @@ this.eventUpdate=event;
 
     private void defineTransportAction() {
         switch (transportState) {
-        case NO_MEDIA_PRESENT:
-            transportAction = new TransportAction[] {};
-            break;
-        case PAUSED_PLAYBACK:
-            transportAction = new TransportAction[] { TransportAction.Stop, TransportAction.Play, TransportAction.Next,
-                    TransportAction.Previous, TransportAction.Seek };
-            break;
-        case PLAYING:
-            transportAction = new TransportAction[] { TransportAction.Stop, TransportAction.Pause,
-                    TransportAction.Next, TransportAction.Previous, TransportAction.Seek };
-            break;
-        case STOPPED:
-            // TODO ajouetr next/prev en fonction de la playlist
-            transportAction = new TransportAction[] { TransportAction.Play, TransportAction.Next,
-                    TransportAction.Previous, TransportAction.Seek };
-        default:
-            transportAction = new TransportAction[] { TransportAction.Stop, TransportAction.Play,
-                    TransportAction.Pause, TransportAction.Next, TransportAction.Previous, TransportAction.Seek };
-            break;
+            case NO_MEDIA_PRESENT:
+                transportAction = new TransportAction[]{};
+                break;
+            case PAUSED_PLAYBACK:
+                transportAction = new TransportAction[]{TransportAction.Stop, TransportAction.Play, TransportAction.Next,
+                        TransportAction.Previous, TransportAction.Seek};
+                break;
+            case PLAYING:
+                transportAction = new TransportAction[]{TransportAction.Stop, TransportAction.Pause,
+                        TransportAction.Next, TransportAction.Previous, TransportAction.Seek};
+                break;
+            case STOPPED:
+                // TODO ajouetr next/prev en fonction de la playlist
+                transportAction = new TransportAction[]{TransportAction.Play, TransportAction.Next,
+                        TransportAction.Previous, TransportAction.Seek};
+            default:
+                transportAction = new TransportAction[]{TransportAction.Stop, TransportAction.Play,
+                        TransportAction.Pause, TransportAction.Next, TransportAction.Previous, TransportAction.Seek};
+                break;
         }
 
         getLastChange().setEventedValue(0, new AVTransportVariable.CurrentTransportActions(transportAction));
 
     }
-    
+
     @Override
     protected void finalize() throws Throwable {
-    	super.finalize();
-    	BusManager.getInstance().unregister(this);
+        super.finalize();
+        BusManager.getInstance().unregister(this);
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -220,7 +201,7 @@ this.eventUpdate=event;
 
     @Override
     public UnsignedIntegerFourBytes[] getCurrentInstanceIds() {
-        return new UnsignedIntegerFourBytes[] { new UnsignedIntegerFourBytes(0) };
+        return new UnsignedIntegerFourBytes[]{new UnsignedIntegerFourBytes(0)};
     }
 
     @Override

@@ -1,5 +1,5 @@
 package fr.fladajonesjones.MediaControler.events;
 
-public class UpnpServerFindAlbumEvent extends UpnpServerEvent{
+public class UpnpServerFindAlbumEvent extends UpnpServerEvent {
 
 }

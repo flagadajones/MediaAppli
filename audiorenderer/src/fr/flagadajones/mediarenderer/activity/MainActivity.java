@@ -16,10 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
-
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.StringUtils;
 import fr.flagadajones.mediarenderer.Application;

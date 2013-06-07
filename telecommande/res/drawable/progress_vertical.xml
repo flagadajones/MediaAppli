@@ -14,7 +14,21 @@
      limitations under the License.
 -->
 
-<transition xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/md__list_pressed_holo_dark"/>
-    <item android:drawable="@drawable/md__list_longpressed_holo"/>
-</transition>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background"
+          android:drawable="@drawable/hori_progress_bg_holo_light" />
+
+    <item android:id="@android:id/secondaryProgress">
+
+        <scale android:scaleHeight="100%"
+               android:drawable="@drawable/hori_progress_secondary_holo_light" />
+    </item>
+
+    <item android:id="@android:id/progress">
+        <scale android:scaleHeight="100%"
+
+               android:drawable="@drawable/hori_progress_primary_holo_light" />
+    </item>
+
+</layer-list>

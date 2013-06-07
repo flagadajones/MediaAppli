@@ -2,20 +2,20 @@
 
 <PreferenceScreen
 
-xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-<PreferenceCategory android:title="MediaRenderer">
+    <PreferenceCategory android:title="MediaRenderer">
 
-<EditTextPreference
+        <EditTextPreference
 
-android:key="nomRenderer"
+            android:key="nomRenderer"
 
-android:title="Nom du Renderer"
+            android:title="Nom du Renderer"
 
-android:summary="Entrez le nom du renderer">
+            android:summary="Entrez le nom du renderer">
 
-</EditTextPreference>
+        </EditTextPreference>
 
-</PreferenceCategory>
+    </PreferenceCategory>
 
 </PreferenceScreen>

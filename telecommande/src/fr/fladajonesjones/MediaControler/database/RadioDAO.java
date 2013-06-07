@@ -1,21 +1,22 @@
 package fr.fladajonesjones.MediaControler.database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
 import fr.fladajonesjones.media.model.Radio;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class RadioDAO {
     private SQLiteDatabase maBaseDonnees;
     private static RadioDAO instance;
     private static final Logger log = Logger.getLogger(RadioDAO.class.getName());
+
     public static RadioDAO getInstance() {
         if (instance == null) {
             instance = new RadioDAO();
@@ -28,9 +29,9 @@ public class RadioDAO {
     }
 
     public ArrayList<Radio> getAllRadio() {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_RADIOS, new String[] { MySQLOpenHelper.COLONNE_RADIO_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_RADIOS, new String[]{MySQLOpenHelper.COLONNE_RADIO_ID,
                 MySQLOpenHelper.COLONNE_RADIO_NOM, MySQLOpenHelper.COLONNE_RADIO_URL,
-                MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV }, null, null, null, null,
+                MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV}, null, null, null, null,
                 MySQLOpenHelper.COLONNE_RADIO_NOM);
 
         ArrayList<Radio> retour = cursorToRadios(c);
@@ -40,11 +41,11 @@ public class RadioDAO {
     }
 
     public ArrayList<Radio> getAllRadioFav(int number) {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_RADIOS, new String[] { MySQLOpenHelper.COLONNE_RADIO_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_RADIOS, new String[]{MySQLOpenHelper.COLONNE_RADIO_ID,
                 MySQLOpenHelper.COLONNE_RADIO_NOM, MySQLOpenHelper.COLONNE_RADIO_URL,
-                MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV },
+                MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV},
                 MySQLOpenHelper.COLONNE_RADIO_FAV + " > 0 ", null, null, null, MySQLOpenHelper.COLONNE_RADIO_FAV
-                        + " desc, " + MySQLOpenHelper.COLONNE_RADIO_NOM,  String.valueOf(number));
+                + " desc, " + MySQLOpenHelper.COLONNE_RADIO_NOM, String.valueOf(number));
 
         ArrayList<Radio> retour = cursorToRadios(c);
         // Ferme le curseur pour liberer les ressources.
@@ -53,11 +54,11 @@ public class RadioDAO {
     }
 
     public ArrayList<Radio> getAllRadioFav() {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_RADIOS, new String[] { MySQLOpenHelper.COLONNE_RADIO_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_RADIOS, new String[]{MySQLOpenHelper.COLONNE_RADIO_ID,
                 MySQLOpenHelper.COLONNE_RADIO_NOM, MySQLOpenHelper.COLONNE_RADIO_URL,
-                MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV },
+                MySQLOpenHelper.COLONNE_RADIO_ALBUM_ART, MySQLOpenHelper.COLONNE_RADIO_FAV},
                 MySQLOpenHelper.COLONNE_RADIO_FAV + " > 0 ", null, null, null, MySQLOpenHelper.COLONNE_RADIO_FAV
-                        + " desc, " + MySQLOpenHelper.COLONNE_RADIO_NOM, null);
+                + " desc, " + MySQLOpenHelper.COLONNE_RADIO_NOM, null);
 
         ArrayList<Radio> retour = cursorToRadios(c);
         // Ferme le curseur pour liberer les ressources.
@@ -132,7 +133,7 @@ public class RadioDAO {
             }
         }
 
-     //   maBaseDonnees.setLockingEnabled(false);
+        //   maBaseDonnees.setLockingEnabled(false);
 
         maBaseDonnees.execSQL("Delete from " + MySQLOpenHelper.TABLE_RADIOS);
         maBaseDonnees.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + MySQLOpenHelper.TABLE_RADIOS + "';");
@@ -147,13 +148,13 @@ public class RadioDAO {
                 ih.execute();
             }
         } catch (Exception e) {
-            log.log(Level.SEVERE,"Error",e);
+            log.log(Level.SEVERE, "Error", e);
         } finally {
             if (ih != null)
                 ih.close();
 //            maBaseDonnees.setLockingEnabled(true);
         }
-      //  tmpRadios.clear();
+        //  tmpRadios.clear();
         // Application.activity.showToast("Pistes OK", true);
     }
 

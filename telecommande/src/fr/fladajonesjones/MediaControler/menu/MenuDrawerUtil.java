@@ -1,9 +1,5 @@
 package fr.fladajonesjones.MediaControler.menu;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.simonvt.menudrawer.MenuDrawer;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,16 +7,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import fr.fladajonesjones.MediaControler.R;
-import fr.fladajonesjones.MediaControler.activity.AlbumFragment;
-import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
-import fr.fladajonesjones.MediaControler.activity.RadioGridViewFragment;
-import fr.fladajonesjones.MediaControler.activity.RendererGridFragment;
-import fr.fladajonesjones.MediaControler.activity.ServerGridFragment;
-import fr.fladajonesjones.MediaControler.activity.SettingsActivity;
+import fr.fladajonesjones.MediaControler.activity.*;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
+import net.simonvt.menudrawer.MenuDrawer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuDrawerUtil {
-     public static MenuDrawer mMenuDrawer;
+    public static MenuDrawer mMenuDrawer;
 
     public static MenuAdapter mAdapter;
     private static MenuListView mList;
@@ -48,7 +43,7 @@ public class MenuDrawerUtil {
     }
 
     public static void toggleMenu() {
-       // mMenuDrawer.toggleMenu();
+        // mMenuDrawer.toggleMenu();
     }
 
     public static void closeMenu() {
@@ -104,7 +99,7 @@ public class MenuDrawerUtil {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mActivePosition = position;
             mMenuDrawer.setActiveView(view, position);
-            
+
             Object item = mAdapter.getItem(position);
             if (item instanceof Item && ((Item) item).mTitle.equals("Musique")) {
                 replaceFragment(new AlbumFragment());
@@ -116,9 +111,9 @@ public class MenuDrawerUtil {
                 // replaceFragment(new DashBoardFragment());
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Conf")) {
                 Intent intent = new Intent(mActivity, SettingsActivity.class);
-                mActivity.startActivity(intent);    
-                    // replaceFragment(new DashBoardFragment());
-                 
+                mActivity.startActivity(intent);
+                // replaceFragment(new DashBoardFragment());
+
             } else if (item instanceof Item && ((Item) item).mTitle.equals("Radio")) {
                 replaceFragment(new RadioGridViewFragment());
             } else if (item instanceof UpnpRendererDevice) {
@@ -126,7 +121,7 @@ public class MenuDrawerUtil {
                 fragment.renderer = (UpnpRendererDevice) item;
                 replaceFragment(fragment);
             }
-            
+
             mMenuDrawer.closeMenu();
 
         }

@@ -1,9 +1,5 @@
 package fr.flagadajones.mediarenderer.player;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -11,8 +7,13 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.util.Log;
 import fr.fladajonesjones.media.model.Piste;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A subclass of android.media.MediaPlayer which provides methods for state-management, data-source management, etc.
+ *
  * @author rootlicker http://speakingcode.com
  */
 public class StatefulMediaPlayer extends android.media.MediaPlayer implements
@@ -23,6 +24,7 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer implements
     /**
      * Set of states for StatefulMediaPlayer:<br>
      * EMPTY, CREATED, PREPARED, STARTED, PAUSED, STOPPED, ERROR
+     *
      * @author rootlicker
      */
     public enum MPStates {
@@ -51,10 +53,13 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer implements
     public void setOnCompletionListener(OnCompletionListener listener) {
         onCompletionListener = listener;
         super.setOnCompletionListener(this);
-    };
+    }
+
+    ;
 
     /**
      * Sets a StatefulMediaPlayer's data source as the provided StreamStation
+     *
      * @param audioItem the StreamStation to set as the data source
      */
     public void setAudioItem(Piste audioItem) {
@@ -79,6 +84,7 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer implements
     /**
      * Instantiates a StatefulMediaPlayer object with the Audio Stream Type set to STREAM_MUSIC and the provided
      * StreamStation's URL as the data source.
+     *
      * @param audioItem The StreamStation to use as the data source
      */
     public StatefulMediaPlayer(Piste audioItem) {
@@ -188,7 +194,7 @@ public class StatefulMediaPlayer extends android.media.MediaPlayer implements
     public boolean isPlaybackCompleted() {
         return (mState == MPStates.PLAYBACKCOMPLETED);
     }
-    
+
     public boolean isEnd() {
         return (mState == MPStates.END);
     }

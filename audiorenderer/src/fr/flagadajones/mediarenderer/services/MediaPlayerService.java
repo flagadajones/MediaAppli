@@ -1,26 +1,16 @@
 package fr.flagadajones.mediarenderer.services;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnInfoListener;
-import android.media.MediaPlayer.OnPreparedListener;
+import android.media.MediaPlayer.*;
 import android.os.IBinder;
 import android.util.Log;
-
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.media.model.Piste;
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.UpnpTransformer;
@@ -29,16 +19,11 @@ import fr.flagadajones.mediarenderer.activity.MainActivity;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerChangeSongEvent;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerErrorEvent;
 import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerSongUpdateEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerInitializeEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerNextEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPlayListEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPrevEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSeekEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSetVolumeEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.*;
 import fr.flagadajones.mediarenderer.player.StatefulMediaPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MediaPlayerService extends Service implements OnBufferingUpdateListener, OnInfoListener,
         OnPreparedListener, OnErrorListener, OnCompletionListener {
@@ -93,21 +78,21 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         } else {
             trackPosition = 0;
             playlist.clear();
-            if (event.item.getUrl().substring(event.item.getUrl().lastIndexOf('.'),event.item.getUrl().lastIndexOf('.')+4).toLowerCase().equals(".m3u")){
-                try{
+            if (event.item.getUrl().substring(event.item.getUrl().lastIndexOf('.'), event.item.getUrl().lastIndexOf('.') + 4).toLowerCase().equals(".m3u")) {
+                try {
                     M3UParser mpt = new M3UParser();
                     M3UParser.M3UHolder m3hodler = mpt.parseURL(event.item.getUrl());
                     for (int n = 0; n < m3hodler.getSize(); n++) {
-                        Piste pis= new Piste();
-                        pis.titre=m3hodler.getName(n);
-                        pis.url=m3hodler.getUrl(n);
+                        Piste pis = new Piste();
+                        pis.titre = m3hodler.getName(n);
+                        pis.url = m3hodler.getUrl(n);
                         playlist.add(pis);
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
-            playlist.add(event.item);
+            } else {
+                playlist.add(event.item);
             }
             mediaDuration = event.item.duree;
             initializePlayer();
@@ -142,6 +127,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
             initializePlayer();
             BusManager.getInstance().post(new PlayerStartEvent());
         } else {
+            trackPosition = 0;
             mMediaPlayer.reset();
         }
     }
@@ -160,7 +146,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     @Override
     public void onPrepared(MediaPlayer player) {
-   
+
         BusManager.getInstance().post(new PlayerStartEvent());
     }
 
@@ -234,6 +220,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
             stopForeground(true);
             mMediaPlayer.stop();
             mMediaPlayer.seekTo(0);
+            trackPosition = 0;
 
             if (UpdateThread.isRunning())
                 updateThread.stop();
@@ -261,12 +248,12 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
     @Subscribe
     public void onSeekTo(PlayerSeekEvent event) {
-                    if(event.seekType==0){
-                        trackPosition=event.pos;
+        if (event.seekType == 0) {
+            trackPosition = event.pos;
 
-        initializePlayer();
-        BusManager.getInstance().post(new PlayerStartEvent());
-                    }
+            initializePlayer();
+            // BusManager.getInstance().post(new PlayerStartEvent());
+        }
         //mMediaPlayer.seekTo(event.msec);
 
         BusManager.getInstance().post(updateMediaInfo());
@@ -278,6 +265,7 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
 
         playlist = event.list;
         mMediaPlayer.reset();
+        trackPosition = 0;
         if (playlist != null) {
             mediaDuration = UpnpTransformer.calculTotalTime(playlist);
         }

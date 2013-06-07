@@ -1,8 +1,5 @@
 package fr.fladajonesjones.MediaControler.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -14,34 +11,37 @@ import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.MyPagerAdapter;
 import fr.fladajonesjones.MediaControler.menu.MenuDrawerUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashBoardFragment extends Fragment {
 
-	private PagerAdapter mPagerAdapter;
+    private PagerAdapter mPagerAdapter;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
-		
-		View layout = inflater.inflate(R.layout.fragment_dashboard, null);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-		// Cr�ation de la liste de Fragments que fera d�filer le PagerAdapter
-		List<Fragment> fragments = new ArrayList<Fragment>();
+        View layout = inflater.inflate(R.layout.fragment_dashboard, null);
 
-		// Ajout des Fragments dans la liste
-		fragments.add(Fragment.instantiate(getActivity(),RendererGridFragment.class.getName()));
-		fragments.add(Fragment.instantiate(getActivity(),ServerGridFragment.class.getName()));
+        // Cr�ation de la liste de Fragments que fera d�filer le PagerAdapter
+        List<Fragment> fragments = new ArrayList<Fragment>();
 
-		// Cr�ation de l'adapter qui s'occupera de l'affichage de la liste de
-		// Fragments
-		this.mPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), fragments);
+        // Ajout des Fragments dans la liste
+        fragments.add(Fragment.instantiate(getActivity(), RendererGridFragment.class.getName()));
+        fragments.add(Fragment.instantiate(getActivity(), ServerGridFragment.class.getName()));
 
-		ViewPager pager = (ViewPager) layout.findViewById(R.id.viewpager);
-		// Affectation de l'adapter au ViewPager
-		pager.setAdapter(this.mPagerAdapter);
-		return layout;
-	}
-	
+        // Cr�ation de l'adapter qui s'occupera de l'affichage de la liste de
+        // Fragments
+        this.mPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), fragments);
+
+        ViewPager pager = (ViewPager) layout.findViewById(R.id.viewpager);
+        // Affectation de l'adapter au ViewPager
+        pager.setAdapter(this.mPagerAdapter);
+        return layout;
+    }
+
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MenuDrawerUtil.toggleMenu();

@@ -10,16 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
+import android.widget.*;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.activity.NowPlayingFragment;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
@@ -76,7 +69,7 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
                     albumName.setText(albumName.getText()
                             + " - "
                             + ((Album) renderer.getMusique()).getPistes().get(
-                                    renderer.positionInfo.getTrack().getValue().intValue()).titre);
+                            renderer.positionInfo.getTrack().getValue().intValue()).titre);
                 }
             }
             if (renderer.positionInfo != null) {
@@ -138,18 +131,18 @@ public class RendererStatusGridAdapter extends ArrayAdapter<UpnpRendererDevice> 
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                        case R.id.action_connect:
-                            renderer.setSelected(true);
-                            UpnpDeviceManager.getInstance().addRendererDevice(renderer);
-                            RendererStatusGridAdapter.this.notifyDataSetChanged();
-                            return true;
-                        case R.id.action_disconnect:
-                            renderer.setSelected(false);
-                            UpnpDeviceManager.getInstance().removeRendererDevice(renderer);
-                            RendererStatusGridAdapter.this.notifyDataSetChanged();
-                            return true;
-                        default:
-                            return false;
+                            case R.id.action_connect:
+                                renderer.setSelected(true);
+                                UpnpDeviceManager.getInstance().addRendererDevice(renderer);
+                                RendererStatusGridAdapter.this.notifyDataSetChanged();
+                                return true;
+                            case R.id.action_disconnect:
+                                renderer.setSelected(false);
+                                UpnpDeviceManager.getInstance().removeRendererDevice(renderer);
+                                RendererStatusGridAdapter.this.notifyDataSetChanged();
+                                return true;
+                            default:
+                                return false;
                         }
 
                     }

@@ -238,7 +238,7 @@ public class MySQLOpenHelper extends SQLiteOpenHelper {
     }
 
     public static void updateFav(Musique musique) {
-        musique.fav=musique.fav+1;
+        musique.fav = musique.fav + 1;
         if (musique instanceof Radio) {
             RadioDAO.getInstance().updateRadio((Radio) musique);
         } else if (musique instanceof Album) {

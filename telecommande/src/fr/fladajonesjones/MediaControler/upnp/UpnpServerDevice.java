@@ -1,10 +1,16 @@
 package fr.fladajonesjones.MediaControler.upnp;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
+import com.squareup.otto.Subscribe;
+import fr.fladajonesjones.MediaControler.Application;
+import fr.fladajonesjones.MediaControler.database.AlbumDAO;
+import fr.fladajonesjones.MediaControler.database.ArtisteDAO;
+import fr.fladajonesjones.MediaControler.database.PisteDAO;
+import fr.fladajonesjones.MediaControler.events.*;
+import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
+import fr.fladajonesjones.media.model.Album;
+import fr.fladajonesjones.media.model.Artiste;
+import fr.fladajonesjones.media.model.Piste;
+import fr.flagadajones.media.util.BusManager;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.Device;
@@ -20,31 +26,17 @@ import org.fourthline.cling.support.model.container.MusicAlbum;
 import org.fourthline.cling.support.model.item.Item;
 import org.fourthline.cling.support.model.item.MusicTrack;
 
-import android.content.IntentFilter;
-
-import com.squareup.otto.Subscribe;
-
-import fr.fladajonesjones.MediaControler.Application;
-import fr.fladajonesjones.MediaControler.database.AlbumDAO;
-import fr.fladajonesjones.MediaControler.database.ArtisteDAO;
-import fr.fladajonesjones.MediaControler.database.PisteDAO;
-import fr.fladajonesjones.MediaControler.events.UpnpServerBrowseOkEvent;
-import fr.fladajonesjones.MediaControler.events.UpnpServerEvent;
-import fr.fladajonesjones.MediaControler.events.UpnpServerFindAlbumEvent;
-import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteEvent;
-import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
-import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
-import fr.fladajonesjones.media.model.Album;
-import fr.fladajonesjones.media.model.Artiste;
-import fr.fladajonesjones.media.model.Piste;
-import fr.flagadajones.media.util.BusManager;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class UpnpServerDevice extends UpnpDevice {
     private static final Logger log = Logger.getLogger(UpnpServerDevice.class.getName());
     Service<Device, Service> contentDirectoryService = null;
-    
-    boolean browsing=false;
-    
+
+    boolean browsing = false;
+
     PisteDAO pisteDao = null;
     AlbumDAO albumDao = null;
     ArtisteDAO artisteDao = null;
@@ -55,7 +47,7 @@ public class UpnpServerDevice extends UpnpDevice {
             String noeud = listeNoeud.remove(0);
             browse(noeud, new UpnpServerBrowseOkEvent());
         } else {
-            
+
             BusManager.getInstance().unregister(this);
             Application.activity.showToast("Chargement terminé", true);
 
@@ -109,15 +101,14 @@ public class UpnpServerDevice extends UpnpDevice {
     }
 
     public void browseAlbums() {
-        if(!browsing){
-            browsing=true;
-        listeNoeud.clear();
-        IntentFilter f = new IntentFilter();
-        BusManager.getInstance().register(this);
+        if (!browsing) {
+            browsing = true;
+            listeNoeud.clear();
+            BusManager.getInstance().register(this);
 
-        initDao();
+            initDao();
 
-        browse("0", new UpnpServerBrowseOkEvent());
+            browse("0", new UpnpServerBrowseOkEvent());
         }
     }
 

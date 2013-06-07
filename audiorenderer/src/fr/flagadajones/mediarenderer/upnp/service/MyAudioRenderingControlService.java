@@ -1,5 +1,10 @@
 package fr.flagadajones.mediarenderer.upnp.service;
 
+import android.content.Context;
+import android.media.AudioManager;
+import fr.flagadajones.media.util.BusManager;
+import fr.flagadajones.mediarenderer.Application;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSetVolumeEvent;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;
 import org.fourthline.cling.support.lastchange.LastChange;
@@ -9,12 +14,6 @@ import org.fourthline.cling.support.renderingcontrol.RenderingControlException;
 import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelMute;
 import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
-
-import android.content.Context;
-import android.media.AudioManager;
-import fr.flagadajones.media.util.BusManager;
-import fr.flagadajones.mediarenderer.Application;
-import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerSetVolumeEvent;
 
 public class MyAudioRenderingControlService extends AbstractAudioRenderingControl {
     private AudioManager audMgr = (AudioManager) Application.instance.getSystemService(Context.AUDIO_SERVICE);
@@ -27,12 +26,12 @@ public class MyAudioRenderingControlService extends AbstractAudioRenderingContro
 
     @Override
     protected Channel[] getCurrentChannels() {
-        return new Channel[] { Channel.Master };
+        return new Channel[]{Channel.Master};
     }
 
     @Override
     public UnsignedIntegerFourBytes[] getCurrentInstanceIds() {
-        return new UnsignedIntegerFourBytes[] { new UnsignedIntegerFourBytes(0) };
+        return new UnsignedIntegerFourBytes[]{new UnsignedIntegerFourBytes(0)};
     }
 
     @Override

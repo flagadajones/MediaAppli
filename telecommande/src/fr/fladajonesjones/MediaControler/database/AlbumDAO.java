@@ -1,17 +1,17 @@
 package fr.fladajonesjones.MediaControler.database;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
 import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Artiste;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AlbumDAO {
     private SQLiteDatabase maBaseDonnees;
@@ -23,9 +23,9 @@ public class AlbumDAO {
 
     public Album getAlbum(String id) {
 
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[] { MySQLOpenHelper.COLONNE_ALBUM_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[]{MySQLOpenHelper.COLONNE_ALBUM_ID,
                 MySQLOpenHelper.COLONNE_ALBUM_NOM, MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK,
-                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART }, null, null, null,
+                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART}, null, null, null,
                 MySQLOpenHelper.COLONNE_ALBUM_ID + " = \"" + id + "\"", null);
 
         Album retour = cursorToAlbum(c);
@@ -37,9 +37,9 @@ public class AlbumDAO {
 
     public Album getAlbumByName(String nom) {
 
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[] { MySQLOpenHelper.COLONNE_ALBUM_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[]{MySQLOpenHelper.COLONNE_ALBUM_ID,
                 MySQLOpenHelper.COLONNE_ALBUM_NOM, MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK,
-                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART }, null, null, null,
+                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART}, null, null, null,
                 MySQLOpenHelper.COLONNE_ALBUM_NOM + " LIKE \"" + nom + "\"", null);
 
         Album retour = cursorToAlbum(c);
@@ -51,9 +51,9 @@ public class AlbumDAO {
 
     public ArrayList<Album> getAllAlbums() {
 
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[] { MySQLOpenHelper.COLONNE_ALBUM_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[]{MySQLOpenHelper.COLONNE_ALBUM_ID,
                 MySQLOpenHelper.COLONNE_ALBUM_NOM, MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK,
-                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART }, null, null, null,
+                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART}, null, null, null,
                 null, MySQLOpenHelper.COLONNE_ALBUM_NOM);
 
         ArrayList<Album> retour = cursorToAlbums(c, false);
@@ -65,7 +65,7 @@ public class AlbumDAO {
     }
 
     public ArrayList<Album> getAllAlbums(boolean complet, int number) {
-        Long debut=System.currentTimeMillis();
+        Long debut = System.currentTimeMillis();
 
         if (complet == false) {
             return getAllAlbums();
@@ -86,15 +86,15 @@ public class AlbumDAO {
 
         // Ferme le curseur pour liberer les ressources.
         c.close();
-        log.log(Level.WARNING,"getAllAlbums :"+number+" - "+(System.currentTimeMillis()-debut));
+        log.log(Level.WARNING, "getAllAlbums :" + number + " - " + (System.currentTimeMillis() - debut));
         return retour;
     }
 
     public ArrayList<Album> getAllAlbums(int artiste) {
 
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[] { MySQLOpenHelper.COLONNE_ALBUM_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_ALBUMS, new String[]{MySQLOpenHelper.COLONNE_ALBUM_ID,
                 MySQLOpenHelper.COLONNE_ALBUM_NOM, MySQLOpenHelper.COLONNE_ALBUM_NB_TRACK,
-                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART },
+                MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID, MySQLOpenHelper.COLONNE_ALBUM_ALBUM_ART},
                 MySQLOpenHelper.COLONNE_ALBUM_ARTISTE_ID + " = " + artiste, null, null, null,
                 MySQLOpenHelper.COLONNE_ALBUM_NOM);
 
@@ -209,7 +209,7 @@ public class AlbumDAO {
 
         Collections.sort(tmpAlbums);
 
-       // maBaseDonnees.setLockingEnabled(false);
+        // maBaseDonnees.setLockingEnabled(false);
         int number = 1;
         try {
             for (Album album : tmpAlbums) {
@@ -225,18 +225,18 @@ public class AlbumDAO {
                 number++;
             }
         } catch (Exception e) {
-            log.log(Level.SEVERE,"erreur",e);
+            log.log(Level.SEVERE, "erreur", e);
         } finally {
             if (ih != null)
                 ih.close();
-    //        maBaseDonnees.setLockingEnabled(true);
+            //        maBaseDonnees.setLockingEnabled(true);
         }
         tmpAlbums.clear();
 
         // Application.activity.showToast("Albums OK", true);
         // Application.instance.unregisterReceiver(mStatusListener);
 
-    
+
     }
 
 }

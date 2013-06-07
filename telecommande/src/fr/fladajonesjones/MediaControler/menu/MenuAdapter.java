@@ -1,9 +1,5 @@
 package fr.fladajonesjones.MediaControler.menu;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -12,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import fr.fladajonesjones.MediaControler.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MenuAdapter extends BaseAdapter {
 
@@ -83,10 +83,10 @@ public class MenuAdapter extends BaseAdapter {
 
         TextView tv = (TextView) v;
         tv.setText(((Item) item).mTitle);
-        Drawable draw=tv.getResources().getDrawable(((Item) item).mIconRes );
+        Drawable draw = tv.getResources().getDrawable(((Item) item).mIconRes);
         draw.setBounds(0, 0, 100, 100);
-       
-        tv.setCompoundDrawables(null,draw, null, null);
+
+        tv.setCompoundDrawables(null, draw, null, null);
         return v;
     }
 

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@null"
-    android:gravity="center"
-    android:padding="0dp" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:padding="0dp">
 
     <LinearLayout
         android:id="@+id/artisteNames"
@@ -15,7 +14,7 @@
         android:background="@null"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="0dp" >
+        android:padding="0dp">
 
         <TextView
             android:id="@+id/artisteName1"
@@ -36,9 +35,9 @@
             android:singleLine="true"
             android:text="Nom Album"
             android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
-        
+
         <TextView
 
             android:id="@+id/artisteName2"
@@ -59,7 +58,7 @@
             android:singleLine="true"
             android:text="Nom Album"
             android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/artisteName3"
@@ -79,7 +78,7 @@
             android:singleLine="true"
             android:text="Nom Album"
             android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/artisteName4"
@@ -99,7 +98,7 @@
             android:singleLine="true"
             android:text="Nom Album"
             android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/artisteName5"
@@ -119,9 +118,10 @@
             android:singleLine="true"
             android:text="Nom Album"
             android:textSize="@dimen/text_size_xlarge"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
-<LinearLayout
+
+    <LinearLayout
         android:id="@+id/albumNames"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_album_height"
@@ -129,108 +129,116 @@
         android:background="@null"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="0dp" android:paddingTop="30dp" >
-    
-            <TextView
-        android:id="@+id/albumName1"
-        android:layout_width="@dimen/album_size_gridrow"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:background="@null"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="Nom Album"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" 
-        android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"
-                android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
-        />
+        android:paddingLeft="0dp"
+        android:paddingTop="30dp">
+
         <TextView
-        android:id="@+id/albumName2"
-        android:layout_width="@dimen/album_size_gridrow"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:background="@null"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="Nom Album"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" 
-        android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+            android:id="@+id/albumName1"
+            android:layout_width="@dimen/album_size_gridrow"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Nom Album"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/album_marginTop_gridrow"
+            android:drawableTop="@drawable/bg_img_notfound3"
+            android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+            />
 
-        />
         <TextView
-        android:id="@+id/albumName3"
-        android:layout_width="@dimen/album_size_gridrow"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:background="@null"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="Nom Album"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" 
-        android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
-        />
-            <TextView
-        android:id="@+id/albumName4"
-        android:layout_width="@dimen/album_size_gridrow"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:background="@null"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="Nom Album"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" 
-        android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
-        />
-        
-    <TextView
-        android:id="@+id/albumName5"
-        android:layout_width="@dimen/album_size_gridrow"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:background="@null"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="Nom Album"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold"
+            android:id="@+id/albumName2"
+            android:layout_width="@dimen/album_size_gridrow"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Nom Album"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/album_marginTop_gridrow"
+            android:drawableTop="@drawable/bg_img_notfound3"
+            android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
 
-        android:layout_marginTop="@dimen/album_marginTop_gridrow"
-        
-        android:drawableTop="@drawable/bg_img_notfound3"   android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
-        />
+            />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/albumName3"
+            android:layout_width="@dimen/album_size_gridrow"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Nom Album"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/album_marginTop_gridrow"
+            android:drawableTop="@drawable/bg_img_notfound3"
+            android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+            />
+
+        <TextView
+            android:id="@+id/albumName4"
+            android:layout_width="@dimen/album_size_gridrow"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Nom Album"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/album_marginTop_gridrow"
+            android:drawableTop="@drawable/bg_img_notfound3"
+            android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+            />
+
+        <TextView
+            android:id="@+id/albumName5"
+            android:layout_width="@dimen/album_size_gridrow"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Nom Album"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+
+            android:layout_marginTop="@dimen/album_marginTop_gridrow"
+
+            android:drawableTop="@drawable/bg_img_notfound3"
+            android:paddingTop="@dimen/album_paddingtop_artistename_gridrow"
+            />
+
+    </LinearLayout>
 </RelativeLayout>

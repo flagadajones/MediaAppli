@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_connect"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/connect"/>
-     <item
+    <item
         android:id="@+id/action_disconnect"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:icon="@drawable/ic_action_refresh"
-        android:title="@string/disconnect"/>  
+        android:title="@string/disconnect"/>
 </menu> 

@@ -1,19 +1,5 @@
 package fr.fladajonesjones.MediaControler.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.fourthline.cling.android.AndroidUpnpService;
-import org.fourthline.cling.model.message.header.UDADeviceTypeHeader;
-import org.fourthline.cling.model.message.header.UDNHeader;
-import org.fourthline.cling.model.meta.Device;
-import org.fourthline.cling.model.meta.LocalDevice;
-import org.fourthline.cling.model.meta.RemoteDevice;
-import org.fourthline.cling.model.types.UDADeviceType;
-import org.fourthline.cling.model.types.UDN;
-import org.fourthline.cling.registry.DefaultRegistryListener;
-import org.fourthline.cling.registry.Registry;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +16,19 @@ import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpService;
 import fr.flagadajones.media.util.BusManager;
+import org.fourthline.cling.android.AndroidUpnpService;
+import org.fourthline.cling.model.message.header.UDADeviceTypeHeader;
+import org.fourthline.cling.model.message.header.UDNHeader;
+import org.fourthline.cling.model.meta.Device;
+import org.fourthline.cling.model.meta.LocalDevice;
+import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.model.types.UDADeviceType;
+import org.fourthline.cling.model.types.UDN;
+import org.fourthline.cling.registry.DefaultRegistryListener;
+import org.fourthline.cling.registry.Registry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpnpDeviceManager {
     private static String MEDIARENDERER_TYPE = "urn:schemas-upnp-org:device:MediaRenderer:1";
@@ -106,12 +105,12 @@ public class UpnpDeviceManager {
     }
 
     public void setLibraryDevice(UpnpServerDevice device) {
-        
+
         if (libraryDevice != null)
             deviceDAO.removeDevice(libraryDevice.getUdn());
-if(device!=null){
-        deviceDAO.insertDevice(device);
-}
+        if (device != null) {
+            deviceDAO.insertDevice(device);
+        }
         libraryDevice = device;
 
     }
@@ -163,10 +162,12 @@ if(device!=null){
 
             deviceAdded(device);
         }
-@Override
-public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
-    deviceAdded(device);
-}
+
+        @Override
+        public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
+            deviceAdded(device);
+        }
+
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
             deviceRemoved(device);
@@ -242,6 +243,8 @@ public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
             }
 
         }
-    };
+    }
+
+    ;
 
 }

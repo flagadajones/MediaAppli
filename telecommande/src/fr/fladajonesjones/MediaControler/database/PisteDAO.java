@@ -1,13 +1,13 @@
 package fr.fladajonesjones.MediaControler.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
 import fr.fladajonesjones.media.model.Piste;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PisteDAO {
     private SQLiteDatabase maBaseDonnees;
@@ -17,9 +17,9 @@ public class PisteDAO {
     }
 
     public Piste getPiste(int id) {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[] { MySQLOpenHelper.COLONNE_PISTE_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[]{MySQLOpenHelper.COLONNE_PISTE_ID,
                 MySQLOpenHelper.COLONNE_PISTE_NOM, MySQLOpenHelper.COLONNE_PISTE_DUREE,
-                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL },
+                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL},
                 MySQLOpenHelper.COLONNE_PISTE_ID + " = " + id, null, null, null, null);
 
         Piste retour = cursorToPiste(c);
@@ -29,9 +29,9 @@ public class PisteDAO {
     }
 
     public Piste getPiste(String nom) {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[] { MySQLOpenHelper.COLONNE_PISTE_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[]{MySQLOpenHelper.COLONNE_PISTE_ID,
                 MySQLOpenHelper.COLONNE_PISTE_NOM, MySQLOpenHelper.COLONNE_PISTE_DUREE,
-                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL },
+                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL},
                 MySQLOpenHelper.COLONNE_PISTE_NOM + " LIKE \"" + nom + "\"", null, null, null, null);
 
         Piste retour = cursorToPiste(c);
@@ -41,9 +41,9 @@ public class PisteDAO {
     }
 
     public ArrayList<Piste> getAllPistes() {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[] { MySQLOpenHelper.COLONNE_PISTE_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[]{MySQLOpenHelper.COLONNE_PISTE_ID,
                 MySQLOpenHelper.COLONNE_PISTE_NOM, MySQLOpenHelper.COLONNE_PISTE_DUREE,
-                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL }, null, null, null, null,
+                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL}, null, null, null, null,
                 MySQLOpenHelper.COLONNE_PISTE_NOM);
 
         ArrayList<Piste> retour = cursorToPistes(c);
@@ -53,9 +53,9 @@ public class PisteDAO {
     }
 
     public ArrayList<Piste> getAllPistes(String album) {
-        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[] { MySQLOpenHelper.COLONNE_PISTE_ID,
+        Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_PISTES, new String[]{MySQLOpenHelper.COLONNE_PISTE_ID,
                 MySQLOpenHelper.COLONNE_PISTE_NOM, MySQLOpenHelper.COLONNE_PISTE_DUREE,
-                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL },
+                MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID, MySQLOpenHelper.COLONNE_PISTE_URL},
                 MySQLOpenHelper.COLONNE_PISTE_ALBUM_ID + " = \"" + album + "\"", null, null, null, null);
 
         ArrayList<Piste> retour = cursorToPistes(c);
@@ -135,7 +135,7 @@ public class PisteDAO {
         return maBaseDonnees.delete(MySQLOpenHelper.TABLE_PISTES, where, whereArgs);
     }
 
-    
+
     public void insertPistes(List<Piste> tmpPistes) {
         if (tmpPistes == null || tmpPistes.size() == 0)
             return;
@@ -150,7 +150,7 @@ public class PisteDAO {
         final int nom = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_NOM);
         final int url = ih.getColumnIndex(MySQLOpenHelper.COLONNE_PISTE_URL);
 
-      //  maBaseDonnees.setLockingEnabled(false);
+        //  maBaseDonnees.setLockingEnabled(false);
         try {
             for (Piste piste : tmpPistes) {
                 ih.prepareForReplace();
@@ -166,7 +166,7 @@ public class PisteDAO {
         } finally {
             if (ih != null)
                 ih.close();
-       //     maBaseDonnees.setLockingEnabled(true);
+            //     maBaseDonnees.setLockingEnabled(true);
         }
         tmpPistes.clear();
         // Application.activity.showToast("Pistes OK", true);

@@ -1,19 +1,19 @@
 package fr.fladajonesjones.MediaControler.activity;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import fr.fladajonesjones.MediaControler.R;
 
-public class SettingsActivity extends PreferenceActivity{
+import java.util.List;
+
+public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        }
-    
+    }
+
     /**
      * Populate the activity with the top-level headers.
      */
@@ -22,7 +22,7 @@ public class SettingsActivity extends PreferenceActivity{
         loadHeadersFromResource(R.xml.preference_headers, target);
     }
 
-    
+
     /**
      * This fragment shows the preferences for the first header.
      */
@@ -42,7 +42,5 @@ public class SettingsActivity extends PreferenceActivity{
         }
     }
 
-    
 
-  
 }

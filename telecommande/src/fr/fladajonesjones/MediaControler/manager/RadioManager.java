@@ -1,5 +1,19 @@
 package fr.fladajonesjones.MediaControler.manager;
 
+import android.content.Context;
+import android.net.http.AndroidHttpClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fr.fladajonesjones.MediaControler.database.RadioDAO;
+import fr.fladajonesjones.MediaControler.database.VersionDAO;
+import fr.fladajonesjones.media.model.Radio;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,23 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-
-import android.content.Context;
-import android.net.http.AndroidHttpClient;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import fr.fladajonesjones.MediaControler.database.RadioDAO;
-import fr.fladajonesjones.MediaControler.database.VersionDAO;
-import fr.fladajonesjones.media.model.Radio;
 
 public class RadioManager {
     Context context;
@@ -40,28 +37,28 @@ public class RadioManager {
         this.context = context;
     }
 
-    public List<Radio> getFav(int number){
-        
+    public List<Radio> getFav(int number) {
+
         return radioDao.getAllRadioFav(number);
     }
-    
+
     public List<Radio> parse() {
         if (!isUpdated()) {
             radios = parseJson();
             radioDao.insertRadios(radios);
             versionDao.updateVersionRadio(version);
-            
+
         } else {
             radios = radioDao.getAllRadio();
 
-            
+
         }
 
         return radios;
     }
 
     public boolean isUpdated() {
-        boolean result = false;
+        boolean result = true;
         AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android");
         HttpResponse response;
         StringBuilder responseString = new StringBuilder();
@@ -93,10 +90,10 @@ public class RadioManager {
                 throw new IOException(statusLine.getReasonPhrase());
             }
         } catch (ClientProtocolException e) {
-            log.log(Level.SEVERE,"Error",e);
+            log.log(Level.SEVERE, "Error", e);
 
         } catch (IOException e) {
-            log.log(Level.SEVERE,"Error",e);
+            log.log(Level.SEVERE, "Error", e);
         } finally {
             httpClient.close();
         }

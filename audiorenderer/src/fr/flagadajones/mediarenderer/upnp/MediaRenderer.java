@@ -1,21 +1,17 @@
 package fr.flagadajones.mediarenderer.upnp;
 
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import fr.flagadajones.mediarenderer.Application;
+import fr.flagadajones.mediarenderer.upnp.service.MyAVTransportService;
+import fr.flagadajones.mediarenderer.upnp.service.MyAudioRenderingControlService;
+import fr.flagadajones.mediarenderer.upnp.service.MyConnectionManagerService;
 import org.fourthline.cling.binding.LocalServiceBinder;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.fourthline.cling.model.DefaultServiceManager;
 import org.fourthline.cling.model.ServiceManager;
 import org.fourthline.cling.model.ValidationException;
-import org.fourthline.cling.model.meta.DeviceDetails;
-import org.fourthline.cling.model.meta.DeviceIdentity;
-import org.fourthline.cling.model.meta.Icon;
-import org.fourthline.cling.model.meta.LocalDevice;
-import org.fourthline.cling.model.meta.LocalService;
-import org.fourthline.cling.model.meta.ManufacturerDetails;
-import org.fourthline.cling.model.meta.ModelDetails;
+import org.fourthline.cling.model.meta.*;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportLastChangeParser;
@@ -24,12 +20,9 @@ import org.fourthline.cling.support.lastchange.LastChangeAwareServiceManager;
 import org.fourthline.cling.support.lastchange.LastChangeParser;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlLastChangeParser;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import fr.flagadajones.mediarenderer.Application;
-import fr.flagadajones.mediarenderer.upnp.service.MyAVTransportService;
-import fr.flagadajones.mediarenderer.upnp.service.MyAudioRenderingControlService;
-import fr.flagadajones.mediarenderer.upnp.service.MyConnectionManagerService;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MediaRenderer {
 
@@ -99,8 +92,8 @@ public class MediaRenderer {
             device = new LocalDevice(new DeviceIdentity(new UDN(uuid)), new UDADeviceType("MediaRenderer", 1),
                     new DeviceDetails("Fj on " + preferences.getString("nomRenderer", android.os.Build.DEVICE),
                             new ManufacturerDetails("Fj", NAMESPACE), new ModelDetails("Fj MediaRenderer", "Test", "1",
-                                    NAMESPACE)), new Icon[] { createDefaultDeviceIcon() }, new LocalService[] {
-                            avTransportService, renderingControlService, connectionManagerService });
+                            NAMESPACE)), new Icon[]{createDefaultDeviceIcon()}, new LocalService[]{
+                    avTransportService, renderingControlService, connectionManagerService});
 
         } catch (ValidationException ex) {
             log.log(Level.SEVERE, ex.getMessage(), ex);

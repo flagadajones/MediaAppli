@@ -11,9 +11,8 @@ public class MyRendererUpnpService extends AndroidUpnpServiceImpl {
 
     @Override
     protected UpnpServiceConfiguration createConfiguration() {
-        return new AndroidUpnpServiceConfiguration() ;
+        return new AndroidUpnpServiceConfiguration();
     }
-    
-    
+
 
 }

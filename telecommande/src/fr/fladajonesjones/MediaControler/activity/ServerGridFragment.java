@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-
 import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.ServerGridAdapter;
 import fr.fladajonesjones.MediaControler.events.UpnpServerAddEvent;
@@ -20,22 +18,24 @@ import fr.flagadajones.media.util.BusManager;
 public class ServerGridFragment extends Fragment {
 
     @Subscribe
-    public void onServerDeviceAdded(final  UpnpServerAddEvent event) {
-         getActivity().runOnUiThread(new Runnable() {
-         public void run() {
-        if (serverListAdapter.getPosition(event.device) == -1)
-            serverListAdapter.add(event.device);
-        else
-            serverListAdapter.notifyDataSetChanged();
-         }});
+    public void onServerDeviceAdded(final UpnpServerAddEvent event) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                if (serverListAdapter.getPosition(event.device) == -1)
+                    serverListAdapter.add(event.device);
+                else
+                    serverListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Subscribe
     public void onServerDeviceRemoved(final UpnpServerRemoveEvent event) {
-         getActivity().runOnUiThread(new Runnable() {
-         public void run() {
-        serverListAdapter.remove(event.device);
-         }});
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                serverListAdapter.remove(event.device);
+            }
+        });
     }
 
     // private static final Logger log =
@@ -58,10 +58,12 @@ public class ServerGridFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MenuDrawerUtil.toggleMenu();
-    };
+    }
+
+    ;
 
     private void initServerList(LayoutInflater inflater, View layout) {
-        
+
         GridView serverListView = (GridView) layout.findViewById(R.id.server_gridview);
         serverListAdapter = new ServerGridAdapter(getActivity());
 
@@ -72,10 +74,9 @@ public class ServerGridFragment extends Fragment {
             serverListAdapter.addAll(UpnpDeviceManager.getInstance().lstServer);
         serverListView.setAdapter(serverListAdapter);
 
-      
+
     }
 
-    
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

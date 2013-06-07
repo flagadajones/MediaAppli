@@ -1,1 +1,125 @@
-<DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sec="http://www.sec.co.kr/"><container id="0$1$12$6054" parentID="0" restricted="1" searchable="0"><dc:title>Les Dix Commandements</dc:title><upnp:class>object.container.album.musicAlbum</upnp:class><upnp:albumArtURI>http://192.168.0.32:9000/disk/DLNA-PNJPEG_TN-OP01-CI1-FLAGS00f00000/defaultalbumart/a_u_d_i_o.jpg/O0$1$8I414474.jpg?scale=160x160</upnp:albumArtURI><upnp:albumArtURI>http://192.168.0.32:9000/disk/DLNA-PNJPEG_TN-OP01-CI1-FLAGS00f00000/defaultalbumart/a_u_d_i_o.jpg/O0$1$8I414474.jpg?scale=160x160</upnp:albumArtURI><item id="0$1$12$6054R414474" parentID="0$1$12$6054" restricted="0"><dc:title>Je laisse à l'abandon</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:16">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414474.mp3</res></item><item id="0$1$12$6054R416778" parentID="0$1$12$6054" restricted="0"><dc:title>Il s'appellera Moïse</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:03:15">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416778.mp3</res></item><item id="0$1$12$6054R415498" parentID="0$1$12$6054" restricted="0"><dc:title>Le dilemme</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:02">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I415498.mp3</res></item><item id="0$1$12$6054R414218" parentID="0$1$12$6054" restricted="0"><dc:title>A chacun son rêve</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:51">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414218.mp3</res></item><item id="0$1$12$6054R417034" parentID="0$1$12$6054" restricted="0"><dc:title>La peine maximum</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:48">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I417034.mp3</res></item><item id="0$1$12$6054R414730" parentID="0$1$12$6054" restricted="0"><dc:title>Oh Moïse</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:05:42">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414730.mp3</res></item><item id="0$1$12$6054R417290" parentID="0$1$12$6054" restricted="0"><dc:title>Il est celui que je voulais</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:05:10">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I417290.mp3</res></item><item id="0$1$12$6054R415242" parentID="0$1$12$6054" restricted="0"><dc:title>Mais tu t'en vas</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:05:37">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I415242.mp3</res></item><item id="0$1$12$6054R416266" parentID="0$1$12$6054" restricted="0"><dc:title>Laisse mon peuple s'en aller</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:19">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416266.mp3</res></item><item id="0$1$12$6054R416522" parentID="0$1$12$6054" restricted="0"><dc:title>L-I-B-R-E</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:50">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416522.mp3</res></item><item id="0$1$12$6054R414986" parentID="0$1$12$6054" restricted="0"><dc:title>Devant la mer</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:34">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414986.mp3</res></item><item id="0$1$12$6054R417546" parentID="0$1$12$6054" restricted="0"><dc:title>Mon frère</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:56">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I417546.mp3</res></item><item id="0$1$12$6054R415754" parentID="0$1$12$6054" restricted="0"><dc:title>Les dix commandments</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:06:05">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I415754.mp3</res></item><item id="0$1$12$6054R416010" parentID="0$1$12$6054" restricted="0"><dc:title>L'envie d'aimer (Final)</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><upnp:album>Les Dix Commandements</upnp:album><res protocolInfo="http-get:*:audio/mp3:*" duration="0:06:30">http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416010.mp3</res></item></container></DIDL-Lite>
+<DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/"
+           xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <container id="0$1$12$6054" parentID="0" restricted="1" searchable="0">
+        <dc:title>Les Dix Commandements</dc:title>
+        <upnp:class>object.container.album.musicAlbum</upnp:class>
+        <upnp:albumArtURI>
+            http://192.168.0.32:9000/disk/DLNA-PNJPEG_TN-OP01-CI1-FLAGS00f00000/defaultalbumart/a_u_d_i_o.jpg/O0$1$8I414474.jpg?scale=160x160
+        </upnp:albumArtURI>
+        <upnp:albumArtURI>
+            http://192.168.0.32:9000/disk/DLNA-PNJPEG_TN-OP01-CI1-FLAGS00f00000/defaultalbumart/a_u_d_i_o.jpg/O0$1$8I414474.jpg?scale=160x160
+        </upnp:albumArtURI>
+        <item id="0$1$12$6054R414474" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Je laisse à l'abandon</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:16">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414474.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R416778" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Il s'appellera Moïse</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:03:15">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416778.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R415498" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Le dilemme</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:02">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I415498.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R414218" parentID="0$1$12$6054" restricted="0">
+            <dc:title>A chacun son rêve</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:51">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414218.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R417034" parentID="0$1$12$6054" restricted="0">
+            <dc:title>La peine maximum</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:48">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I417034.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R414730" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Oh Moïse</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:05:42">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414730.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R417290" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Il est celui que je voulais</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:05:10">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I417290.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R415242" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Mais tu t'en vas</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:05:37">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I415242.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R416266" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Laisse mon peuple s'en aller</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:19">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416266.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R416522" parentID="0$1$12$6054" restricted="0">
+            <dc:title>L-I-B-R-E</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:50">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416522.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R414986" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Devant la mer</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:34">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I414986.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R417546" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Mon frère</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:04:56">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I417546.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R415754" parentID="0$1$12$6054" restricted="0">
+            <dc:title>Les dix commandments</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:06:05">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I415754.mp3
+            </res>
+        </item>
+        <item id="0$1$12$6054R416010" parentID="0$1$12$6054" restricted="0">
+            <dc:title>L'envie d'aimer (Final)</dc:title>
+            <upnp:class>object.item.audioItem.musicTrack</upnp:class>
+            <upnp:album>Les Dix Commandements</upnp:album>
+            <res protocolInfo="http-get:*:audio/mp3:*" duration="0:06:30">
+                http://192.168.0.32:9000/disk/DLNA-PNMP3-OP01-FLAGS01700000/O0$1$8I416010.mp3
+            </res>
+        </item>
+    </container>
+</DIDL-Lite>

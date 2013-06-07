@@ -1,13 +1,13 @@
 package fr.fladajonesjones.MediaControler.database;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import fr.fladajonesjones.MediaControler.upnp.UpnpDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.MediaControler.upnp.UpnpServerDevice;
+
+import java.util.ArrayList;
 
 public class DeviceDAO {
     private SQLiteDatabase maBaseDonnees;
@@ -20,8 +20,8 @@ public class DeviceDAO {
 
     public ArrayList<UpnpDevice> getAllDevice() {
         Cursor c = maBaseDonnees
-                .query(MySQLOpenHelper.TABLE_DEVICES, new String[] { MySQLOpenHelper.COLONNE_DEVICE_UDN,
-                        MySQLOpenHelper.COLONNE_DEVICE_TYPE }, null, null, null, null, null);
+                .query(MySQLOpenHelper.TABLE_DEVICES, new String[]{MySQLOpenHelper.COLONNE_DEVICE_UDN,
+                        MySQLOpenHelper.COLONNE_DEVICE_TYPE}, null, null, null, null, null);
         //
         if (c.getCount() == 0) {
 

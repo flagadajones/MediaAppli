@@ -17,11 +17,11 @@
     <dimen name="audio_player_controls_height">80dp</dimen>
 
     <!-- now playing -->
-        <dimen name="SeekWidth">270dp</dimen>
+    <dimen name="SeekWidth">270dp</dimen>
     <dimen name="SeekHeight">135dp</dimen>
     <dimen name="SeekLayoutWidth">290dp</dimen>
     <dimen name="ImagePlayerSize">100dp</dimen>
-<dimen name="ButtonPlayerSize">72dp</dimen>
+    <dimen name="ButtonPlayerSize">72dp</dimen>
 
 
     <!-- album grid row-->

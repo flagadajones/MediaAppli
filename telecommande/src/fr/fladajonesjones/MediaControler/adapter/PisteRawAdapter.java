@@ -16,10 +16,11 @@ import fr.flagadajones.media.util.BusManager;
 public class PisteRawAdapter extends ArrayAdapter<Piste> {
 
     private LayoutInflater inflater;
-                                                                      private UpnpRendererDevice renderer;
-    public PisteRawAdapter(Context context,UpnpRendererDevice renderer) {
+    private UpnpRendererDevice renderer;
+
+    public PisteRawAdapter(Context context, UpnpRendererDevice renderer) {
         super(context, -1);
-        this.renderer=renderer;
+        this.renderer = renderer;
 
         inflater = ((Activity) context).getLayoutInflater();
 
@@ -43,7 +44,7 @@ public class PisteRawAdapter extends ArrayAdapter<Piste> {
             holder = (PisteRowHolder) row.getTag();
         }
         Piste item = getItem(position);
-        if(renderer.positionInfo!=null && position==renderer.positionInfo.getTrack().getValue())
+        if (renderer.positionInfo != null && position == renderer.positionInfo.getTrack().getValue())
             row.setBackgroundColor(getContext().getResources().getColor(android.R.color.holo_green_light));
         else
             row.setBackgroundColor(0);
@@ -54,7 +55,7 @@ public class PisteRawAdapter extends ArrayAdapter<Piste> {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BusManager.getInstance().post(new NowPlayingSeekEvent(NowPlayingSeekEvent.TRACK_NB,position));
+                BusManager.getInstance().post(new NowPlayingSeekEvent(NowPlayingSeekEvent.TRACK_NB, position));
             }
         });
 

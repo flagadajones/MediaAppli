@@ -1,7 +1,6 @@
 package fr.fladajonesjones.MediaControler;
 
 import com.squareup.picasso.Picasso;
-
 import fr.fladajonesjones.MediaControler.activity.DashBoardActivity;
 import fr.fladajonesjones.MediaControler.database.MySQLOpenHelper;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
@@ -14,18 +13,15 @@ public class Application extends android.app.Application {
     static public ImageLoader imageLoader = null;
 
 
-
-    
     //////////////  default
     static public Application instance;
-    
-    static int i;
-    
-    
-    /////////////////  Application    
-    
 
-  
+    static int i;
+
+
+    /////////////////  Application    
+
+
     @Override
     public void onTerminate() {
         // TODO Auto-generated method stub
@@ -34,9 +30,9 @@ public class Application extends android.app.Application {
     }
 
     static public DashBoardActivity activity;
-    
 
-    public void onStop(){
+
+    public void onStop() {
      /*   HttpResponseCache cache = HttpResponseCache.getInstalled();
 
         if (cache != null) {
@@ -44,12 +40,12 @@ public class Application extends android.app.Application {
         }
         */
     }
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        imageLoader = new ImageLoader(getApplicationContext(),R.drawable.stub);
+        imageLoader = new ImageLoader(getApplicationContext(), R.drawable.stub);
 
         MySQLOpenHelper.getInstance(getApplicationContext());
 
@@ -64,46 +60,46 @@ public class Application extends android.app.Application {
             }
         */
         Picasso.with(this).setDebugging(true);
-      //  initMock();
+        //  initMock();
 
     }
 
-    
-    private void initMock(){
-        
-        UpnpServerDevice server= new UpnpServerDevice();
+
+    private void initMock() {
+
+        UpnpServerDevice server = new UpnpServerDevice();
         server.setUdn("server1");
-        server.icone="http://localhost/toto.pnp";
-        
+        server.icone = "http://localhost/toto.pnp";
+
         UpnpDeviceManager.getInstance().lstServer.add(server);
-        server= new UpnpServerDevice();
+        server = new UpnpServerDevice();
         server.setUdn("server2");
-        server.icone="http://localhost/toto.pnp";
-        
+        server.icone = "http://localhost/toto.pnp";
+
         UpnpDeviceManager.getInstance().lstServer.add(server);
-        server= new UpnpServerDevice();
+        server = new UpnpServerDevice();
         server.setUdn("server3");
-        server.icone="http://localhost/toto.pnp";
-        
+        server.icone = "http://localhost/toto.pnp";
+
         UpnpDeviceManager.getInstance().lstServer.add(server);
-        
+
         UpnpRendererDevice renderer = new UpnpRendererDevice();
         renderer.setUdn("renderer1");
-        renderer.icone="http://localhost/toto.pnp";
-        renderer.connected=true;
+        renderer.icone = "http://localhost/toto.pnp";
+        renderer.connected = true;
         UpnpDeviceManager.getInstance().lstRenderer.add(renderer);
         renderer = new UpnpRendererDevice();
         renderer.setUdn("renderer2");
-        renderer.icone="http://localhost/toto.pnp";
+        renderer.icone = "http://localhost/toto.pnp";
         UpnpDeviceManager.getInstance().lstRenderer.add(renderer);
         renderer = new UpnpRendererDevice();
         renderer.setUdn("renderer3");
-        renderer.icone="http://localhost/toto.pnp";
+        renderer.icone = "http://localhost/toto.pnp";
         UpnpDeviceManager.getInstance().lstRenderer.add(renderer);
 
         MySQLOpenHelper.getInstance(getApplicationContext()).initMock();
 
     }
-  
- 
+
+
 }

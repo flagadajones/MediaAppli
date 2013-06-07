@@ -1,9 +1,9 @@
 package fr.fladajonesjones.MediaControler.upnp;
 
-import java.util.Comparator;
-
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.RemoteDevice;
+
+import java.util.Comparator;
 
 public class UpnpDevice {
 

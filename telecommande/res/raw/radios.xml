@@ -2,9 +2,10 @@
 <radios>
 
     <radio>
-        <name>France Bleu Basse Normandie </name>
-         <image>http://upload.wikimedia.org/wikipedia/fr/thumb/6/62/Logo_France_Bleu.png/599px-Logo_France_Bleu.png</image>
-          <flux>http://mp3.live.tv-radio.com/fbbassenormandie/all/fbbassenormandie.mp3</flux>
+        <name>France Bleu Basse Normandie</name>
+        <image>http://upload.wikimedia.org/wikipedia/fr/thumb/6/62/Logo_France_Bleu.png/599px-Logo_France_Bleu.png
+        </image>
+        <flux>http://mp3.live.tv-radio.com/fbbassenormandie/all/fbbassenormandie.mp3</flux>
     </radio>
     <radio>
         <name>Le Mouv'</name>

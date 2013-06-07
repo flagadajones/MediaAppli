@@ -10,9 +10,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-
 import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.MediaControler.adapter.DeviceGridAdapter;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
 import fr.fladajonesjones.MediaControler.manager.UpnpDeviceManager;
@@ -66,12 +64,12 @@ public class DialogRendererSelector {
                     }
 
                 }).setNegativeButton("Une Seule Fois", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // dialog.cancel();
-                        playMusique();
+            public void onClick(DialogInterface dialog, int id) {
+                // dialog.cancel();
+                playMusique();
 
-                    }
-                });
+            }
+        });
         AlertDialog alert = builder.create();
         alert.requestWindowFeature(Window.FEATURE_LEFT_ICON);
         alert.show();
@@ -79,18 +77,17 @@ public class DialogRendererSelector {
     }
 
     private static void playMusique() {
-       if(selectedDevice!=null){
-        if(musique instanceof Album) {
-        if (((Album)musique).isPisteLoaded()) {
-            selectedDevice.playMusique(musique);
-        } else {
-            BusManager.getInstance().register(eventSub);
-            UpnpDeviceManager.getInstance().libraryDevice.loadPiste(musique.upnpId);
-        }
-        }
-        else
-            selectedDevice.playMusique(musique);
+        if (selectedDevice != null) {
+            if (musique instanceof Album) {
+                if (((Album) musique).isPisteLoaded()) {
+                    selectedDevice.playMusique(musique);
+                } else {
+                    BusManager.getInstance().register(eventSub);
+                    UpnpDeviceManager.getInstance().libraryDevice.loadPiste(musique.upnpId);
+                }
+            } else
+                selectedDevice.playMusique(musique);
 
-       }
+        }
     }
 }

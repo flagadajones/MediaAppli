@@ -1,12 +1,5 @@
 package fr.fladajonesjones.MediaControler.adapter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
-
 import fr.fladajonesjones.MediaControler.DialogRendererSelector;
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.events.UpnpServerLoadingPisteOkEvent;
@@ -29,6 +20,8 @@ import fr.fladajonesjones.MediaControler.upnp.UpnpRendererDevice;
 import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 
+import java.util.*;
+
 public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 
     Activity activity;
@@ -38,20 +31,19 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 
     String[] sections;
 
-   static Album album;
+    static Album album;
     static UpnpRendererDevice selectedDevice;
-    
-    static Object eventSub = new Object(){
-    @Subscribe public void onUpnpServerLoadingPisteOk(UpnpServerLoadingPisteOkEvent event){
+
+    static Object eventSub = new Object() {
+        @Subscribe
+        public void onUpnpServerLoadingPisteOk(UpnpServerLoadingPisteOkEvent event) {
             BusManager.getInstance().unregister(this);
-            
+
             selectedDevice.playMusique(album);
         }
     };
-    
-    
 
-    
+
     private View.OnClickListener myOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -64,32 +56,31 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
             if (UpnpDeviceManager.getInstance().rendererDevice.size() == 0) {
                 return;
             } else if (UpnpDeviceManager.getInstance().getDefaultRenderer() != null) {
-            	selectedDevice=UpnpDeviceManager.getInstance().getDefaultRenderer();
-            	playMusique(selectedDevice,album);
-            	
+                selectedDevice = UpnpDeviceManager.getInstance().getDefaultRenderer();
+                playMusique(selectedDevice, album);
+
             } else if (UpnpDeviceManager.getInstance().rendererDevice.size() == 1) {
-            	selectedDevice = UpnpDeviceManager.getInstance().rendererDevice.get(0);
-                playMusique(selectedDevice,album);
+                selectedDevice = UpnpDeviceManager.getInstance().rendererDevice.get(0);
+                playMusique(selectedDevice, album);
             } else {
-                DialogRendererSelector.createDialogSelectionDevice(activity,album, holder.albumName.getCompoundDrawables()[1]);
+                DialogRendererSelector.createDialogSelectionDevice(activity, album, holder.albumName.getCompoundDrawables()[1]);
             }
 
         }
     };
-    
-    private static void playMusique(UpnpRendererDevice selectedDevice,Album album){
-        
+
+    private static void playMusique(UpnpRendererDevice selectedDevice, Album album) {
+
         if (album.isPisteLoaded()) {
             selectedDevice.playMusique(album);
         } else {
             BusManager.getInstance().register(eventSub);
 
-           UpnpDeviceManager.getInstance().libraryDevice.loadPiste(album.upnpId);
+            UpnpDeviceManager.getInstance().libraryDevice.loadPiste(album.upnpId);
         }
-        
+
     }
-    
-  
+
 
     private final Object mLock = new Object();
 
@@ -97,7 +88,7 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
     public RowGridAdapter(Activity context) {
         super();
         this.activity = context;
-    
+
 
     }
 
@@ -204,11 +195,11 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
         for (RowArtiste iterable_element : item.lstArtiste) {
             TextView t = holder.artisteNames[num];
             t.setText(iterable_element.artiste.getNom());
-            LinearLayout.LayoutParams firstLayoutParam=(LinearLayout.LayoutParams)t.getLayoutParams();
-            LinearLayout.LayoutParams newLayoutParam=new LinearLayout.LayoutParams(firstLayoutParam.width, firstLayoutParam.height, iterable_element.nbAlbum);
-            newLayoutParam.setMargins(firstLayoutParam.leftMargin,firstLayoutParam.topMargin,firstLayoutParam.rightMargin,firstLayoutParam.bottomMargin);
+            LinearLayout.LayoutParams firstLayoutParam = (LinearLayout.LayoutParams) t.getLayoutParams();
+            LinearLayout.LayoutParams newLayoutParam = new LinearLayout.LayoutParams(firstLayoutParam.width, firstLayoutParam.height, iterable_element.nbAlbum);
+            newLayoutParam.setMargins(firstLayoutParam.leftMargin, firstLayoutParam.topMargin, firstLayoutParam.rightMargin, firstLayoutParam.bottomMargin);
             t.setLayoutParams(newLayoutParam);
-           // t.setBackgroundColor(iterable_element.color);
+            // t.setBackgroundColor(iterable_element.color);
             t.setVisibility(View.VISIBLE);
             num++;
         }
@@ -227,34 +218,34 @@ public class RowGridAdapter extends BaseAdapter implements SectionIndexer {
 //            holderAlbum.albumIcone.setTag(tag);
 //            Application.thumbnailImageLoader.getLoader().load(holderAlbum.albumIcone);
 
-          //  holderAlbum.albumName.setCompoundDrawables(null,activity.getResources().getDrawable(R.drawable.stub),null,null);
+            //  holderAlbum.albumName.setCompoundDrawables(null,activity.getResources().getDrawable(R.drawable.stub),null,null);
             Picasso.with(activity).load(iterable_element.albumArt).placeholder(R.drawable.stub)
-                    .error(R.drawable.bg_img_notfound3).resize(80,80).into(holderAlbum.albumName);
+                    .error(R.drawable.bg_img_notfound3).resize(80, 80).into(holderAlbum.albumName);
 
             //Application.imageLoader.DisplayImage(iterable_element.icone,  holderAlbum.albumIcone);
 
-           // Application.imageLoader.DisplayImage(iterable_element.albumArt,  holderAlbum.albumName);
-            
+            // Application.imageLoader.DisplayImage(iterable_element.albumArt,  holderAlbum.albumName);
+
             numAlbum++;
         }
         for (int i = numAlbum; i < 5; i++) {
-        	AlbumHolder holderAlbum = holder.albums[i];
-        	TextView t = holderAlbum.albumName;
+            AlbumHolder holderAlbum = holder.albums[i];
+            TextView t = holderAlbum.albumName;
             t.setVisibility(View.INVISIBLE);
         }
-        if (numAlbum<5){
-        	TextView t = holder.artisteNames[num];
+        if (numAlbum < 5) {
+            TextView t = holder.artisteNames[num];
             t.setText("");
 //            t.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5-num));
-            LinearLayout.LayoutParams firstLayoutParam=(LinearLayout.LayoutParams)t.getLayoutParams();
-            LinearLayout.LayoutParams newLayoutParam=new LinearLayout.LayoutParams(firstLayoutParam.width, firstLayoutParam.height, 5-num);
-            newLayoutParam.setMargins(firstLayoutParam.leftMargin,firstLayoutParam.topMargin,firstLayoutParam.rightMargin,firstLayoutParam.bottomMargin);
+            LinearLayout.LayoutParams firstLayoutParam = (LinearLayout.LayoutParams) t.getLayoutParams();
+            LinearLayout.LayoutParams newLayoutParam = new LinearLayout.LayoutParams(firstLayoutParam.width, firstLayoutParam.height, 5 - num);
+            newLayoutParam.setMargins(firstLayoutParam.leftMargin, firstLayoutParam.topMargin, firstLayoutParam.rightMargin, firstLayoutParam.bottomMargin);
             t.setLayoutParams(newLayoutParam);
 
             //t.setBackgroundColor(0);
             t.setVisibility(View.VISIBLE);
         }
-        
+
         // albumGrid.setOnItemClickListener(new OnItemClickListener() {
         // @Override
         // public void onItemClick(AdapterView<?> parent, View v,

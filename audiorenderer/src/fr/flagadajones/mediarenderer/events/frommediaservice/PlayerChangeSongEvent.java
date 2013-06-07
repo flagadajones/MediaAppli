@@ -1,8 +1,8 @@
 package fr.flagadajones.mediarenderer.events.frommediaservice;
 
-import java.util.List;
-
 import fr.fladajonesjones.media.model.Piste;
+
+import java.util.List;
 
 public class PlayerChangeSongEvent {
     public Piste audioItem;

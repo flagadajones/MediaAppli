@@ -1,10 +1,5 @@
 package fr.fladajonesjones.MediaControler.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -14,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.squareup.otto.Subscribe;
-
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.RowGridAdapter;
 import fr.fladajonesjones.MediaControler.database.AlbumDAO;
@@ -29,6 +22,11 @@ import fr.fladajonesjones.MediaControler.model.Row.RowArtiste;
 import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class AlbumFragment extends Fragment {
     LayoutInflater inflater;
     RowGridAdapter rowGridAdapter;
@@ -36,6 +34,7 @@ public class AlbumFragment extends Fragment {
     AlbumDAO albumDao = new AlbumDAO();
 
     private static final Logger log = Logger.getLogger(AlbumFragment.class.getName());
+
     @Override
     public void onResume() {
         super.onResume();
@@ -47,59 +46,63 @@ public class AlbumFragment extends Fragment {
         super.onPause();
         BusManager.getInstance().unregister(this);
     }
-    
+
     @Subscribe
-    public void onFindAlbum(UpnpServerFindAlbumEvent event){
+    public void onFindAlbum(UpnpServerFindAlbumEvent event) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
 
-    	// Album album=intent.getParcelableExtra("album");
-        rowGridAdapter.clear();
-        rowGridAdapter.addAll(initRow(albumDao.getAllAlbums(true, 0)));
-        rowGridAdapter.notifyDataSetChanged();
-            }});
+                // Album album=intent.getParcelableExtra("album");
+                rowGridAdapter.clear();
+                rowGridAdapter.addAll(initRow(albumDao.getAllAlbums(true, 0)));
+                rowGridAdapter.notifyDataSetChanged();
             }
-    
+        });
+    }
+
     @Subscribe
-    public void onLoadingPiste(UpnpServerLoadingPisteEvent event){
+    public void onLoadingPiste(UpnpServerLoadingPisteEvent event) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
 
-    	progressDialog.show();
-            }});
+                progressDialog.show();
+            }
+        });
     }
-    
+
     @Subscribe
-    public void onLoadingPisteOk(UpnpServerLoadingPisteOkEvent event){
+    public void onLoadingPisteOk(UpnpServerLoadingPisteOkEvent event) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
 
-    	if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-            }});
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+        });
     }
-    
-   
+
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MenuDrawerUtil.toggleMenu();
-        progressDialog= new ProgressDialog(getActivity());
+        progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Patientez");
         progressDialog.setMessage("Chargement des pistes...");
         progressDialog.setIndeterminate(true);
         // Application.libraryDevice.browseAlbums();
-    };
+    }
+
+    ;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.fragment_album_list_view, null);
         this.inflater = inflater;
 
-        Long debut=System.currentTimeMillis();
+        Long debut = System.currentTimeMillis();
         initGridAlbum(layout);
-        log.log(Level.WARNING,"onViewCreated :"+(System.currentTimeMillis()-debut));
+        log.log(Level.WARNING, "onViewCreated :" + (System.currentTimeMillis() - debut));
 
         return layout;
     }
@@ -114,7 +117,7 @@ public class AlbumFragment extends Fragment {
 
         // Album album=intent.getParcelableExtra("album");
 
-     
+
         new AsyncTask<Void, Void, List<Row>>() {
             @Override
             protected void onPostExecute(List<Row> result) {
@@ -129,7 +132,7 @@ public class AlbumFragment extends Fragment {
             }
         }.execute();
 
-        
+
         new AsyncTask<Void, Void, List<Row>>() {
             @Override
             protected void onPostExecute(List<Row> result) {
@@ -150,8 +153,8 @@ public class AlbumFragment extends Fragment {
     }
 
     private List<Row> initRow(List<Album> lstAlbum) {
-        Long debut=System.currentTimeMillis();
-        
+        Long debut = System.currentTimeMillis();
+
 
         List<Row> liste = new ArrayList<Row>();
         String[] allColors = getActivity().getResources().getStringArray(R.array.colors);
@@ -194,13 +197,13 @@ public class AlbumFragment extends Fragment {
             liste.remove(liste.size() - 1);
         }
 
-        log.log(Level.WARNING,"initRow :"+(System.currentTimeMillis()-debut));
+        log.log(Level.WARNING, "initRow :" + (System.currentTimeMillis() - debut));
         return liste;
     }
-    
+
     @Override
     public void onDestroyView() {
-    	super.onDestroyView();
+        super.onDestroyView();
     }
 
 }

@@ -1,10 +1,5 @@
 package fr.flagadajones.mediarenderer;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.fourthline.cling.android.AndroidUpnpService;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
@@ -17,6 +12,10 @@ import fr.flagadajones.android.loader.ImageLoader;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
 import fr.flagadajones.mediarenderer.upnp.MediaRenderer;
 import fr.flagadajones.mediarenderer.upnp.service.MyRendererUpnpService;
+import org.fourthline.cling.android.AndroidUpnpService;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Application extends android.app.Application {
     final private static Logger log = Logger.getLogger(Application.class.getName());
@@ -25,7 +24,7 @@ public class Application extends android.app.Application {
 
     public static MediaRenderer mediaRenderer;
     public static AndroidUpnpService upnpService;
-    
+
     // ###############################################################################
     // UPNP Service
     // ###############################################################################

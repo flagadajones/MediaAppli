@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 package fr.fladajonesjones.MediaControler.activity;
 
@@ -14,10 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
-
 import fr.fladajonesjones.MediaControler.R;
 import fr.fladajonesjones.MediaControler.adapter.PisteRawAdapter;
 import fr.fladajonesjones.MediaControler.events.NowPlayingSeekEvent;
@@ -27,25 +22,17 @@ import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar;
 
-/**
- * @author Andrew Neal
- */
 public class NowPlayingFragment extends Fragment {
 
     public UpnpRendererDevice renderer;
-
     // Track, album, and artist name
     private TextView mTrackName, mAlbumArtistName;
-
     // Album art
     private ImageView mAlbumArt;
 
     // Controls
-
     private Button mPrev, mNext;
-    private Button mPause, mStop;
-    private boolean pause = false;
-
+    private Button mPlay, mPause, mStop;
     private HoloCircleSeekBar mSeekbar;
     private ListView listePiste;
     private PisteRawAdapter adapter = null;
@@ -89,6 +76,8 @@ public class NowPlayingFragment extends Fragment {
                 renderer.seekPiste(renderer.positionInfo.getTrack().getValue().intValue() - 1);
             }
         });
+
+
         mNext = (Button) root.findViewById(R.id.ButtonNext);
         mNext.setOnClickListener(new OnClickListener() {
             @Override
@@ -96,18 +85,18 @@ public class NowPlayingFragment extends Fragment {
                 renderer.seekPiste(renderer.positionInfo.getTrack().getValue().intValue() + 1);
             }
         });
-
+        mPlay = (Button) root.findViewById(R.id.ButtonPlay);
+        mPlay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renderer.play();
+            }
+        });
         mPause = (Button) root.findViewById(R.id.ButtonPause);
         mPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (pause) {
-                    renderer.pause();
-                } else {
-                    renderer.play();
-                }
-                pause = !pause;
-
+                renderer.pause();
             }
         });
         mStop = (Button) root.findViewById(R.id.ButtonStop);

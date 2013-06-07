@@ -1,4 +1,3 @@
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:paddingBottom="6dp"
               android:layout_width="match_parent"
@@ -6,59 +5,60 @@
               android:layout_height="wrap_content"
               android:gravity="center_vertical"
               android:orientation="horizontal"
-              android:weightSum="100" >
+              android:weightSum="100">
 
     <ImageView
-            android:id="@+id/stripe"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:adjustViewBounds="true"
-            android:background="@color/red"
-            android:baselineAlignBottom="true"
-            android:contentDescription="@string/color_stripe"
-            android:scaleType="centerCrop" />
+        android:id="@+id/stripe"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:adjustViewBounds="true"
+        android:background="@color/red"
+        android:baselineAlignBottom="true"
+        android:contentDescription="@string/color_stripe"
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
-            android:id="@+id/contentLayout"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dip"
-            android:layout_weight="90"
-            android:orientation="vertical" >
+        android:id="@+id/contentLayout"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dip"
+        android:layout_weight="90"
+        android:orientation="vertical">
+
         <LinearLayout
-                android:id="@+id/contentTitle"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="8dip"
-                android:orientation="horizontal" >
+            android:id="@+id/contentTitle"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dip"
+            android:orientation="horizontal">
 
             <TextView
-                    android:id="@+id/deviceName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dip"
-                    android:padding="2dip"
+                android:id="@+id/deviceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dip"
+                android:padding="2dip"
 
-                    android:text="Nom Artiste"
-                    android:textColor="#33B6EA"
-                    android:textSize="24sp"
-                    android:gravity="center_vertical"/>
+                android:text="Nom Artiste"
+                android:textColor="#33B6EA"
+                android:textSize="24sp"
+                android:gravity="center_vertical"/>
         </LinearLayout>
 
         <TextView
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="48dip"
-                android:ellipsize="end"
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dip"
+            android:layout_marginRight="48dip"
+            android:ellipsize="end"
 
-                android:gravity="center_vertical|center_horizontal"
-                android:maxLines="3"
-                android:text="Non disponible"
-                android:textSize="16sp" />
+            android:gravity="center_vertical|center_horizontal"
+            android:maxLines="3"
+            android:text="Non disponible"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

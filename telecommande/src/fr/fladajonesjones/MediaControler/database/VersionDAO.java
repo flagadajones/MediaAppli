@@ -13,8 +13,8 @@ public class VersionDAO {
 
     public String getRadioVersion() {
         Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_VERSIONS,
-                new String[] { MySQLOpenHelper.COLONNE_VERSION_VALUE }, MySQLOpenHelper.COLONNE_VERSION_ID + " = '"
-                        + MySQLOpenHelper.VERSION_RADIO + "'", null, null, null, null);
+                new String[]{MySQLOpenHelper.COLONNE_VERSION_VALUE}, MySQLOpenHelper.COLONNE_VERSION_ID + " = '"
+                + MySQLOpenHelper.VERSION_RADIO + "'", null, null, null, null);
 
         if (c.getCount() == 0)
             return null;
@@ -27,8 +27,8 @@ public class VersionDAO {
 
     public String getMusiqueVersion() {
         Cursor c = maBaseDonnees.query(MySQLOpenHelper.TABLE_VERSIONS,
-                new String[] { MySQLOpenHelper.COLONNE_VERSION_VALUE }, MySQLOpenHelper.COLONNE_VERSION_ID + " = '"
-                        + MySQLOpenHelper.VERSION_MUSIQUE + "'", null, null, null, null);
+                new String[]{MySQLOpenHelper.COLONNE_VERSION_VALUE}, MySQLOpenHelper.COLONNE_VERSION_ID + " = '"
+                + MySQLOpenHelper.VERSION_MUSIQUE + "'", null, null, null, null);
 
         if (c.getCount() == 0)
             return null;
