@@ -1,5 +1,6 @@
 package fr.flagadajones.mediarenderer.upnp.service;
 
+import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 import fr.fladajonesjones.media.model.Album;
 import fr.fladajonesjones.media.model.Musique;
@@ -20,6 +21,9 @@ import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.model.*;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,11 +42,15 @@ public class MyAVTransportService extends AbstractAVTransportService {
     PlayerSongUpdateEvent eventUpdate;
     private String metaData = "";
 
+    private boolean firstPiste=false;
+    private boolean lastPiste=false;
     public MyAVTransportService(LastChange lastChange) {
         super(lastChange);
         BusManager.getInstance().register(this);
 
     }
+
+
 
     // /////////////////////////////////////////////////////////////////////////////////////
     // / OTTO
@@ -50,16 +58,30 @@ public class MyAVTransportService extends AbstractAVTransportService {
     @Subscribe
     public void onUpdateSongInfo(PlayerSongUpdateEvent event) {
         this.eventUpdate = event;
+
         if (event.playListSize == 0) {
             mediaInfo = new MediaInfo();
             positionInfo = new PositionInfo();
+            firstPiste=true;
+            lastPiste=true;
         } else {
+            if(event.trackPosition==0){
+                firstPiste=true;
+            }else{
+                firstPiste=false;
+            }
+            if(event.trackPosition==event.playListSize-1){
+                lastPiste=true;
+            }else{
+                lastPiste=false;
+            }
             mediaInfo = new MediaInfo(event.mediaUrl, metaData, new UnsignedIntegerFourBytes(event.playListSize),
 
                     event.mediaDuration, StorageMedium.NETWORK);
 
             //positionInfo = new PositionInfo(event.trackPosition,metaData,event.trackUrl);
         }
+        defineTransportAction();
     }
 
     @Subscribe
@@ -67,6 +89,7 @@ public class MyAVTransportService extends AbstractAVTransportService {
         int timePos = event.pos / 1000;
         String time = StringUtils.makeTimeString(timePos);
         positionInfo = new PositionInfo(eventUpdate.trackPosition, eventUpdate.trackDuration, metaData, eventUpdate.trackUrl, time, time, timePos, timePos);
+
 
     }
 
@@ -161,36 +184,51 @@ public class MyAVTransportService extends AbstractAVTransportService {
         defineTransportAction();
         getLastChange().setEventedValue(0, new AVTransportVariable.TransportState(transportState));
     }
+    private void nextOrPrev(List<TransportAction> liste){
+
+        if (!firstPiste)
+            liste.add(TransportAction.Previous);
+        if(!lastPiste)
+            liste.add(TransportAction.Next);
+
+    }
 
     private void defineTransportAction() {
+        List<TransportAction> transportList=new ArrayList<TransportAction>();
         switch (transportState) {
             case NO_MEDIA_PRESENT:
-                transportAction = new TransportAction[]{};
+                //transportAction = transportList.toArray(new TransportAction[0]);
                 break;
             case PAUSED_PLAYBACK:
-                transportAction = new TransportAction[]{TransportAction.Stop, TransportAction.Play, TransportAction.Next,
-                        TransportAction.Previous, TransportAction.Seek};
+                transportList=new ArrayList<TransportAction>(Arrays.asList(new TransportAction[]{TransportAction.Stop, TransportAction.Play,TransportAction.Seek}));
+                nextOrPrev(transportList);
                 break;
             case PLAYING:
-                transportAction = new TransportAction[]{TransportAction.Stop, TransportAction.Pause,
-                        TransportAction.Next, TransportAction.Previous, TransportAction.Seek};
+                transportList=new ArrayList<TransportAction>(Arrays.asList(new TransportAction[]{TransportAction.Stop,TransportAction.Pause,TransportAction.Seek}));
+                nextOrPrev(transportList);
                 break;
             case STOPPED:
-                // TODO ajouetr next/prev en fonction de la playlist
-                transportAction = new TransportAction[]{TransportAction.Play, TransportAction.Next,
-                        TransportAction.Previous, TransportAction.Seek};
+                transportList=new ArrayList<TransportAction>(Arrays.asList(new TransportAction[]{TransportAction.Play,TransportAction.Seek}));
+                nextOrPrev(transportList);
             default:
-                transportAction = new TransportAction[]{TransportAction.Stop, TransportAction.Play,
-                        TransportAction.Pause, TransportAction.Next, TransportAction.Previous, TransportAction.Seek};
+                transportList=new ArrayList<TransportAction>(Arrays.asList(new TransportAction[]{TransportAction.Stop, TransportAction.Play,
+                        TransportAction.Pause,TransportAction.Seek}));
+                nextOrPrev(transportList);
                 break;
         }
-
+        transportAction=transportList.toArray(new TransportAction[0]);
         getLastChange().setEventedValue(0, new AVTransportVariable.CurrentTransportActions(transportAction));
+        BusManager.getInstance().post(produceUpnpRendererTransportActionEvent());
+    }
 
+    @Produce
+    public UpnpRendererTransportActionEvent produceUpnpRendererTransportActionEvent(){
+    return new UpnpRendererTransportActionEvent(transportAction);
     }
 
     @Override
     protected void finalize() throws Throwable {
+
         super.finalize();
         BusManager.getInstance().unregister(this);
     }

@@ -6,9 +6,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
 import com.example.testseekbar.R;
-
 import fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar;
 
 public class MainActivity2 extends Activity {
@@ -33,8 +31,8 @@ public class MainActivity2 extends Activity {
                     if (!changedPosition) {
                         if (play)
                             principal.setThumb(MainActivity2.this.getResources().getDrawable(R.drawable.playerpause)); // do
-                                                                                                                       // action
-                                                                                                                       // here
+                            // action
+                            // here
                         else
                             principal.setThumb(MainActivity2.this.getResources().getDrawable(R.drawable.playerplay)); // do
                         play = !play;

@@ -1,7 +1,7 @@
 package fr.fladajonesjones.media.model;
 
-import java.net.URI;
-
+import android.os.Parcel;
+import android.os.Parcelable;
 import org.fourthline.cling.support.contentdirectory.DIDLParser;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.DIDLObject;
@@ -9,18 +9,18 @@ import org.fourthline.cling.support.model.Res;
 import org.fourthline.cling.support.model.item.AudioBroadcast;
 import org.seamless.util.MimeType;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.net.URI;
 
 public class Radio extends Musique implements Parcelable {
 
-    public Radio(String id,String nom,String url, String albumArt,int fav){
-        this.upnpId=id;
-        this.titre=nom;
-        this.url=url;
-        this.albumArt=albumArt;
-        this.fav=fav;
+    public Radio(String id, String nom, String url, String albumArt, int fav) {
+        this.upnpId = id;
+        this.titre = nom;
+        this.url = url;
+        this.albumArt = albumArt;
+        this.fav = fav;
     }
+
     public String getUrl() {
         return url;
     }
@@ -62,7 +62,8 @@ public class Radio extends Musique implements Parcelable {
     public Radio() {
 
     }
-@Override
+
+    @Override
     public String getDuree() {
         return "00:00:00";
     }

@@ -1,10 +1,10 @@
 package fr.fladajonesjones.media.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Album extends Musique implements Parcelable, Comparable<Album> {
 
@@ -32,11 +32,11 @@ public class Album extends Musique implements Parcelable, Comparable<Album> {
 
     }
 
-    
-    public String getDuree(){
-       return "00:00:00";
+
+    public String getDuree() {
+        return "00:00:00";
     }
-    
+
     public boolean isPisteLoaded() {
         if (lstPistes == null || lstPistes.size() != nbTracks) {
             return false;
@@ -72,7 +72,6 @@ public class Album extends Musique implements Parcelable, Comparable<Album> {
         return lstPistes;
 
     }
-
 
 
     @Override

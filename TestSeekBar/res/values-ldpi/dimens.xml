@@ -7,5 +7,5 @@
     <dimen name="SeekHeight">267dp</dimen>
     <dimen name="SeekLayoutWidth">554dp</dimen>
     <dimen name="ImagePlayerSize">200dp</dimen>
-<dimen name="ButtonPlayerSize">72dp</dimen>
+    <dimen name="ButtonPlayerSize">72dp</dimen>
 </resources>

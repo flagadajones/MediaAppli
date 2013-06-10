@@ -27,10 +27,7 @@ import org.fourthline.cling.support.avtransport.lastchange.AVTransportLastChange
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable.TransportState;
 import org.fourthline.cling.support.lastchange.LastChange;
-import org.fourthline.cling.support.model.MediaInfo;
-import org.fourthline.cling.support.model.PositionInfo;
-import org.fourthline.cling.support.model.SeekMode;
-import org.fourthline.cling.support.model.TransportInfo;
+import org.fourthline.cling.support.model.*;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -372,6 +369,29 @@ public class UpnpRendererDevice extends UpnpDevice {
 
     }
 
+    public void getTransportActions() {
+        if (transPortService == null)
+            transPortService = device.findService(new UDAServiceType("AVTransport"));
+
+        ActionCallback transportAction = new GetCurrentTransportActions(transPortService) {
+
+            @Override
+            public void received(ActionInvocation actionInvocation, TransportAction[] actions) {
+
+                BusManager.getInstance().post(new UpnpRendererTransportActionEvent(actions));
+
+            }
+
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+                Application.activity.showToast(defaultMsg, true);
+            }
+        };
+
+        UpnpDeviceManager.getInstance().upnpService.getControlPoint().execute(transportAction);
+
+    }
+
     public void initSubscription() {
         // transPortServicecallback == null &&
         if (transPortService != null)
@@ -384,6 +404,7 @@ public class UpnpRendererDevice extends UpnpDevice {
                     // Application.activity.showToast(
                     // "Established: " + sub.getSubscriptionId(), true);
                     startRepeatingTask();
+                    getTransportActions();
                 }
 
                 @Override
@@ -427,7 +448,7 @@ public class UpnpRendererDevice extends UpnpDevice {
                                     lastChange.getInstanceIDs()[0], AVTransportVariable.CurrentTransportActions.class);
                             
                             if(currentTransportActions!=null && currentTransportActions.getValue().length!=0){
-                            
+
                             BusManager.getInstance().post(new UpnpRendererTransportActionEvent(currentTransportActions.getValue()));
                             }
                             

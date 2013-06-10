@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>fr.flagadajones</groupId>
-		<artifactId>media</artifactId>
-		<version>${project.version}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<artifactId>testseekbar</artifactId>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>fr.flagadajones</groupId>
+        <artifactId>media</artifactId>
+        <version>${project.version}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>testseekbar</artifactId>
 
-	<packaging>apk</packaging>
-	<build>
+    <packaging>apk</packaging>
+    <build>
 
-		<sourceDirectory>src</sourceDirectory>
-		<plugins>
-			<plugin>
-				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>android-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>support-v4</artifactId>
-			<version>r7</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>r7</version>
+        </dependency>
 
-		<dependency>
-		    
-		      <groupId>com.larswerkman</groupId>
-    <artifactId>HoloCircleSeekBar</artifactId>
-		    <version>7</version>
-		</dependency>
+        <dependency>
 
-	</dependencies>
+            <groupId>com.larswerkman</groupId>
+            <artifactId>HoloCircleSeekBar</artifactId>
+            <version>7</version>
+        </dependency>
+
+    </dependencies>
 
 
 </project>

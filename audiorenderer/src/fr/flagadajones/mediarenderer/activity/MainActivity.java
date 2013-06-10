@@ -12,12 +12,14 @@ import android.os.IBinder;
 import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+import fr.fladajonesjones.media.model.Album;
 import fr.flagadajones.media.util.BusManager;
 import fr.flagadajones.media.util.StringUtils;
 import fr.flagadajones.mediarenderer.Application;
@@ -28,24 +30,35 @@ import fr.flagadajones.mediarenderer.events.frommediaservice.PlayerUpdatePosEven
 import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerPauseEvent;
 import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStartEvent;
 import fr.flagadajones.mediarenderer.events.fromupnpservice.PlayerStopEvent;
+import fr.flagadajones.mediarenderer.events.fromupnpservice.UpnpRendererTransportActionEvent;
 import fr.flagadajones.mediarenderer.services.MediaPlayerService;
 import fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar;
+import org.fourthline.cling.support.model.TransportAction;
 
 public class MainActivity extends Activity {
 
     private static int CODE_RETOUR = 1;
-    PisteRawAdapter adapter = null;
-    private ImageView albumArt;
-    private Button buttonPlayPause;
-    private HoloCircleSeekBar seekBar;
-    private TextView songName;
-    private TextView artisteName;
-    private ListView pisteListe;
+    // Track, album, and artist name
+    private TextView mTrackName, mAlbumArtistName;
+    // Album art
+    private ImageView mAlbumArt;
+
+    // Controls
+    private Button mPrev, mNext;
+    private Button mPlay, mPause, mStop;
+    private HoloCircleSeekBar mSeekbar;
+    private ListView listePiste;
+    private PisteRawAdapter adapter = null;
     private boolean mBound = false;
+
+    private MediaPlayerService mediaPlayerService;
+
     private ServiceConnection mediaPlayerServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
             mBound = true;
+            mediaPlayerService=(MediaPlayerService )serviceBinder;
+
         }
 
         @Override
@@ -60,37 +73,103 @@ public class MainActivity extends Activity {
         BusManager.getInstance().register(this);
     }
 
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
         BusManager.getInstance().unregister(this);
     }
 
-    private void initViews() {
-        //   buttonPlayPause = (Button) findViewById(R.id.ButtonPlayStop);
-        albumArt = (ImageView) findViewById(R.id.AlbumArt);
-        seekBar = (HoloCircleSeekBar) findViewById(R.id.Position);
-        artisteName = (TextView) findViewById(R.id.ArtisteName);
-        songName = (TextView) findViewById(R.id.SongName);
-        pisteListe = (ListView) findViewById(R.id.Piste);
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        bindToService();
 
-        pisteListe.setAdapter(adapter);
+    }
+
+    private void initViews() {
+        mTrackName = (TextView) findViewById(R.id.SongName);
+
+        mAlbumArtistName = (TextView) findViewById(R.id.ArtisteName);
+
+        mAlbumArt = (ImageView) findViewById(R.id.AlbumArt);
+
+        listePiste = (ListView) findViewById(R.id.pisteListe);
+
+        adapter = new PisteRawAdapter(MainActivity.this);
+        listePiste.setAdapter(adapter);
+
+
+        mPrev = (Button) findViewById(R.id.ButtonPrev);
+/*        mPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renderer.seekPiste(renderer.positionInfo.getTrack().getValue().intValue() - 1);
+            }
+        });
+*/
+        mNext = (Button) findViewById(R.id.ButtonNext);
+/*        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renderer.seekPiste(renderer.positionInfo.getTrack().getValue().intValue() + 1);
+            }
+        });
+*/        mPlay = (Button) findViewById(R.id.ButtonPlay);
+/*        mPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renderer.play();
+            }
+        });
+*/        mPause = (Button)findViewById(R.id.ButtonPause);
+/*        mPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renderer.pause();
+            }
+        });
+*/        mStop = (Button) findViewById(R.id.ButtonStop);
+/*        mStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                renderer.stop();
+
+            }
+        });
+*/
+        mSeekbar = (HoloCircleSeekBar) findViewById(R.id.Position);
+
+/*        mSeekbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (renderer.playing)
+                    renderer.pause();
+                else
+                    renderer.play();
+            }
+        });
+*/
 
     }
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        adapter = new PisteRawAdapter(this);
         // Activate StrictMode
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectAll().penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
                 .penaltyLog().build());
 
-        setContentView(R.layout.main);
+        setContentView(R.layout.renderer_now_playing);
         initViews();
+
         bindToService();
+
+
     }
 
     private boolean mediaPlayerServiceRunning() {
@@ -132,7 +211,7 @@ public class MainActivity extends Activity {
     public void onPausePlayer(final PlayerPauseEvent event) {
         runOnUiThread(new Runnable() {
             public void run() {
-                buttonPlayPause.setText("PAUSE");
+               // buttonPlayPause.setText("PAUSE");
             }
         });
 
@@ -153,7 +232,7 @@ public class MainActivity extends Activity {
 
         runOnUiThread(new Runnable() {
             public void run() {
-                buttonPlayPause.setText("STOP");
+                //buttonPlayPause.setText("STOP");
             }
         });
 
@@ -164,7 +243,7 @@ public class MainActivity extends Activity {
 
         runOnUiThread(new Runnable() {
             public void run() {
-                seekBar.setProgress(event.pos);
+                mSeekbar.setProgress(event.pos/1000);
             }
         });
     }
@@ -173,15 +252,33 @@ public class MainActivity extends Activity {
     public void onChangeSong(final PlayerChangeSongEvent event) {
         runOnUiThread(new Runnable() {
             public void run() {
+                if(event.audioItem==null)
+                    return;
                 if (event.audioItem.albumArt != null)
-                    Picasso.with(MainActivity.this).load(event.audioItem.albumArt).into(albumArt);
+                    Picasso.with(MainActivity.this).load(event.audioItem.albumArt).placeholder(R.drawable.stub)
+                        .error(R.drawable.stub).into(mAlbumArt);
                 //Application.imageLoader.DisplayImage(event.audioItem.albumArt, albumArt);
-                songName.setText(event.audioItem.titre);
-                artisteName.setText(event.audioItem.artiste);
-                seekBar.setMax(StringUtils.makeLongFromStringTime(event.audioItem.duree).intValue());
+                mTrackName.setText(event.audioItem.titre);
+                mAlbumArtistName.setText(event.audioItem.artiste);
+                mSeekbar.setMax(StringUtils.makeLongFromStringTime(event.audioItem.duree).intValue());
+                mSeekbar.setProgress(0);
                 adapter.clear();
-                adapter.addAll(event.playlist);
+                if (event.playlist.size()!=1) {
+                    if(adapter.trackPosition==0)
+                        adapter.addAll(event.playlist);
+                        adapter.trackPosition=event.trackPosition;
+
+
+                    listePiste.setSelection(event.trackPosition);
+                    listePiste.setSelected(true);
+                    listePiste.setVisibility(View.VISIBLE);
+                } else {
+                    listePiste.setVisibility(View.INVISIBLE);
+                }
             }
+
+
+
         });
     }
 
@@ -206,4 +303,57 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
 
     }
+
+    @Subscribe
+    public void onUpnpRendererTransportActionEvent(final UpnpRendererTransportActionEvent event) {
+        if (event.actions == null)
+            return;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                desactiveButton(mPlay);
+                desactiveButton(mNext);
+                desactiveButton(mPause);
+                desactiveButton(mPrev);
+                desactiveButton(mStop);
+
+                for (TransportAction action : event.actions) {
+                    switch (action) {
+                        case Play:
+                            activeButton(mPlay);
+                            break;
+                        case Next:
+                            activeButton(mNext);
+                            break;
+                        case Pause:
+                            activeButton(mPause);
+                            break;
+                        case Previous:
+                            activeButton(mPrev);
+                            break;
+                        case Stop:
+                            activeButton(mStop);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void activeButton(Button button) {
+        button.setEnabled(true);
+        button.setAlpha(1);
+    }
+
+    private void desactiveButton(Button button) {
+        button.setEnabled(false);
+        button.setAlpha(0.2f);
+    }
+
+
+
 }

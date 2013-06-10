@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.testseekbar.R;
 import com.fima.cardsui.objects.Card;
 
@@ -16,8 +15,8 @@ public class PisteCard extends Card {
     // isClickable);
     // }
 
-    public PisteCard(String titre,String duree) {
-        super(titre,duree);
+    public PisteCard(String titre, String duree) {
+        super(titre, duree);
     }
 
     boolean changedPosition = false;
@@ -27,11 +26,11 @@ public class PisteCard extends Card {
     public View getCardContent(final Context context) {
         View v = LayoutInflater.from(context).inflate(R.layout.piste_row, null);
 
-            ((TextView) v.findViewById(R.id.pisteTitre)).setText(title);
-            ((TextView) v.findViewById(R.id.pisteDuree)).setText(desc);
+        ((TextView) v.findViewById(R.id.pisteTitre)).setText(title);
+        ((TextView) v.findViewById(R.id.pisteDuree)).setText(desc);
 
-            return v;
-        
+        return v;
+
     }
 
 }

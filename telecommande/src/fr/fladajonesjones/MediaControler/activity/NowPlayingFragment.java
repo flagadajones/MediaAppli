@@ -133,11 +133,14 @@ public class NowPlayingFragment extends Fragment {
     }
 
     @Subscribe
-    public void onUpnpRendererTransportActionEvent(UpnpRendererTransportActionEvent event) {
+    public void onUpnpRendererTransportActionEvent(final UpnpRendererTransportActionEvent event) {
         if (event.actions == null)
             return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-        desactiveButton(mPlay);
+                desactiveButton(mPlay);
         desactiveButton(mNext);
         desactiveButton(mPause);
         desactiveButton(mPrev);
@@ -165,6 +168,7 @@ public class NowPlayingFragment extends Fragment {
             }
 
         }
+            }});
     }
 
     private void activeButton(Button button) {

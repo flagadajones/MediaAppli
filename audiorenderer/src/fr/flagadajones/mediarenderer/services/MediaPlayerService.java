@@ -29,9 +29,9 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         OnPreparedListener, OnErrorListener, OnCompletionListener {
     protected StatefulMediaPlayer mMediaPlayer = new StatefulMediaPlayer();
     private UpdateThread updateThread = new UpdateThread(this);
-    private List<Piste> playlist = new ArrayList<Piste>();
+    public List<Piste> playlist = new ArrayList<Piste>();
     private String mediaDuration = "00:00:00";
-    private int trackPosition;
+    public int trackPosition;
 
     public MediaPlayerService() {
         BusManager.getInstance().register(this);
@@ -105,9 +105,17 @@ public class MediaPlayerService extends Service implements OnBufferingUpdateList
         mMediaPlayer.setAudioItem(piste);
 
         mMediaPlayer.prepareAsync();
-        BusManager.getInstance().post(new PlayerChangeSongEvent(piste, playlist));
+        BusManager.getInstance().post(producePlayerChangeSongEvent());
         BusManager.getInstance().post(updateMediaInfo());
 
+    }
+
+    @Produce
+    public PlayerChangeSongEvent  producePlayerChangeSongEvent(){
+        if(playlist.size()!=0)
+        return new PlayerChangeSongEvent(playlist.get(trackPosition), playlist,trackPosition);
+        else
+            return new PlayerChangeSongEvent(null, playlist,trackPosition);
     }
 
     @Override

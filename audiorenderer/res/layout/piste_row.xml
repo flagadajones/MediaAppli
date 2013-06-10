@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:textColor="#33B6EA"
+        android:textSize="24sp"
+
         android:text="TextView"/>
 
     <TextView
@@ -19,6 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
+        android:textColor="#33B6EA"
+        android:textSize="24sp"
+
         android:text="99:99"/>
 
 </RelativeLayout>

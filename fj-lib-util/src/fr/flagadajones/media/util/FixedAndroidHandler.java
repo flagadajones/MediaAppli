@@ -15,14 +15,14 @@
  */
 package fr.flagadajones.media.util;
 
+import android.util.Log;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-
-import android.util.Log;
 
 /*
 Taken from: http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob_plain;f=core/java/com/android/internal/logging/AndroidHandler.java;hb=c2ad241504fcaa12d4579d3b0b4038d1ca8d08c9
@@ -53,7 +53,6 @@ public class FixedAndroidHandler extends Handler {
      * Converts a {@link java.util.logging.Logger} logging level into an Android one.
      *
      * @param level The {@link java.util.logging.Logger} logging level.
-     *
      * @return The resulting Android logging level.
      */
     static int getAndroidLevel(Level level) {

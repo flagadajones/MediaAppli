@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="audio_player_info_container_padding">8dp</dimen>
+    <dimen name="audio_player_info_container_padding">8dp</dimen>
+    <dimen name="audio_player_artwork_padding">20dp</dimen>
+    <dimen name="audio_player_button_container_padding">20dp</dimen>
+    <dimen name="audio_player_seek_bar_padding">20dp</dimen>
+    <dimen name="text_size_xlarge">14dp</dimen>
+    <dimen name="text_size_large">12dp</dimen>
+    <dimen name="text_size_small">8dp</dimen>
+    <dimen name="audio_player_controls_height">80dp</dimen>
+
+    <!-- now playing -->
+    <dimen name="SeekWidth">510dp</dimen>
+    <dimen name="SeekHeight">275dp</dimen>
+    <dimen name="SeekLayoutWidth">530dp</dimen>
+    <dimen name="ImagePlayerSize">220dp</dimen>
+    <dimen name="ButtonPlayerSize">72dp</dimen>
+
+</resources>

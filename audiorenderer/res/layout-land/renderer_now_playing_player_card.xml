@@ -11,7 +11,7 @@
         android:layout_height="@dimen/ImagePlayerSize"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:src="@drawable/bg_img_loading"/>
+        android:src="@drawable/stub"/>
 
     <fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar
         android:id="@+id/Position"

@@ -5,10 +5,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
 import com.example.testseekbar.R;
 import com.fima.cardsui.objects.Card;
-
 import fr.flagadajones.widget.holocircleseekbar.HoloCircleSeekBar;
 
 public class PlayerCard extends Card {
@@ -19,7 +17,7 @@ public class PlayerCard extends Card {
     boolean changedPosition = false;
     boolean play = false;
 
-   
+
     public View getCardContent(final Context context) {
         View v = LayoutInflater.from(context).inflate(R.layout.player_card, null);
 
@@ -36,8 +34,8 @@ public class PlayerCard extends Card {
                     if (!changedPosition) {
                         if (play)
                             principal.setThumb(context.getResources().getDrawable(R.drawable.playerpause)); // do
-                                                                                                            // action
-                                                                                                            // here
+                            // action
+                            // here
                         else
                             principal.setThumb(context.getResources().getDrawable(R.drawable.playerplay)); // do
                         play = !play;

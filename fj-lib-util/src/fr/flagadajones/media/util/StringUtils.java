@@ -43,15 +43,15 @@ public class StringUtils {
         String timeSplit[] = time.split(":");
         Long timeValue = 0L;
 
-        timeValue += Long.valueOf(timeSplit[0]) * 60L * 60L ;//* 1000L;
-        timeValue += Long.valueOf(timeSplit[1]) * 60L ;//* 1000L;
+        timeValue += Long.valueOf(timeSplit[0]) * 60L * 60L;//* 1000L;
+        timeValue += Long.valueOf(timeSplit[1]) * 60L;//* 1000L;
 
         if (timeSplit.length == 3) {
-            timeValue += Long.valueOf(timeSplit[2]) ;//* 1000L;
+            timeValue += Long.valueOf(timeSplit[2]);//* 1000L;
 
         }
         return timeValue;
     }
 
-  
+
 }

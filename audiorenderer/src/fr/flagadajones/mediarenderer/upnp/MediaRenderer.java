@@ -34,7 +34,7 @@ public class MediaRenderer {
 
     private static final String NAMESPACE = "http://flagadajones.fr/mediarenderer/";
     private static final String PREF_UUID = "uuid";
-    private static final long LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS = 100000;
+    private static final long LAST_CHANGE_FIRING_INTERVAL_MILLISECONDS = 2000;
     private static final Logger log = Logger.getLogger(MediaRenderer.class.getName());
 
     protected final LocalServiceBinder binder = new AnnotationLocalServiceBinder();
@@ -65,7 +65,6 @@ public class MediaRenderer {
         avTransport = new MyServiceManager<MyAVTransportService>(avTransportService, lastChangeParser) {
             @Override
             protected MyAVTransportService createServiceInstance() throws Exception {
-                MyAVTransportService t = new MyAVTransportService(avTransportLastChange);
                 return new MyAVTransportService(avTransportLastChange);
             }
         };
